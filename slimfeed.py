@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 #    Copyright 2011 by Andreas Pakulat <apaku@gmx.de>
 #
 #    This program is free software; you can redistribute it and/or modify
@@ -15,9 +16,25 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #    02110-1301  USA.
 
+# Setup PyQt stuff.
+import sip
+sip.setapi("QString", 2)
+sip.setapi("QDate", 2)
+sip.setapi("QDateTime", 2)
+sip.setapi("QTextStream", 2)
+sip.setapi("QTime", 2)
+sip.setapi("QUrl", 2)
+sip.setapi("QVariant", 2)
+
+from PyQt4 import QtCore, QtGui, uic
+import sys
+
 def main():
-    pass
+    app = QtGui.QApplication(sys.argv)
+    mainwin = uic.loadUi("slimfeed.ui")
+    mainwin.show()
+    return app.exec_()
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
 

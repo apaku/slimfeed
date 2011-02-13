@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>mainWindow</class>
+ <widget class="QMainWindow" name="mainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1061</width>
+    <height>744</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>SlimFeed</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QSplitter" name="splitter_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QTableView" name="feedList"/>
+      <widget class="QSplitter" name="splitter">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <widget class="QTableView" name="articelList"/>
+       <widget class="QWebView" name="browser">
+        <property name="url">
+         <url>
+          <string>about:blank</string>
+         </url>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1061</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFeed">
+    <property name="title">
+     <string>Feed</string>
+    </property>
+    <addaction name="actionAdd"/>
+    <addaction name="actionMark_All_As_Read"/>
+    <addaction name="actionFetch_All_Feeds"/>
+   </widget>
+   <widget class="QMenu" name="menuArticle">
+    <property name="title">
+     <string>Article</string>
+    </property>
+    <addaction name="actionMark_All_As_Read_2"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout_SlimFeed"/>
+   </widget>
+   <addaction name="menuFeed"/>
+   <addaction name="menuArticle"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionAdd">
+   <property name="text">
+    <string>Add</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="text">
+    <string>Delete</string>
+   </property>
+  </action>
+  <action name="actionMark_All_As_Read">
+   <property name="text">
+    <string>Mark All As Read</string>
+   </property>
+  </action>
+  <action name="actionMark_All_As_Read_2">
+   <property name="text">
+    <string>Mark All As Read</string>
+   </property>
+  </action>
+  <action name="actionFetch_All_Feeds">
+   <property name="text">
+    <string>Fetch All Feeds</string>
+   </property>
+  </action>
+  <action name="actionAbout_SlimFeed">
+   <property name="text">
+    <string>About SlimFeed</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QWebView</class>
+   <extends>QWidget</extends>
+   <header>QtWebKit/QWebView</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
