@@ -27,6 +27,10 @@ class StoreMock:
     pass
 
 class EntryMock:
+    def __init__(self, data=None):
+        if data is not None:
+            self._data = data
+
     def save(self, store):
         self._stored = True
 
@@ -35,7 +39,20 @@ class EntryMock:
 
 class FeedTest(unittest.TestCase):
     def setUp(self):
+        import time
         self.feed = Feed()
+        self.updatetime = time.localtime()
+        self.entrydata = {"summary":"This is the content", "title":"EntryTitle", "updated_parsed":self.updatetime,"link":"http://localhost/entry","id":"http://localhost/entry?p12", "author":"MeAgain"}
+        self.feeddata = {"feed":{"title":"TestTitle","updated_parsed":self.updatetime,"author":"Me"},"href":"http://localhost","entries":[self.entrydata]}
+
+    def testInitFromData(self):
+        f = Feed(data=self.feeddata,entryClz=EntryMock)
+        self.assertEqual(f.title(),self.feeddata["feed"]["title"])
+        self.assertEqual(f.author(),self.feeddata["feed"]["author"])
+        self.assertEqual(f.updated(),self.feeddata["feed"]["updated_parsed"])
+        self.assertEqual(f.url(),self.feeddata["href"])
+        self.assertEqual(len(f.entries()), 1)
+        self.assertEqual(f.entries()[0]._data, self.entrydata)
 
     def testSave(self):
         e = EntryMock()
