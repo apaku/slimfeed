@@ -19,6 +19,7 @@
 import unittest, xmlrunner
 
 from feedmanagertest import FeedManagerTest
+from feedtest import FeedTest
 
 if __name__ == "__main__":
     unittest.main(testRunner=xmlrunner.XmlTestRunner(file("pyunit.xml", "w")))
