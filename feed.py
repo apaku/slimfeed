@@ -16,9 +16,30 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #    02110-1301  USA.
 
+from entry import Entry
+
 class Feed:
-    def __init__(self):
+    def __init__(self, data=None, entryClz=Entry):
         self._entries = []
+        if data is not None:
+            self._title = data["feed"]["title"]
+            self._author = data["feed"]["author"]
+            self._updated = data["feed"]["updated_parsed"]
+            self._url = data["href"]
+            for e in data["entries"]:
+                self.addEntry(entryClz(data=e))
+
+    def title(self):
+        return self._title
+
+    def author(self):
+        return self._author
+
+    def updated(self):
+        return self._updated
+
+    def url(self):
+        return self._url
 
     def load(self, store):
         pass
