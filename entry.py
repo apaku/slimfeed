@@ -17,8 +17,30 @@
 #    02110-1301  USA.
 
 class Entry:
-    def __init__(self):
-        pass
+    def __init__(self,data=None):
+        if data is not None:
+            if "summary" in data.keys():
+                self._content = data["summary"]
+            else:
+                self._content = data["content"]
+            self._title = data["title"]
+            self._author = data["author"]
+            self._updated = data["updated_parsed"]
+            self._url = data["link"]
+            self._id = data["id"]
+
+    def url(self):
+        return self._url
+    def updated(self):
+        return self._updated
+    def id(self):
+        return self._id
+    def author(self):
+        return self._author
+    def title(self):
+        return self._title
+    def content(self):
+        return self._content
 
     def load(self, store):
         pass
