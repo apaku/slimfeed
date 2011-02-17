@@ -18,28 +18,56 @@
 
 from entry import Entry
 
-class Feed:
-    def __init__(self, data=None, entryClz=Entry):
-        self._entries = []
-        if data is not None:
-            self._title = data["feed"]["title"]
-            self._author = data["feed"]["author"]
-            self._updated = data["feed"]["updated_parsed"]
-            self._url = data["href"]
-            for e in data["entries"]:
-                self.addEntry(entryClz(data=e))
+class Feed(object):
+    def __init__(self):
+        self._entries = set()
+        self._title = ""
+        self._author = ""
+        self._updated = None
+        self._url = ""
 
-    def title(self):
+    def __hash__(self):
+        return 3*hash(self.title)+5*hash(self.url)+7*hash(self.author)
+
+    def gettitle(self):
         return self._title
+    def settitle(self, title):
+        self._title = title
+    def deltitle(self):
+        del self._title
+    title = property(gettitle, settitle, deltitle, "Title of the feed")
 
-    def author(self):
+    def getauthor(self):
         return self._author
+    def setauthor(self, author):
+        self._author = author
+    def delauthor(self):
+        del self._author
+    author = property(getauthor, setauthor, delauthor, "Author of the feed")
 
-    def updated(self):
-        return self._updated
-
-    def url(self):
+    def geturl(self):
         return self._url
+    def seturl(self, url):
+        self._url = url
+    def delurl(self):
+        del self._url
+    url = property(geturl, seturl, delurl, "Url of the feed")
+
+    def getupdated(self):
+        return self._updated
+    def setupdated(self, updated):
+        self._updated = updated
+    def delupdated(self):
+        del self._updated
+    updated = property(getupdated, setupdated, delupdated, "Date of last update of the feed")
+
+    def getentries(self):
+        return self._entries
+    def setentries(self, entries):
+        self._entries = entries
+    def delentries(self):
+        del self._entries
+    entries = property(getentries, setentries, delentries, "Entries of the feed")
 
     def load(self, store):
         pass
@@ -47,17 +75,6 @@ class Feed:
     def save(self, store):
         for entry in self._entries:
             entry.save(store)
-
-    def entries(self):
-        return self._entries
-
-    def addEntry(self, entry):
-        if not entry in self._entries:
-            self._entries.append(entry)
-
-    def removeEntry(self, entry):
-        if entry in self._entries:
-            self._entries.remove(entry)
 
 if __name__ == "__main__":
     import sys

@@ -30,27 +30,50 @@ class EntryTest(unittest.TestCase):
     def setUp(self):
         import time
         self.entry = Entry()
-        self.updatetime = time.localtime()
-        self.entrydatarss = {"summary":"This is the content", "title":"EntryTitle", "updated_parsed":self.updatetime,"link":"http://localhost/entry","id":"http://localhost/entry?p12", "author":"MeAgain"}
-        self.entrydataatom = {"content":"This is the content", "title":"EntryTitle", "updated_parsed":self.updatetime,"link":"http://localhost/entry","id":"http://localhost/entry?p12", "author":"MeAgain"}
 
-    def testInitFromDataRss(self):
-        f = Entry(data=self.entrydatarss)
-        self.assertEqual(f.title(),self.entrydatarss["title"])
-        self.assertEqual(f.author(),self.entrydatarss["author"])
-        self.assertEqual(f.updated(),self.entrydatarss["updated_parsed"])
-        self.assertEqual(f.url(),self.entrydatarss["link"])
-        self.assertEqual(f.content(),self.entrydatarss["summary"])
-        self.assertEqual(f.id(),self.entrydatarss["id"])
+    def testTitle(self):
+        self.assertEqual(len(self.entry.title), 0)
+        self.entry.title = "test"
+        self.assertEqual(self.entry.title, "test")
+        del self.entry.title
+        self.assertFalse(hasattr(self.entry, "title"))
 
-    def testInitFromDataAtom(self):
-        f = Entry(data=self.entrydataatom)
-        self.assertEqual(f.title(),self.entrydataatom["title"])
-        self.assertEqual(f.author(),self.entrydataatom["author"])
-        self.assertEqual(f.updated(),self.entrydataatom["updated_parsed"])
-        self.assertEqual(f.url(),self.entrydataatom["link"])
-        self.assertEqual(f.content(),self.entrydataatom["content"])
-        self.assertEqual(f.id(),self.entrydataatom["id"])
+    def testUrl(self):
+        self.assertEqual(len(self.entry.url), 0)
+        self.entry.url = "test"
+        self.assertEqual(self.entry.url, "test")
+        del self.entry.url
+        self.assertFalse(hasattr(self.entry, "url"))
+
+    def testAuthor(self):
+        self.assertEqual(len(self.entry.author), 0)
+        self.entry.author = "test"
+        self.assertEqual(self.entry.author, "test")
+        del self.entry.author
+        self.assertFalse(hasattr(self.entry, "author"))
+
+    def testContent(self):
+        self.assertEqual(len(self.entry.content), 0)
+        self.entry.content = "test"
+        self.assertEqual(self.entry.content, "test")
+        del self.entry.content
+        self.assertFalse(hasattr(self.entry, "content"))
+
+    def testIdentity(self):
+        self.assertEqual(len(self.entry.identity), 0)
+        self.entry.identity = "test"
+        self.assertEqual(self.entry.identity, "test")
+        del self.entry.identity
+        self.assertFalse(hasattr(self.entry, "identity"))
+
+    def testUpdated(self):
+        import time
+        self.assertEqual(self.entry.updated, None)
+        t = time.time()
+        self.entry.updated = t
+        self.assertEqual(self.entry.updated, t)
+        del self.entry.updated
+        self.assertFalse(hasattr(self.entry, "updated"))
 
     def testSave(self):
         self.entry.save(StoreMock())

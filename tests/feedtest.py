@@ -39,47 +39,67 @@ class EntryMock:
 
 class FeedTest(unittest.TestCase):
     def setUp(self):
-        import time
         self.feed = Feed()
-        self.updatetime = time.localtime()
-        self.entrydata = {"summary":"This is the content", "title":"EntryTitle", "updated_parsed":self.updatetime,"link":"http://localhost/entry","id":"http://localhost/entry?p12", "author":"MeAgain"}
-        self.feeddata = {"feed":{"title":"TestTitle","updated_parsed":self.updatetime,"author":"Me"},"href":"http://localhost","entries":[self.entrydata]}
-
-    def testInitFromData(self):
-        f = Feed(data=self.feeddata,entryClz=EntryMock)
-        self.assertEqual(f.title(),self.feeddata["feed"]["title"])
-        self.assertEqual(f.author(),self.feeddata["feed"]["author"])
-        self.assertEqual(f.updated(),self.feeddata["feed"]["updated_parsed"])
-        self.assertEqual(f.url(),self.feeddata["href"])
-        self.assertEqual(len(f.entries()), 1)
-        self.assertEqual(f.entries()[0]._data, self.entrydata)
 
     def testSave(self):
         e = EntryMock()
-        self.feed.addEntry(e)
+        self.feed.entries.add(e)
         self.feed.save(StoreMock())
         self.assertEqual(e._stored, True)
 
+    def testTitle(self):
+        self.assertEqual(len(self.feed.title), 0)
+        self.feed.title="test"
+        self.assertEqual(len(self.feed.title), len("test"))
+        self.assertEqual(self.feed.title, "test")
+        del self.feed.title
+        self.assertFalse(hasattr(self.feed, "title"))
+
+    def testAuthor(self):
+        self.assertEqual(len(self.feed.author), 0)
+        self.feed.author="test"
+        self.assertEqual(len(self.feed.author), len("test"))
+        self.assertEqual(self.feed.author, "test")
+        del self.feed.author
+        self.assertFalse(hasattr(self.feed, "author"))
+
+    def testUrl(self):
+        self.assertEqual(len(self.feed.url), 0)
+        self.feed.url="test"
+        self.assertEqual(len(self.feed.url), len("test"))
+        self.assertEqual(self.feed.url, "test")
+        del self.feed.url
+        self.assertFalse(hasattr(self.feed, "url"))
+
+    def testUpdated(self):
+        import time
+        self.assertEqual(self.feed.updated, None)
+        t = time.time()
+        self.feed.updated=t
+        self.assertEqual(self.feed.updated, t)
+        del self.feed.updated
+        self.assertFalse(hasattr(self.feed, "updated"))
+
     def testAdd(self):
-        self.assertEqual(len(self.feed.entries()), 0)
-        self.feed.addEntry(EntryMock())
-        self.assertEqual(len(self.feed.entries()), 1)
+        self.assertEqual(len(self.feed.entries), 0)
+        self.feed.entries.add(EntryMock())
+        self.assertEqual(len(self.feed.entries), 1)
 
     def testRemove(self):
-        self.assertEqual(len(self.feed.entries()), 0)
+        self.assertEqual(len(self.feed.entries), 0)
         f = EntryMock()
-        self.feed.addEntry(f)
-        self.assertEqual(len(self.feed.entries()), 1)
-        self.feed.removeEntry(f) 
-        self.assertEqual(len(self.feed.entries()), 0)
+        self.feed.entries.add(f)
+        self.assertEqual(len(self.feed.entries), 1)
+        self.feed.entries.remove(f) 
+        self.assertEqual(len(self.feed.entries), 0)
 
     def testAddDuplicate(self):
-        self.assertEqual(len(self.feed.entries()), 0)
+        self.assertEqual(len(self.feed.entries), 0)
         f = EntryMock()
-        self.feed.addEntry(f)
-        self.assertEqual(len(self.feed.entries()), 1)
-        self.feed.addEntry(f)
-        self.assertEqual(len(self.feed.entries()), 1)
+        self.feed.entries.add(f)
+        self.assertEqual(len(self.feed.entries), 1)
+        self.feed.entries.add(f)
+        self.assertEqual(len(self.feed.entries), 1)
 
 
 if __name__ == "__main__":

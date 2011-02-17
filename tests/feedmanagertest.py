@@ -29,25 +29,25 @@ class FeedManagerTest(unittest.TestCase):
         self.feedManager = FeedManager()
 
     def testAdd(self):
-        self.assertEqual(len(self.feedManager.feeds()), 0)
-        self.feedManager.addFeed(Feed())
-        self.assertEqual(len(self.feedManager.feeds()), 1)
+        self.assertEqual(len(self.feedManager.feeds), 0)
+        self.feedManager.feeds.add(Feed())
+        self.assertEqual(len(self.feedManager.feeds), 1)
 
     def testRemove(self):
-        self.assertEqual(len(self.feedManager.feeds()), 0)
+        self.assertEqual(len(self.feedManager.feeds), 0)
         f = Feed()
-        self.feedManager.addFeed(f)
-        self.assertEqual(len(self.feedManager.feeds()), 1)
-        self.feedManager.removeFeed(f) 
-        self.assertEqual(len(self.feedManager.feeds()), 0)
+        self.feedManager.feeds.add(f)
+        self.assertEqual(len(self.feedManager.feeds), 1)
+        self.feedManager.feeds.remove(f) 
+        self.assertEqual(len(self.feedManager.feeds), 0)
 
     def testAddDuplicate(self):
-        self.assertEqual(len(self.feedManager.feeds()), 0)
+        self.assertEqual(len(self.feedManager.feeds), 0)
         f = Feed()
-        self.feedManager.addFeed(f)
-        self.assertEqual(len(self.feedManager.feeds()), 1)
-        self.feedManager.addFeed(f)
-        self.assertEqual(len(self.feedManager.feeds()), 1)
+        self.feedManager.feeds.add(f)
+        self.assertEqual(len(self.feedManager.feeds), 1)
+        self.feedManager.feeds.add(f)
+        self.assertEqual(len(self.feedManager.feeds), 1)
 
 if __name__ == "__main__":
     unittest.main()

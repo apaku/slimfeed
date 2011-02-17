@@ -16,9 +16,9 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #    02110-1301  USA.
 
-class FeedManager:
+class FeedManager(object):
     def __init__(self):
-        self._feeds = []
+        self._feeds = set()
 
     def load(self, store):
         pass
@@ -27,16 +27,13 @@ class FeedManager:
         for feed in self._feeds:
             feed.saveEntries(store)
 
-    def feeds(self):
+    def getfeeds(self):
         return self._feeds
-    
-    def addFeed(self, feed):
-        if not feed in self._feeds:
-            self._feeds.append(feed)
-    
-    def removeFeed(self, feed):
-        if feed in self._feeds:
-            self._feeds.remove(feed)
+    def setfeeds(self, feeds):
+        self._feeds = feeds
+    def delfeeds(self):
+        del self._feeds
+    feeds = property(getfeeds, setfeeds, delfeeds, "Feeds managed by this object")
 
 if __name__ == "__main__":
     import sys
