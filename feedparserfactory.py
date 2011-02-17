@@ -16,13 +16,34 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #    02110-1301  USA.
 
-import unittest, xmlrunner
+from entry import Entry
+from feed import Feed
 
-from feedmanagertest import FeedManagerTest
-from feedtest import FeedTest
-from entrytest import EntryTest
-from feedparserfactorytest import FeedParserFactoryTest
+def createFeedFromData(data, entryclz=Entry):
+    feed = Feed()
+    feed.title = data["feed"]["title"]
+    feed.url = data["href"]
+    feed.author = data["feed"]["author"]
+    feed.updated = data["feed"]["updated_parsed"]
+    for edata in data["entries"]:
+        feed.entries.add(createEntryFromData(data=edata, entryclz=entryclz))
+    return feed
+
+def createEntryFromData(data, entryclz=Entry):
+    entry = entryclz()
+    entry.title = data["title"]
+    entry.author = data["author"]
+    if "summary" in data.keys():
+        entry.content = data["summary"]
+    else:
+        entry.content = data["content"]
+    entry.updated = data["updated_parsed"]
+    entry.url = data["link"]
+    entry.identity = data["id"]
+    return entry
 
 if __name__ == "__main__":
-    unittest.main(testRunner=xmlrunner.XmlTestRunner(file("pyunit.xml", "w")))
+    import sys
+    print "Cannot run this module"
+    sys.exit(1)
 
