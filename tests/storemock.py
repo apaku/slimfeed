@@ -19,7 +19,7 @@
 class SubStoresMock(dict):
     def __getitem__(self, name):
         try:
-            dict.__getitem__(self, name)
+            return dict.__getitem__(self, name)
         except KeyError:
             dict.__setitem__(self, name, StoreMock())
             return dict.__getitem__(self, name)
