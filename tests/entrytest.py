@@ -22,14 +22,19 @@ sys.path.append("..")
 sys.path.append(".")
 
 from entry import Entry
-
-class StoreMock:
-    pass
+from storemock import StoreMock
 
 class EntryTest(unittest.TestCase):
     def setUp(self):
         import time
         self.entry = Entry()
+        self.saveentry = Entry()
+        self.saveentry.title = "TestTitle"
+        self.saveentry.author = "TestAuthor"
+        self.saveentry.url = "TestUrl"
+        self.saveentry.content = "TestContent"
+        self.saveentry.identity = "TestId"
+        self.saveentry.updated = time.time()
 
     def testTitle(self):
         self.assertEqual(len(self.entry.title), 0)
@@ -75,8 +80,33 @@ class EntryTest(unittest.TestCase):
         del self.entry.updated
         self.assertFalse(hasattr(self.entry, "updated"))
 
+    def testLoad(self):
+        import time
+        s = StoreMock()
+        s.setValue("Title", "MyTitle")
+        s.setValue("Content", "MyContent")
+        t = time.time()
+        s.setValue("Updated", t)
+        s.setValue("Url", "MyUrl")
+        s.setValue("Id", "MyId")
+        s.setValue("Author", "MyAuthor")
+        self.saveentry.load(s)
+        self.assertEqual(self.saveentry.title, "MyTitle")
+        self.assertEqual(self.saveentry.author, "MyAuthor")
+        self.assertEqual(self.saveentry.url, "MyUrl")
+        self.assertEqual(self.saveentry.identity, "MyId")
+        self.assertEqual(self.saveentry.updated, t)
+        self.assertEqual(self.saveentry.content, "MyContent")
+
     def testSave(self):
-        self.entry.save(StoreMock())
+        s = StoreMock()
+        self.saveentry.save(s)
+        self.assertEqual(s.getValue("Title"), self.saveentry.title)
+        self.assertEqual(s.getValue("Url"), self.saveentry.url)
+        self.assertEqual(s.getValue("Author"), self.saveentry.author)
+        self.assertEqual(s.getValue("Content"), self.saveentry.content)
+        self.assertEqual(s.getValue("Updated"), self.saveentry.updated)
+        self.assertEqual(s.getValue("Id"), self.saveentry.identity)
 
 if __name__ == "__main__":
     unittest.main()

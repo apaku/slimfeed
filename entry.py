@@ -79,10 +79,20 @@ class Entry(object):
     content = property(getcontent, setcontent, delcontent, "Content of this entry")
 
     def load(self, store):
-        pass
+        self.title = store.getValue("Title")
+        self.author = store.getValue("Author")
+        self.content = store.getValue("Content")
+        self.updated = store.getValue("Updated")
+        self.url = store.getValue("Url")
+        self.identity = store.getValue("Id")
 
     def save(self, store):
-        pass
+        store.setValue("Title", self.title)
+        store.setValue("Author", self.author)
+        store.setValue("Content", self.content)
+        store.setValue("Updated", self.updated)
+        store.setValue("Url", self.url)
+        store.setValue("Id", self.identity)
 
 if __name__ == "__main__":
     import sys
