@@ -70,11 +70,23 @@ class Feed(object):
     entries = property(getentries, setentries, delentries, "Entries of the feed")
 
     def load(self, store):
-        pass
+        self.title = store.getValue("Title")
+        self.author = store.getValue("Author")
+        self.updated = store.getValue("Updated")
+        self.url = store.getValue("Url")
+        for g in store.substores().values():
+            e = Entry()
+            e.load(g)
+            self.entries.add(e)
 
     def save(self, store):
+        from base64 import b64encode
+        store.setValue("Title", self.title)
+        store.setValue("Url", self.url)
+        store.setValue("Updated", self.updated)
+        store.setValue("Author", self.author)
         for entry in self._entries:
-            entry.save(store)
+            entry.save(store.substores()["Entry_%s" %b64encode(entry.identity)])
 
 if __name__ == "__main__":
     import sys

@@ -22,30 +22,59 @@ sys.path.append("..")
 sys.path.append(".")
 
 from feed import Feed
-
-class StoreMock:
-    pass
-
-class EntryMock:
-    def __init__(self, data=None):
-        if data is not None:
-            self._data = data
-
-    def save(self, store):
-        self._stored = True
-
-    def load(self, store):
-        self._loaded = True
+from entry import Entry
+from storemock import StoreMock
 
 class FeedTest(unittest.TestCase):
     def setUp(self):
+        import time
         self.feed = Feed()
+        self.savefeed = Feed()
+        self.savefeed.title = "MyTitle"
+        self.savefeed.author = "MyAuthor"
+        self.savefeed.url = "MyUrl"
+        self.savefeed.updated = time.time()
+
+    def testLoad(self):
+        import time
+        from base64 import b64encode
+        t = time.time()
+        s = StoreMock()
+        s.setValue("Title", "TestTitle")
+        s.setValue("Url", "TestUrl")
+        s.setValue("Author", "TestAuthor")
+        s.setValue("Updated", t)
+        g = s.substores()["Entry_%s" %b64encode("Id1")]
+        g.setValue("Title", "T1")
+        g.setValue("Updated", t)
+        g.setValue("Author", "Author1")
+        g.setValue("Url", "Url1")
+        g.setValue("Id", "Id1")
+        g.setValue("Content", "Content1")
+        g = s.substores()["Entry_%s" %b64encode("Id2")]
+        g.setValue("Title", "T2")
+        g.setValue("Updated", t)
+        g.setValue("Author", "Author2")
+        g.setValue("Url", "Url2")
+        g.setValue("Id", "Id2")
+        g.setValue("Content", "Content2")
+        self.savefeed.load(s)
+        self.assertEqual(self.savefeed.title, "TestTitle")
+        self.assertEqual(self.savefeed.updated, t)
+        self.assertEqual(self.savefeed.url, "TestUrl")
+        self.assertEqual(self.savefeed.author, "TestAuthor")
+        self.assertEqual(len(self.savefeed.entries), 2)
 
     def testSave(self):
-        e = EntryMock()
-        self.feed.entries.add(e)
-        self.feed.save(StoreMock())
-        self.assertEqual(e._stored, True)
+        e = Entry()
+        s = StoreMock()
+        self.savefeed.entries.add(e)
+        self.savefeed.save(s)
+        self.assertEqual(len(s.substores()), 1)
+        self.assertEqual(self.savefeed.title, s.getValue("Title"))
+        self.assertEqual(self.savefeed.author, s.getValue("Author"))
+        self.assertEqual(self.savefeed.url, s.getValue("Url"))
+        self.assertEqual(self.savefeed.updated, s.getValue("Updated"))
 
     def testTitle(self):
         self.assertEqual(len(self.feed.title), 0)
@@ -82,12 +111,12 @@ class FeedTest(unittest.TestCase):
 
     def testAdd(self):
         self.assertEqual(len(self.feed.entries), 0)
-        self.feed.entries.add(EntryMock())
+        self.feed.entries.add(Entry())
         self.assertEqual(len(self.feed.entries), 1)
 
     def testRemove(self):
         self.assertEqual(len(self.feed.entries), 0)
-        f = EntryMock()
+        f = Entry()
         self.feed.entries.add(f)
         self.assertEqual(len(self.feed.entries), 1)
         self.feed.entries.remove(f) 
@@ -95,7 +124,7 @@ class FeedTest(unittest.TestCase):
 
     def testAddDuplicate(self):
         self.assertEqual(len(self.feed.entries), 0)
-        f = EntryMock()
+        f = Entry()
         self.feed.entries.add(f)
         self.assertEqual(len(self.feed.entries), 1)
         self.feed.entries.add(f)
