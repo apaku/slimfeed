@@ -30,8 +30,11 @@ class StoreMock:
         self.subs = SubStoresMock()
     def setValue(self, key, value):
         self.data[key] = value
-    def getValue(self, key):
-        return self.data[key]
+    def getValue(self, key, default=None):
+        try:
+            return self.data[key]
+        except KeyError:
+            return default
     def substores(self):
         return self.subs
 
