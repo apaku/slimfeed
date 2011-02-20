@@ -24,9 +24,42 @@ sys.path.append(".")
 from feedmanager import FeedManager
 from feed import Feed
 
+from storemock import StoreMock
+
 class FeedManagerTest(unittest.TestCase):
     def setUp(self):
         self.feedManager = FeedManager()
+
+    def testLoad(self):
+        import time
+        from base64 import b64encode
+        s = StoreMock()
+        g = StoreMock()
+        t = time.time()
+        g.setValue("Title", "T1")
+        g.setValue("Updated", t)
+        g.setValue("Author", "Author1")
+        g.setValue("Url", "Url1")
+        s.substores()["Feed_%s" %b64encode("T1")] = g
+        g = StoreMock()
+        g.setValue("Title", "T2")
+        g.setValue("Updated", t)
+        g.setValue("Author", "Author2")
+        g.setValue("Url", "Url2")
+        s.substores()["Feed_%s" %b64encode("T2")] = g
+        self.feedManager.load(s)
+        self.assertEqual(len(self.feedManager.feeds), 2)
+
+    def testSave(self):
+        s = StoreMock()
+        f = Feed()
+        f.title = "T1"
+        self.feedManager.feeds.add(f)
+        f = Feed()
+        f.title = "T2"
+        self.feedManager.feeds.add(f)
+        self.feedManager.save(s)
+        self.assertEqual(len(s.substores()), 2)
 
     def testAdd(self):
         self.assertEqual(len(self.feedManager.feeds), 0)

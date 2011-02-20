@@ -16,16 +16,22 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #    02110-1301  USA.
 
+from feed import Feed
+
 class FeedManager(object):
     def __init__(self):
         self._feeds = set()
 
     def load(self, store):
-        pass
+        for g in store.substores().values():
+            f = Feed()
+            f.load(g)
+            self.feeds.add(f)
 
     def save(self, store):
+        from base64 import b64encode
         for feed in self._feeds:
-            feed.saveEntries(store)
+            feed.save(store.substores()["Feed_%s" %b64encode(feed.title)])
 
     def getfeeds(self):
         return self._feeds
