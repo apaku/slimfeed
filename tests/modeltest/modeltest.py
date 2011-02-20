@@ -35,6 +35,7 @@ class ModelTest(QtCore.QObject):
         self.model = sip.cast(_model, QtCore.QAbstractItemModel)
         self.insert = []
         self.remove = []
+        self.changing = []
         self.fetchingMore = False
         assert(self.model)
 
@@ -53,6 +54,9 @@ class ModelTest(QtCore.QObject):
         self.connect( self.model, QtCore.SIGNAL("rowsRemoved(const QModelIndex&, int, int)"), self.runAllTests)
 
         # Special checks for inserting/removing
+        self.connect( self.model, QtCore.SIGNAL("layoutAboutToBeChanged()"), self.layoutAboutToBeChanged )
+        self.connect( self.model, QtCore.SIGNAL("layoutChanged()"), self.layoutChanged )
+
         self.connect( self.model, QtCore.SIGNAL("rowsAboutToBeInserted(const QModelIndex&, int, int)"), self.rowsAboutToBeInserted)
         self.connect( self.model, QtCore.SIGNAL("rowsAboutToBeRemoved(const QModelIndex&, int, int)"), self.rowsAboutToBeRemoved)
         self.connect( self.model, QtCore.SIGNAL("rowsInserted(const QModelIndex&, int, int)"), self.rowsInserted)
@@ -340,6 +344,15 @@ class ModelTest(QtCore.QObject):
         assert(c['oldSize'] - (end - start + 1) == self.model.rowCount(parent))
         assert(c['last'] == self.model.data(self.model.index(start-1, 0, c['parent'])))
         assert(c['next'] == self.model.data(self.model.index(start, 0, c['parent'])))
+
+    def layoutAboutToBeChanged(self):
+        for i in range(0, max(0, min( self.model.rowCount(), 100))):
+            self.changing.add( QtCore.QPersistentModelIndex( self.model.index( i, 0 ) ) )
+
+    def layoutChanged(self):
+        for c in self.changing:
+            assert(c == self.model.index( c.row(), c.column(), c.parent() ))
+        self.changing = []
 
     def checkChildren(self, parent, depth = 0):
         """
