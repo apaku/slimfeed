@@ -347,7 +347,7 @@ class ModelTest(QtCore.QObject):
 
     def layoutAboutToBeChanged(self):
         for i in range(0, max(0, min( self.model.rowCount(), 100))):
-            self.changing.add( QtCore.QPersistentModelIndex( self.model.index( i, 0 ) ) )
+            self.changing.append( QtCore.QPersistentModelIndex( self.model.index( i, 0 ) ) )
 
     def layoutChanged(self):
         for c in self.changing:
