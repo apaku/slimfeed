@@ -101,12 +101,12 @@ class EntryTest(unittest.TestCase):
     def testSave(self):
         s = StoreMock()
         self.saveentry.save(s)
-        self.assertEqual(s.getValue("Title"), self.saveentry.title)
-        self.assertEqual(s.getValue("Url"), self.saveentry.url)
-        self.assertEqual(s.getValue("Author"), self.saveentry.author)
-        self.assertEqual(s.getValue("Content"), self.saveentry.content)
-        self.assertEqual(s.getValue("Updated"), self.saveentry.updated)
-        self.assertEqual(s.getValue("Id"), self.saveentry.identity)
+        self.assertEqual(s.value("Title"), self.saveentry.title)
+        self.assertEqual(s.value("Url"), self.saveentry.url)
+        self.assertEqual(s.value("Author"), self.saveentry.author)
+        self.assertEqual(s.value("Content"), self.saveentry.content)
+        self.assertEqual(s.value("Updated"), self.saveentry.updated)
+        self.assertEqual(s.value("Id"), self.saveentry.identity)
 
 if __name__ == "__main__":
     unittest.main()

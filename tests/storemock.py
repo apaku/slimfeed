@@ -16,26 +16,43 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #    02110-1301  USA.
 
-class SubStoresMock(dict):
-    def __getitem__(self, name):
-        try:
-            return dict.__getitem__(self, name)
-        except KeyError:
-            dict.__setitem__(self, name, StoreMock())
-            return dict.__getitem__(self, name)
-
 class StoreMock:
     def __init__(self):
         self.data = {}
-        self.subs = SubStoresMock()
+        self.currentGroup = []
+
     def setValue(self, key, value):
-        self.data[key] = value
-    def getValue(self, key, default=None):
+        if len(self.currentGroup) > 0:
+            self.data['/'.join(self.currentGroup + [key])] = value
+        else:
+            self.data[key] = value
+
+    def value(self, key, default=None):
         try:
-            return self.data[key]
+            if len(self.currentGroup) > 0:
+                return self.data['/'.join(self.currentGroup + [key])]
+            else:
+                return self.data[key]
         except KeyError:
             return default
-    def substores(self):
-        return self.subs
 
+    def childGroups(self):
+        l = []
+        for k in self.data.keys():
+            if len(self.currentGroup) > 0:
+                if k.startswith('/'.join(self.currentGroup)):
+                    k = k[len('/'.join(self.currentGroup))+1:]
+                else:
+                    continue
+            if '/' in k:
+                k = k[0:k.index('/')]
+                if not k in l:
+                    l.append(k)
+        return l
+
+    def beginGroup(self, grpname):
+        self.currentGroup.append(grpname)
+
+    def endGroup(self):
+        self.currentGroup.pop()
 

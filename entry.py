@@ -79,12 +79,12 @@ class Entry(object):
     content = property(getcontent, setcontent, delcontent, "Content of this entry")
 
     def load(self, store):
-        self.title = store.getValue("Title")
-        self.author = store.getValue("Author")
-        self.content = store.getValue("Content")
-        self.updated = store.getValue("Updated")
-        self.url = store.getValue("Url")
-        self.identity = store.getValue("Id")
+        self.title = store.value("Title", None)
+        self.author = store.value("Author", None)
+        self.content = store.value("Content", None)
+        self.updated = store.value("Updated", None)
+        self.url = store.value("Url", None)
+        self.identity = store.value("Id", None)
 
     def save(self, store):
         store.setValue("Title", self.title)

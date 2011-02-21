@@ -23,15 +23,19 @@ class FeedManager(object):
         self._feeds = set()
 
     def load(self, store):
-        for g in store.substores().values():
+        for g in store.childGroups():
+            store.beginGroup(g)
             f = Feed()
-            f.load(g)
+            f.load(store)
             self.feeds.add(f)
+            store.endGroup()
 
     def save(self, store):
         from base64 import b64encode
         for feed in self._feeds:
-            feed.save(store.substores()["Feed_%s" %b64encode(feed.title)])
+            store.beginGroup("Feed_%s" %b64encode(feed.title))
+            feed.save(store)
+            store.endGroup()
 
     def getfeeds(self):
         return self._feeds
