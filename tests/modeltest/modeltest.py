@@ -305,13 +305,13 @@ class ModelTest(QtCore.QObject):
         c['oldSize'] = self.model.rowCount(parent)
         c['last'] = self.model.data(model.index(start-1, 0, parent))
         c['next'] = self.model.data(model.index(start, 0, parent))
-        insert.append(c)
+        self.insert.append(c)
 
     def rowsInserted(self, parent, start, end):
         """
         Confirm that what was said was going to happen actually did
         """
-        c = insert.pop()
+        c = self.insert.pop()
         assert(c['parent'] == parent)
         assert(c['oldSize'] + (end - start + 1) == self.model.rowCount(parent))
         assert(c['last'] == self.model.data(self.model.index(start-1, 0, c['parent'])))
