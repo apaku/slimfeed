@@ -303,8 +303,8 @@ class ModelTest(QtCore.QObject):
         c = {}
         c['parent'] = parent
         c['oldSize'] = self.model.rowCount(parent)
-        c['last'] = self.model.data(model.index(start-1, 0, parent))
-        c['next'] = self.model.data(model.index(start, 0, parent))
+        c['last'] = self.model.data(self.model.index(start-1, 0, parent))
+        c['next'] = self.model.data(self.model.index(start, 0, parent))
         self.insert.append(c)
 
     def rowsInserted(self, parent, start, end):
@@ -322,7 +322,7 @@ class ModelTest(QtCore.QObject):
         #       qDebug << self.model.index(i, 0).data().toString()
         #   qDebug() << c['next'] << self.model.data(model.index(end+1, 0, c['parent']))
 
-        assert(c['next'] == self.model.data(model.index(end+1, 0, c['parent'])))
+        assert(c['next'] == self.model.data(self.model.index(end+1, 0, c['parent'])))
 
     def rowsAboutToBeRemoved(self, parent, start, end):
         """
