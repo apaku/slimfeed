@@ -22,6 +22,7 @@ from feedmanagertest import FeedManagerTest
 from feedtest import FeedTest
 from entrytest import EntryTest
 from feedparserfactorytest import FeedParserFactoryTest
+from feedmodeltest import FeedModelTest
 
 if __name__ == "__main__":
     unittest.main(testRunner=xmlrunner.XmlTestRunner(file("pyunit.xml", "w")))
