@@ -16,6 +16,7 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #    02110-1301  USA.
 
+import initsip
 from feed import Feed
 from PyQt4.QtCore import QAbstractTableModel, Qt, QVariant, QModelIndex
 
@@ -40,9 +41,9 @@ class FeedModel(QAbstractTableModel):
                 idx.row() >= self.rowCount() or \
                 idx.column() < 0 or \
                 idx.column() >= self.columnCount():
-            return QVariant()
+            return None
         if role != Qt.DisplayRole:
-            return QVariant()
+            return None
 
         f = list(self._feedmgr.feeds)[idx.row()]
         if idx.column() == 0:
@@ -51,11 +52,11 @@ class FeedModel(QAbstractTableModel):
             return f.unread
         elif idx.column() == 2:
             return len(f.entries)
-        return QVariant()
+        return None
 
     def headerData(self, col, orient, role=Qt.DisplayRole):
         if col < 0 or col >= self.columnCount() or role != Qt.DisplayRole or orient != Qt.Horizontal:
-            return QVariant()
+            return None
         if col == 0:
             return "Title"
         elif col == 1:

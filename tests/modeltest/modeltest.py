@@ -71,7 +71,7 @@ class ModelTest(QtCore.QObject):
         assert(self.model.buddy(QtCore.QModelIndex()) == QtCore.QModelIndex())
         self.model.canFetchMore(QtCore.QModelIndex())
         assert(self.model.columnCount(QtCore.QModelIndex()) >= 0)
-        assert(self.model.data(QtCore.QModelIndex(), QtCore.Qt.DisplayRole) == QtCore.QVariant())
+        assert(self.model.data(QtCore.QModelIndex(), QtCore.Qt.DisplayRole) == None)
         self.fetchingMore = True
         self.model.fetchMore(QtCore.QModelIndex())
         self.fetchingMore = False
@@ -82,16 +82,16 @@ class ModelTest(QtCore.QObject):
         self.model.headerData(0,QtCore.Qt.Horizontal, QtCore.Qt.DisplayRole)
         self.model.index(0,0, QtCore.QModelIndex())
         self.model.itemData(QtCore.QModelIndex())
-        cache = QtCore.QVariant()
+        cache = None
         self.model.match(QtCore.QModelIndex(), -1, cache)
         self.model.mimeTypes()
         assert(self.model.parent(QtCore.QModelIndex()) == QtCore.QModelIndex())
         assert(self.model.rowCount(QtCore.QModelIndex()) >= 0)
-        variant = QtCore.QVariant()
+        variant = None
         self.model.setData(QtCore.QModelIndex(), variant, -1)
-        self.model.setHeaderData(-1, QtCore.Qt.Horizontal, QtCore.QVariant())
-        self.model.setHeaderData(0, QtCore.Qt.Horizontal, QtCore.QVariant())
-        self.model.setHeaderData(999999, QtCore.Qt.Horizontal, QtCore.QVariant())
+        self.model.setHeaderData(-1, QtCore.Qt.Horizontal, None)
+        self.model.setHeaderData(0, QtCore.Qt.Horizontal, None)
+        self.model.setHeaderData(999999, QtCore.Qt.Horizontal, None)
         self.model.sibling(0,0,QtCore.QModelIndex())
         self.model.span(QtCore.QModelIndex())
         self.model.supportedDropActions()
@@ -230,55 +230,55 @@ class ModelTest(QtCore.QObject):
         Tests self.model's implementation of QtCore.QAbstractItemModel::data()
         """
         # Invalid index should return an invalid qvariant
-        assert( not self.model.data(QtCore.QModelIndex(), QtCore.Qt.DisplayRole).isValid())
+        assert( self.model.data(QtCore.QModelIndex(), QtCore.Qt.DisplayRole) is None )
 
         if self.model.rowCount(QtCore.QModelIndex()) == 0:
             return
 
         # A valid index should have a valid QtCore.QVariant data
-        assert( self.model.index(0,0, QtCore.QModelIndex()).isValid())
+        assert( self.model.index(0,0, QtCore.QModelIndex()) is not None )
 
         # shouldn't be able to set data on an invalid index
-        assert( self.model.setData( QtCore.QModelIndex(), QtCore.QVariant("foo"), QtCore.Qt.DisplayRole) == False)
+        assert( self.model.setData( QtCore.QModelIndex(), "foo", QtCore.Qt.DisplayRole) == False )
 
         # General Purpose roles that should return a QString
         variant = self.model.data(self.model.index(0,0,QtCore.QModelIndex()), QtCore.Qt.ToolTipRole)
-        if variant.isValid():
+        if variant is not None:
             assert( variant.canConvert( QtCore.QVariant.String ) )
         variant = self.model.data(self.model.index(0,0,QtCore.QModelIndex()), QtCore.Qt.StatusTipRole)
-        if variant.isValid():
+        if variant is not None:
             assert( variant.canConvert( QtCore.QVariant.String ) )
         variant = self.model.data(self.model.index(0,0,QtCore.QModelIndex()), QtCore.Qt.WhatsThisRole)
-        if variant.isValid():
+        if variant is not None:
             assert( variant.canConvert( QtCore.QVariant.String ) )
         
         # General Purpose roles that should return a QSize
         variant = self.model.data(self.model.index(0,0,QtCore.QModelIndex()), QtCore.Qt.SizeHintRole)
-        if variant.isValid():
+        if variant is not None:
             assert( variant.canConvert( QtCore.QVariant.Size ) )
 
         # General Purpose roles that should return a QFont
         variant = self.model.data(self.model.index(0,0,QtCore.QModelIndex()), QtCore.Qt.FontRole)
-        if variant.isValid():
+        if variant is not None:
             assert( variant.canConvert( QtCore.QVariant.Font ) )
         
         # Check that the alignment is one we know about
         variant = self.model.data(self.model.index(0,0,QtCore.QModelIndex()), QtCore.Qt.TextAlignmentRole)
-        if variant.isValid():
+        if variant is not None:
             alignment = variant.toInt()[0]
             assert( alignment == (alignment & int(QtCore.Qt.AlignHorizontal_Mask | QtCore.Qt.AlignVertical_Mask)))
 
         # General Purpose roles that should return a QColor
         variant = self.model.data(self.model.index(0,0,QtCore.QModelIndex()), QtCore.Qt.BackgroundColorRole)
-        if variant.isValid():
+        if variant is not None:
             assert( variant.canConvert( QtCore.QVariant.Color ) )
         variant = self.model.data(self.model.index(0,0,QtCore.QModelIndex()), QtCore.Qt.TextColorRole)
-        if variant.isValid():
+        if variant is not None:
             assert( variant.canConvert( QtCore.QVariant.Color ) )
 
         # Check that the "check state" is one we know about.
         variant = self.model.data(self.model.index(0,0,QtCore.QModelIndex()), QtCore.Qt.CheckStateRole)
-        if variant.isValid():
+        if variant is not None:
             state = variant.toInt()[0]
             assert( state == QtCore.Qt.Unchecked or
                 state == QtCore.Qt.PartiallyChecked or
@@ -426,7 +426,7 @@ class ModelTest(QtCore.QObject):
                 assert( index.column() == c )
                 # While you can technically return a QtCore.QVariant usually this is a sign
                 # if an bug in data() Disable if this really is ok in your self.model
-                assert( self.model.data(index, QtCore.Qt.DisplayRole).isValid() == True )
+                assert( self.model.data(index, QtCore.Qt.DisplayRole) is not None )
 
                 #if the next test fails here is some somehwat useful debug you play with
                 # if self.model.parent(index) != parent:
