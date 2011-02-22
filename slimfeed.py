@@ -18,11 +18,16 @@
 
 import initsip
 from PyQt4 import QtCore, QtGui, uic
+from feedmanager import FeedManager
+from feedmodel import FeedModel
 import sys
 
 def main():
     app = QtGui.QApplication(sys.argv)
     mainwin = uic.loadUi("slimfeed.ui")
+    mainwin.feedMgr = FeedManager()
+    mainwin.feedModel = FeedModel(mainwin.feedMgr, mainwin)
+    mainwin.feedList.setModel(mainwin.feedModel)
     mainwin.show()
     return app.exec_()
 
