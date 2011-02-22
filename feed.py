@@ -37,6 +37,10 @@ class Feed(object):
         del self._title
     title = property(gettitle, settitle, deltitle, "Title of the feed")
 
+    def getunread(self):
+        return len([e for e in self.entries if not e.read])
+    unread = property(getunread, None, None, "Number of unread entries")
+
     def getauthor(self):
         return self._author
     def setauthor(self, author):

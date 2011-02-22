@@ -51,6 +51,7 @@ class FeedTest(unittest.TestCase):
         s.setValue("Url", "Url1")
         s.setValue("Id", "Id1")
         s.setValue("Content", "Content1")
+        s.setValue("Read", True)
         s.endGroup()
         s.beginGroup("Entry_%s" %b64encode("Id2"))
         s.setValue("Title", "T2")
@@ -65,6 +66,7 @@ class FeedTest(unittest.TestCase):
         self.assertEqual(self.savefeed.updated, t)
         self.assertEqual(self.savefeed.url, "TestUrl")
         self.assertEqual(self.savefeed.author, "TestAuthor")
+        self.assertEqual(self.savefeed.unread, 1)
         self.assertEqual(len(self.savefeed.entries), 2)
 
     def testSave(self):
