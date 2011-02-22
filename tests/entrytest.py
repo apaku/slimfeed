@@ -35,6 +35,7 @@ class EntryTest(unittest.TestCase):
         self.saveentry.content = "TestContent"
         self.saveentry.identity = "TestId"
         self.saveentry.updated = time.time()
+        self.saveentry.read = True
 
     def testTitle(self):
         self.assertEqual(len(self.entry.title), 0)
@@ -90,6 +91,7 @@ class EntryTest(unittest.TestCase):
         s.setValue("Url", "MyUrl")
         s.setValue("Id", "MyId")
         s.setValue("Author", "MyAuthor")
+        s.setValue("Read", False)
         self.saveentry.load(s)
         self.assertEqual(self.saveentry.title, "MyTitle")
         self.assertEqual(self.saveentry.author, "MyAuthor")
@@ -97,6 +99,7 @@ class EntryTest(unittest.TestCase):
         self.assertEqual(self.saveentry.identity, "MyId")
         self.assertEqual(self.saveentry.updated, t)
         self.assertEqual(self.saveentry.content, "MyContent")
+        self.assertEqual(self.saveentry.read, False)
 
     def testSave(self):
         s = StoreMock()
@@ -107,6 +110,7 @@ class EntryTest(unittest.TestCase):
         self.assertEqual(s.value("Content"), self.saveentry.content)
         self.assertEqual(s.value("Updated"), self.saveentry.updated)
         self.assertEqual(s.value("Id"), self.saveentry.identity)
+        self.assertEqual(s.value("Read"), self.saveentry.read)
 
 if __name__ == "__main__":
     unittest.main()

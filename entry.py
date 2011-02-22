@@ -24,12 +24,21 @@ class Entry(object):
         self._id = ""
         self._content = ""
         self._author = ""
+        self._read = False
 
     def __hash__(self):
         if len(self._id) > 0:
             return hash(self._id)
         return 3*hash(self._title)+5*hash(self._author)+7*hash(self._url)
         
+    def getread(self):
+        return self._read
+    def setread(self, read):
+        self._read = read
+    def delread(self):
+        del self._read
+    read = property(getread, setread, delread, "Wether this entry was read already")
+
     def geturl(self):
         return self._url
     def seturl(self, url):
@@ -85,6 +94,7 @@ class Entry(object):
         self.updated = store.value("Updated", None)
         self.url = store.value("Url", None)
         self.identity = store.value("Id", None)
+        self.read = store.value("Read", False)
 
     def save(self, store):
         store.setValue("Title", self.title)
@@ -93,6 +103,7 @@ class Entry(object):
         store.setValue("Updated", self.updated)
         store.setValue("Url", self.url)
         store.setValue("Id", self.identity)
+        store.setValue("Read", self.read)
 
 if __name__ == "__main__":
     import sys
