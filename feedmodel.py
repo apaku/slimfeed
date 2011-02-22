@@ -48,7 +48,7 @@ class FeedModel(QAbstractTableModel):
         if idx.column() == 0:
             return f.title
         elif idx.column() == 1:
-            return 0
+            return f.unread
         elif idx.column() == 2:
             return len(f.entries)
         return QVariant()

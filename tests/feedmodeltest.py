@@ -32,23 +32,44 @@ from PyQt4.QtCore import Qt, QModelIndex
 class FeedMock(object):
     def __init__(self):
         import time
-        self.entries = [1,2,3]
+        self.entries = []
         self.title = "Title"
         self.author = "Author"
         self.url = "Url"
         self.updated = time.time()
+        self.unread = 0
 
 class FeedModelTest(unittest.TestCase):
     def setUp(self):
         import time
         self.feedMgr = FeedManager()
-        self.feedMgr.feeds.add(FeedMock())
-        self.feedMgr.feeds.add(FeedMock())
+        f = FeedMock()
+        f.title = "Title1"
+        f.author = "Author1"
+        f.url = "Url1"
+        f.updated = time.time()
+        f.unread = 1
+        f.entries = [1,2,3]
+        self.feedMgr.feeds.add(f)
+        f = FeedMock()
+        f.title = "Title2"
+        f.author = "Author2"
+        f.url = "Url2"
+        f.updated = time.time()
+        f.unread = 2
+        f.entries = [1,2]
+        self.feedMgr.feeds.add(f)
         self.feedModel = FeedModel(self.feedMgr)
         self.modeltest = ModelTest(self.feedModel,self.feedModel)
 
     def testData(self):
-        self.assertEqual(self.feedModel.data(self.feedModel.index(0, 0, QModelIndex()), Qt.DisplayRole), "Title")
+        self.assertEqual(self.feedModel.rowCount(), 2)
+        self.assertEqual(self.feedModel.data(self.feedModel.index(0, 0, QModelIndex()), Qt.DisplayRole), "Title2")
+        self.assertEqual(self.feedModel.data(self.feedModel.index(0, 1, QModelIndex()), Qt.DisplayRole), 2)
+        self.assertEqual(self.feedModel.data(self.feedModel.index(0, 2, QModelIndex()), Qt.DisplayRole), 2)
+        self.assertEqual(self.feedModel.data(self.feedModel.index(1, 0, QModelIndex()), Qt.DisplayRole), "Title1")
+        self.assertEqual(self.feedModel.data(self.feedModel.index(1, 1, QModelIndex()), Qt.DisplayRole), 1)
+        self.assertEqual(self.feedModel.data(self.feedModel.index(1, 2, QModelIndex()), Qt.DisplayRole), 3)
 
 if __name__ == "__main__":
     unittest.main()
