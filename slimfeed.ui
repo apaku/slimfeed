@@ -67,15 +67,18 @@
     </property>
     <addaction name="actionMarkAllEntriesRead"/>
    </widget>
-   <widget class="QMenu" name="menuHelp">
+   <widget class="QMenu" name="menuSlimfeed">
     <property name="title">
-     <string>Help</string>
+     <string>Slimfeed</string>
     </property>
     <addaction name="actionAbout_SlimFeed"/>
+    <addaction name="actionPreferences"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
    </widget>
+   <addaction name="menuSlimfeed"/>
    <addaction name="menuFeed"/>
    <addaction name="menuArticle"/>
-   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionAdd">
@@ -106,6 +109,16 @@
   <action name="actionAbout_SlimFeed">
    <property name="text">
     <string>About SlimFeed</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="text">
+    <string>Preferences...</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
    </property>
   </action>
  </widget>
