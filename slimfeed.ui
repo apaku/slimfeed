@@ -58,14 +58,14 @@
      <string>Feed</string>
     </property>
     <addaction name="actionAdd"/>
-    <addaction name="actionMark_All_As_Read"/>
-    <addaction name="actionFetch_All_Feeds"/>
+    <addaction name="actionMarkAllFeedsRead"/>
+    <addaction name="actionFetchAllFeeds"/>
    </widget>
    <widget class="QMenu" name="menuArticle">
     <property name="title">
      <string>Article</string>
     </property>
-    <addaction name="actionMark_All_As_Read_2"/>
+    <addaction name="actionMarkAllEntriesRead"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -88,17 +88,17 @@
     <string>Delete</string>
    </property>
   </action>
-  <action name="actionMark_All_As_Read">
+  <action name="actionMarkAllFeedsRead">
    <property name="text">
     <string>Mark All As Read</string>
    </property>
   </action>
-  <action name="actionMark_All_As_Read_2">
+  <action name="actionMarkAllEntriesRead">
    <property name="text">
     <string>Mark All As Read</string>
    </property>
   </action>
-  <action name="actionFetch_All_Feeds">
+  <action name="actionFetchAllFeeds">
    <property name="text">
     <string>Fetch All Feeds</string>
    </property>
