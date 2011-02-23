@@ -20,6 +20,7 @@ import initsip
 from PyQt4 import QtCore, QtGui, uic
 from feedmanager import FeedManager
 from feedmodel import FeedModel
+from entrymodel import EntryModel
 import sys
 
 def main():
@@ -27,7 +28,9 @@ def main():
     mainwin = uic.loadUi("slimfeed.ui")
     mainwin.feedMgr = FeedManager()
     mainwin.feedModel = FeedModel(mainwin.feedMgr, mainwin)
+    mainwin.entryModel = EntryModel(parent=mainwin)
     mainwin.feedList.setModel(mainwin.feedModel)
+    mainwin.entryList.setModel(mainwin.entryModel)
     mainwin.show()
     return app.exec_()
 
