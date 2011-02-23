@@ -31,6 +31,7 @@ def main():
     mainwin.entryModel = EntryModel(parent=mainwin)
     mainwin.feedList.setModel(mainwin.feedModel)
     mainwin.entryList.setModel(mainwin.entryModel)
+    mainwin.actionQuit.triggered.connect(app.quit)
     mainwin.show()
     return app.exec_()
 
