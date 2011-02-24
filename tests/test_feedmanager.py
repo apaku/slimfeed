@@ -26,7 +26,7 @@ from feed import Feed
 
 from storemock import StoreMock
 
-class FeedManagerTest(unittest.TestCase):
+class TestFeedManager(unittest.TestCase):
     def setUp(self):
         self.feedManager = FeedManager()
 

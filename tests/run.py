@@ -16,15 +16,11 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #    02110-1301  USA.
 
-import unittest, xmlrunner
+import nose
+import os
 
-from feedmanagertest import FeedManagerTest
-from feedtest import FeedTest
-from entrytest import EntryTest
-from feedparserfactorytest import FeedParserFactoryTest
-from feedmodeltest import FeedModelTest
-from entrymodeltest import EntryModelTest
+# Make sure to be in the test directory
+os.chdir(os.path.dirname(__file__))
 
-if __name__ == "__main__":
-    unittest.main(testRunner=xmlrunner.XmlTestRunner(file("pyunit.xml", "w")))
+nose.main()
 
