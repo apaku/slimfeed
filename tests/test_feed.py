@@ -25,6 +25,7 @@ from feed import Feed
 from entry import Entry
 from storemock import StoreMock
 
+
 class FeedTest(unittest.TestCase):
     def setUp(self):
         import time
@@ -44,7 +45,7 @@ class FeedTest(unittest.TestCase):
         store.setValue("Url", "TestUrl")
         store.setValue("Author", "TestAuthor")
         store.setValue("Updated", updated)
-        store.beginGroup("Entry_%s" %b64encode("Id1"))
+        store.beginGroup("Entry_%s" % b64encode("Id1"))
         store.setValue("Title", "T1")
         store.setValue("Updated", updated)
         store.setValue("Author", "Author1")
@@ -53,7 +54,7 @@ class FeedTest(unittest.TestCase):
         store.setValue("Content", "Content1")
         store.setValue("Read", True)
         store.endGroup()
-        store.beginGroup("Entry_%s" %b64encode("Id2"))
+        store.beginGroup("Entry_%s" % b64encode("Id2"))
         store.setValue("Title", "T2")
         store.setValue("Updated", updated)
         store.setValue("Author", "Author2")
@@ -115,7 +116,7 @@ class FeedTest(unittest.TestCase):
         feed = Entry()
         self.feed.entries.add(feed)
         self.assertEqual(len(self.feed.entries), 1)
-        self.feed.entries.remove(feed) 
+        self.feed.entries.remove(feed)
         self.assertEqual(len(self.feed.entries), 0)
 
     def testAddDuplicate(self):
@@ -129,4 +130,3 @@ class FeedTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

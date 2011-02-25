@@ -21,6 +21,7 @@ initsip.setupSipApi()
 
 from PyQt4.QtCore import QAbstractTableModel, Qt, QModelIndex
 
+
 # Disable 'method can be used as function' as it triggers on columnCount which
 # indeed does not need the self, but we can't change that due to inheritance
 # from Qt
@@ -32,14 +33,18 @@ class EntryModel(QAbstractTableModel):
 
     def _setfeed(self, feed):
         self._feed = feed
+
     def _getfeed(self):
         return self._feed
-    feed = property(_getfeed, _setfeed, None, "Feed that the model displays entries for")
+
+    feed = property(_getfeed, _setfeed, None, \
+            "Feed that the model displays entries for")
 
     def rowCount(self, parent=QModelIndex()):
         if parent.isValid() or self._feed is None:
             return 0
         return len(self._feed.entries)
+
     def columnCount(self, parent=QModelIndex()):
         if parent.isValid():
             return 0
@@ -66,7 +71,9 @@ class EntryModel(QAbstractTableModel):
         return None
 
     def headerData(self, col, orient, role=Qt.DisplayRole):
-        if col < 0 or col >= self.columnCount() or role != Qt.DisplayRole or orient != Qt.Horizontal:
+        if col < 0 or col >= self.columnCount() or \
+                role != Qt.DisplayRole or \
+                orient != Qt.Horizontal:
             return None
         if col == 0:
             return "Title"
@@ -79,4 +86,3 @@ if __name__ == "__main__":
     import sys
     print "Cannot run this module"
     sys.exit(1)
-

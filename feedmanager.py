@@ -18,6 +18,7 @@
 
 from feed import Feed
 
+
 class FeedManager(object):
     def __init__(self):
         self._feeds = set()
@@ -33,20 +34,19 @@ class FeedManager(object):
     def save(self, store):
         from base64 import b64encode
         for feed in self._feeds:
-            store.beginGroup("Feed_%s" %b64encode(feed.title))
+            store.beginGroup("Feed_%s" % b64encode(feed.title))
             feed.save(store)
             store.endGroup()
 
     def getfeeds(self):
         return self._feeds
+
     def setfeeds(self, feeds):
         self._feeds = feeds
-    def delfeeds(self):
-        del self._feeds
-    feeds = property(getfeeds, setfeeds, delfeeds, "Feeds managed by this object")
+
+    feeds = property(getfeeds, setfeeds, None, "Feeds managed by this object")
 
 if __name__ == "__main__":
     import sys
     print "Cannot run this module"
     sys.exit(1)
-

@@ -23,43 +23,60 @@ sys.path.append(".")
 
 from feedparserfactory import createFeedFromData, createEntryFromData
 
+
 class FeedParserFactoryTest(unittest.TestCase):
     def setUp(self):
         import time
         updated = time.time()
-        self.rssfeeddata = {"feed": {"title": "rsstitle", "author": "myauthor", "updated_parsed": updated},
+        self.rssfeeddata = {"feed": {"title": "rsstitle",
+                            "author": "myauthor",
+                            "updated_parsed": updated},
                             "href": "feedurl",
-                            "entries": [{"title": "entrytitle1", "id": "id1", "link": "url1", 
-                                         "author": "author1", "summary": "content1", 
+                            "entries": [{"title": "entrytitle1",
+                                         "id": "id1",
+                                         "link": "url1",
+                                         "author": "author1",
+                                         "summary": "content1",
                                          "updated_parsed": updated},
-                                        {"title": "entrytitle1", "id": "id1", "link": "url1", 
-                                         "author": "author1", "summary": "content1", 
-                                         "updated_parsed": updated}
-                                       ]
-                           }
-        self.atomfeeddata = {"feed": {"title": "atomtitle", "author": "myauthor", "updated_parsed": updated},
+                                        {"title": "entrytitle1",
+                                         "id": "id1",
+                                         "link": "url1",
+                                         "author": "author1",
+                                         "summary": "content1",
+                                         "updated_parsed": updated}]}
+        self.atomfeeddata = {"feed": {"title": "atomtitle",
+                             "author": "myauthor",
+                             "updated_parsed": updated},
                              "href": "feedurl",
-                             "entries": [{"title": "entrytitle1", "id": "id1", "link": "url1", 
-                                          "author": "author1", "content": "content1", 
+                             "entries": [{"title": "entrytitle1",
+                                          "id": "id1",
+                                          "link": "url1",
+                                          "author": "author1",
+                                          "content": "content1",
                                           "updated_parsed": updated},
-                                         {"title": "entrytitle1", "id": "id1", "link": "url1", 
-                                          "author": "author1", "content": "content1", 
-                                          "updated_parsed": updated}
-                                        ]
-                            }
+                                         {"title": "entrytitle1",
+                                          "id": "id1",
+                                          "link": "url1",
+                                          "author": "author1",
+                                          "content": "content1",
+                                          "updated_parsed": updated}]}
 
     def testAtomInitFeed(self):
         feed = createFeedFromData(data=self.atomfeeddata)
         self.assertEqual(feed.title, self.atomfeeddata["feed"]["title"])
-        self.assertEqual(feed.updated, self.atomfeeddata["feed"]["updated_parsed"])
-        self.assertEqual(feed.author, self.atomfeeddata["feed"]["author"])
+        self.assertEqual(feed.updated, \
+                self.atomfeeddata["feed"]["updated_parsed"])
+        self.assertEqual(feed.author, \
+                self.atomfeeddata["feed"]["author"])
         self.assertEqual(feed.url, self.atomfeeddata["href"])
 
     def testRssInitFeed(self):
         feed = createFeedFromData(data=self.rssfeeddata)
         self.assertEqual(feed.title, self.rssfeeddata["feed"]["title"])
-        self.assertEqual(feed.updated, self.rssfeeddata["feed"]["updated_parsed"])
-        self.assertEqual(feed.author, self.rssfeeddata["feed"]["author"])
+        self.assertEqual(feed.updated, \
+                self.rssfeeddata["feed"]["updated_parsed"])
+        self.assertEqual(feed.author, \
+                self.rssfeeddata["feed"]["author"])
         self.assertEqual(feed.url, self.rssfeeddata["href"])
 
     def testRssInitEntry(self):
@@ -84,4 +101,3 @@ class FeedParserFactoryTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

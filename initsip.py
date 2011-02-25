@@ -16,6 +16,7 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #    02110-1301  USA.
 
+
 def setupSipApi():
     import sip
     sip.setapi("QString", 2)
@@ -25,4 +26,3 @@ def setupSipApi():
     sip.setapi("QTime", 2)
     sip.setapi("QUrl", 2)
     sip.setapi("QVariant", 2)
-

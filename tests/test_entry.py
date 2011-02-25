@@ -24,6 +24,7 @@ sys.path.append(".")
 from entry import Entry
 from storemock import StoreMock
 
+
 class EntryTest(unittest.TestCase):
     def setUp(self):
         import time
@@ -102,4 +103,3 @@ class EntryTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

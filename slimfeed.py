@@ -24,6 +24,7 @@ from feedmodel import FeedModel
 from entrymodel import EntryModel
 import sys
 
+
 def main():
     app = QtGui.QApplication(sys.argv)
     mainwin = uic.loadUi("slimfeed.ui")
@@ -38,4 +39,3 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
-

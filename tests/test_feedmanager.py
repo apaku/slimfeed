@@ -26,6 +26,7 @@ from feed import Feed
 
 from storemock import StoreMock
 
+
 class TestFeedManager(unittest.TestCase):
     def setUp(self):
         self.feedManager = FeedManager()
@@ -35,13 +36,13 @@ class TestFeedManager(unittest.TestCase):
         from base64 import b64encode
         updated = time.time()
         store = StoreMock()
-        store.beginGroup("Feed_%s" %b64encode("T1"))
+        store.beginGroup("Feed_%s" % b64encode("T1"))
         store.setValue("Title", "T1")
         store.setValue("Updated", updated)
         store.setValue("Author", "Author1")
         store.setValue("Url", "Url1")
         store.endGroup()
-        store.beginGroup("Feed_%s" %b64encode("T2"))
+        store.beginGroup("Feed_%s" % b64encode("T2"))
         store.setValue("Title", "T2")
         store.setValue("Updated", updated)
         store.setValue("Author", "Author2")
@@ -71,7 +72,7 @@ class TestFeedManager(unittest.TestCase):
         feed = Feed()
         self.feedManager.feeds.add(feed)
         self.assertEqual(len(self.feedManager.feeds), 1)
-        self.feedManager.feeds.remove(feed) 
+        self.feedManager.feeds.remove(feed)
         self.assertEqual(len(self.feedManager.feeds), 0)
 
     def testAddDuplicate(self):
@@ -84,4 +85,3 @@ class TestFeedManager(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

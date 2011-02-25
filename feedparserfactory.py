@@ -19,6 +19,7 @@
 from entry import Entry
 from feed import Feed
 
+
 def createFeedFromData(data, entryclz=Entry):
     feed = Feed()
     feed.title = data["feed"]["title"]
@@ -28,6 +29,7 @@ def createFeedFromData(data, entryclz=Entry):
     for edata in data["entries"]:
         feed.entries.add(createEntryFromData(data=edata, entryclz=entryclz))
     return feed
+
 
 def createEntryFromData(data, entryclz=Entry):
     entry = entryclz()
@@ -46,4 +48,3 @@ if __name__ == "__main__":
     import sys
     print "Cannot run this module"
     sys.exit(1)
-

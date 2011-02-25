@@ -18,6 +18,7 @@
 
 from entry import Entry
 
+
 class Feed(object):
     def __init__(self):
         self._entries = set()
@@ -27,10 +28,13 @@ class Feed(object):
         self._url = ""
 
     def __hash__(self):
-        return 3*hash(self.title)+5*hash(self.url)+7*hash(self.author)
+        return 3 * hash(self.title) \
+                + 5 * hash(self.url) \
+                + 7 * hash(self.author)
 
     def gettitle(self):
         return self._title
+
     def settitle(self, title):
         self._title = title
 
@@ -42,6 +46,7 @@ class Feed(object):
 
     def getauthor(self):
         return self._author
+
     def setauthor(self, author):
         self._author = author
 
@@ -49,6 +54,7 @@ class Feed(object):
 
     def geturl(self):
         return self._url
+
     def seturl(self, url):
         self._url = url
 
@@ -56,6 +62,7 @@ class Feed(object):
 
     def getupdated(self):
         return self._updated
+
     def setupdated(self, updated):
         self._updated = updated
 
@@ -64,6 +71,7 @@ class Feed(object):
 
     def getentries(self):
         return self._entries
+
     def setentries(self, entries):
         self._entries = entries
 
@@ -88,7 +96,7 @@ class Feed(object):
         store.setValue("Updated", self.updated)
         store.setValue("Author", self.author)
         for entry in self._entries:
-            store.beginGroup("Entry_%s" %b64encode(entry.identity))
+            store.beginGroup("Entry_%s" % b64encode(entry.identity))
             entry.save(store)
             store.endGroup()
 
@@ -96,4 +104,3 @@ if __name__ == "__main__":
     import sys
     print "Cannot run this module"
     sys.exit(1)
-

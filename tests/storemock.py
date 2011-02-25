@@ -16,6 +16,7 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #    02110-1301  USA.
 
+
 class StoreMock:
     def __init__(self):
         self.data = {}
@@ -41,7 +42,7 @@ class StoreMock:
         for k in self.data.keys():
             if len(self.current_group) > 0:
                 if k.startswith('/'.join(self.current_group)):
-                    k = k[len('/'.join(self.current_group))+1:]
+                    k = k[len('/'.join(self.current_group)) + 1:]
                 else:
                     continue
             if '/' in k:
@@ -55,4 +56,3 @@ class StoreMock:
 
     def endGroup(self):
         self.current_group.pop()
-

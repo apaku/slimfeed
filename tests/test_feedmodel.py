@@ -15,8 +15,8 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #    02110-1301  USA.
-# Disable complaints about our mock-object and the impossibility to import modeltest
-# both are ignorable here
+# Disable complaints about our mock-object and the impossibility to import
+# modeltest both are ignorable here
 #pylint: disable=R0903,F0401
 
 import unittest
@@ -32,6 +32,7 @@ from feedmanager import FeedManager
 from modeltest import ModelTest
 from PyQt4.QtCore import Qt, QModelIndex
 
+
 class FeedMock(object):
     def __init__(self):
         import time
@@ -41,6 +42,7 @@ class FeedMock(object):
         self.url = "Url"
         self.updated = time.time()
         self.unread = 0
+
 
 class FeedModelTest(unittest.TestCase):
     def setUp(self):
@@ -66,14 +68,20 @@ class FeedModelTest(unittest.TestCase):
         self.modeltest = ModelTest(self.feedModel, self.feedModel)
 
     def testData(self):
-        self.assertEqual(self.feedModel.rowCount(), 2)
-        self.assertEqual(self.feedModel.data(self.feedModel.index(0, 0, QModelIndex()), Qt.DisplayRole), "Title2")
-        self.assertEqual(self.feedModel.data(self.feedModel.index(0, 1, QModelIndex()), Qt.DisplayRole), 2)
-        self.assertEqual(self.feedModel.data(self.feedModel.index(0, 2, QModelIndex()), Qt.DisplayRole), 2)
-        self.assertEqual(self.feedModel.data(self.feedModel.index(1, 0, QModelIndex()), Qt.DisplayRole), "Title1")
-        self.assertEqual(self.feedModel.data(self.feedModel.index(1, 1, QModelIndex()), Qt.DisplayRole), 1)
-        self.assertEqual(self.feedModel.data(self.feedModel.index(1, 2, QModelIndex()), Qt.DisplayRole), 3)
+        model = self.feedModel
+        self.assertEqual(model.rowCount(), 2)
+        self.assertEqual(model.data(model.index(0, 0, QModelIndex()), \
+                Qt.DisplayRole), "Title2")
+        self.assertEqual(model.data(model.index(0, 1, QModelIndex()), \
+                Qt.DisplayRole), 2)
+        self.assertEqual(model.data(model.index(0, 2, QModelIndex()), \
+                Qt.DisplayRole), 2)
+        self.assertEqual(model.data(model.index(1, 0, QModelIndex()), \
+                Qt.DisplayRole), "Title1")
+        self.assertEqual(model.data(model.index(1, 1, QModelIndex()), \
+                Qt.DisplayRole), 1)
+        self.assertEqual(model.data(model.index(1, 2, QModelIndex()), \
+                Qt.DisplayRole), 3)
 
 if __name__ == "__main__":
     unittest.main()
-
