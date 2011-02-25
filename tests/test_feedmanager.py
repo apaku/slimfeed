@@ -33,33 +33,33 @@ class TestFeedManager(unittest.TestCase):
     def testLoad(self):
         import time
         from base64 import b64encode
-        s = StoreMock()
-        t = time.time()
-        s.beginGroup("Feed_%s" %b64encode("T1"))
-        s.setValue("Title", "T1")
-        s.setValue("Updated", t)
-        s.setValue("Author", "Author1")
-        s.setValue("Url", "Url1")
-        s.endGroup()
-        s.beginGroup("Feed_%s" %b64encode("T2"))
-        s.setValue("Title", "T2")
-        s.setValue("Updated", t)
-        s.setValue("Author", "Author2")
-        s.setValue("Url", "Url2")
-        s.endGroup()
-        self.feedManager.load(s)
+        updated = time.time()
+        store = StoreMock()
+        store.beginGroup("Feed_%s" %b64encode("T1"))
+        store.setValue("Title", "T1")
+        store.setValue("Updated", updated)
+        store.setValue("Author", "Author1")
+        store.setValue("Url", "Url1")
+        store.endGroup()
+        store.beginGroup("Feed_%s" %b64encode("T2"))
+        store.setValue("Title", "T2")
+        store.setValue("Updated", updated)
+        store.setValue("Author", "Author2")
+        store.setValue("Url", "Url2")
+        store.endGroup()
+        self.feedManager.load(store)
         self.assertEqual(len(self.feedManager.feeds), 2)
 
     def testSave(self):
-        s = StoreMock()
-        f = Feed()
-        f.title = "T1"
-        self.feedManager.feeds.add(f)
-        f = Feed()
-        f.title = "T2"
-        self.feedManager.feeds.add(f)
-        self.feedManager.save(s)
-        self.assertEqual(len(s.childGroups()), 2)
+        store = StoreMock()
+        feed = Feed()
+        feed.title = "T1"
+        self.feedManager.feeds.add(feed)
+        feed = Feed()
+        feed.title = "T2"
+        self.feedManager.feeds.add(feed)
+        self.feedManager.save(store)
+        self.assertEqual(len(store.childGroups()), 2)
 
     def testAdd(self):
         self.assertEqual(len(self.feedManager.feeds), 0)
@@ -68,18 +68,18 @@ class TestFeedManager(unittest.TestCase):
 
     def testRemove(self):
         self.assertEqual(len(self.feedManager.feeds), 0)
-        f = Feed()
-        self.feedManager.feeds.add(f)
+        feed = Feed()
+        self.feedManager.feeds.add(feed)
         self.assertEqual(len(self.feedManager.feeds), 1)
-        self.feedManager.feeds.remove(f) 
+        self.feedManager.feeds.remove(feed) 
         self.assertEqual(len(self.feedManager.feeds), 0)
 
     def testAddDuplicate(self):
         self.assertEqual(len(self.feedManager.feeds), 0)
-        f = Feed()
-        self.feedManager.feeds.add(f)
+        feed = Feed()
+        self.feedManager.feeds.add(feed)
         self.assertEqual(len(self.feedManager.feeds), 1)
-        self.feedManager.feeds.add(f)
+        self.feedManager.feeds.add(feed)
         self.assertEqual(len(self.feedManager.feeds), 1)
 
 if __name__ == "__main__":

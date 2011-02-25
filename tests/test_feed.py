@@ -38,51 +38,51 @@ class FeedTest(unittest.TestCase):
     def testLoad(self):
         import time
         from base64 import b64encode
-        t = time.time()
-        s = StoreMock()
-        s.setValue("Title", "TestTitle")
-        s.setValue("Url", "TestUrl")
-        s.setValue("Author", "TestAuthor")
-        s.setValue("Updated", t)
-        s.beginGroup("Entry_%s" %b64encode("Id1"))
-        s.setValue("Title", "T1")
-        s.setValue("Updated", t)
-        s.setValue("Author", "Author1")
-        s.setValue("Url", "Url1")
-        s.setValue("Id", "Id1")
-        s.setValue("Content", "Content1")
-        s.setValue("Read", True)
-        s.endGroup()
-        s.beginGroup("Entry_%s" %b64encode("Id2"))
-        s.setValue("Title", "T2")
-        s.setValue("Updated", t)
-        s.setValue("Author", "Author2")
-        s.setValue("Url", "Url2")
-        s.setValue("Id", "Id2")
-        s.setValue("Content", "Content2")
-        s.endGroup()
-        self.savefeed.load(s)
+        updated = time.time()
+        store = StoreMock()
+        store.setValue("Title", "TestTitle")
+        store.setValue("Url", "TestUrl")
+        store.setValue("Author", "TestAuthor")
+        store.setValue("Updated", updated)
+        store.beginGroup("Entry_%s" %b64encode("Id1"))
+        store.setValue("Title", "T1")
+        store.setValue("Updated", updated)
+        store.setValue("Author", "Author1")
+        store.setValue("Url", "Url1")
+        store.setValue("Id", "Id1")
+        store.setValue("Content", "Content1")
+        store.setValue("Read", True)
+        store.endGroup()
+        store.beginGroup("Entry_%s" %b64encode("Id2"))
+        store.setValue("Title", "T2")
+        store.setValue("Updated", updated)
+        store.setValue("Author", "Author2")
+        store.setValue("Url", "Url2")
+        store.setValue("Id", "Id2")
+        store.setValue("Content", "Content2")
+        store.endGroup()
+        self.savefeed.load(store)
         self.assertEqual(self.savefeed.title, "TestTitle")
-        self.assertEqual(self.savefeed.updated, t)
+        self.assertEqual(self.savefeed.updated, updated)
         self.assertEqual(self.savefeed.url, "TestUrl")
         self.assertEqual(self.savefeed.author, "TestAuthor")
         self.assertEqual(self.savefeed.unread, 1)
         self.assertEqual(len(self.savefeed.entries), 2)
 
     def testSave(self):
-        e = Entry()
-        s = StoreMock()
-        self.savefeed.entries.add(e)
-        self.savefeed.save(s)
-        self.assertEqual(len(s.childGroups()), 1)
-        self.assertEqual(self.savefeed.title, s.value("Title"))
-        self.assertEqual(self.savefeed.author, s.value("Author"))
-        self.assertEqual(self.savefeed.url, s.value("Url"))
-        self.assertEqual(self.savefeed.updated, s.value("Updated"))
+        entry = Entry()
+        store = StoreMock()
+        self.savefeed.entries.add(entry)
+        self.savefeed.save(store)
+        self.assertEqual(len(store.childGroups()), 1)
+        self.assertEqual(self.savefeed.title, store.value("Title"))
+        self.assertEqual(self.savefeed.author, store.value("Author"))
+        self.assertEqual(self.savefeed.url, store.value("Url"))
+        self.assertEqual(self.savefeed.updated, store.value("Updated"))
 
     def testTitle(self):
         self.assertEqual(len(self.feed.title), 0)
-        self.feed.title="test"
+        self.feed.title = "test"
         self.assertEqual(len(self.feed.title), len("test"))
         self.assertEqual(self.feed.title, "test")
         del self.feed.title
@@ -90,7 +90,7 @@ class FeedTest(unittest.TestCase):
 
     def testAuthor(self):
         self.assertEqual(len(self.feed.author), 0)
-        self.feed.author="test"
+        self.feed.author = "test"
         self.assertEqual(len(self.feed.author), len("test"))
         self.assertEqual(self.feed.author, "test")
         del self.feed.author
@@ -98,7 +98,7 @@ class FeedTest(unittest.TestCase):
 
     def testUrl(self):
         self.assertEqual(len(self.feed.url), 0)
-        self.feed.url="test"
+        self.feed.url = "test"
         self.assertEqual(len(self.feed.url), len("test"))
         self.assertEqual(self.feed.url, "test")
         del self.feed.url
@@ -107,9 +107,9 @@ class FeedTest(unittest.TestCase):
     def testUpdated(self):
         import time
         self.assertEqual(self.feed.updated, None)
-        t = time.time()
-        self.feed.updated=t
-        self.assertEqual(self.feed.updated, t)
+        updated = time.time()
+        self.feed.updated = updated
+        self.assertEqual(self.feed.updated, updated)
         del self.feed.updated
         self.assertFalse(hasattr(self.feed, "updated"))
 
@@ -120,18 +120,18 @@ class FeedTest(unittest.TestCase):
 
     def testRemove(self):
         self.assertEqual(len(self.feed.entries), 0)
-        f = Entry()
-        self.feed.entries.add(f)
+        feed = Entry()
+        self.feed.entries.add(feed)
         self.assertEqual(len(self.feed.entries), 1)
-        self.feed.entries.remove(f) 
+        self.feed.entries.remove(feed) 
         self.assertEqual(len(self.feed.entries), 0)
 
     def testAddDuplicate(self):
         self.assertEqual(len(self.feed.entries), 0)
-        f = Entry()
-        self.feed.entries.add(f)
+        feed = Entry()
+        self.feed.entries.add(feed)
         self.assertEqual(len(self.feed.entries), 1)
-        self.feed.entries.add(f)
+        self.feed.entries.add(feed)
         self.assertEqual(len(self.feed.entries), 1)
 
 

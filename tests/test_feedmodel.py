@@ -15,6 +15,9 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #    02110-1301  USA.
+# Disable complaints about our mock-object and the impossibility to import modeltest
+# both are ignorable here
+#pylint: disable=R0903,F0401
 
 import unittest
 import sys
@@ -43,24 +46,24 @@ class FeedModelTest(unittest.TestCase):
     def setUp(self):
         import time
         self.feedMgr = FeedManager()
-        f = FeedMock()
-        f.title = "Title1"
-        f.author = "Author1"
-        f.url = "Url1"
-        f.updated = time.time()
-        f.unread = 1
-        f.entries = [1,2,3]
-        self.feedMgr.feeds.add(f)
-        f = FeedMock()
-        f.title = "Title2"
-        f.author = "Author2"
-        f.url = "Url2"
-        f.updated = time.time()
-        f.unread = 2
-        f.entries = [1,2]
-        self.feedMgr.feeds.add(f)
+        feed = FeedMock()
+        feed.title = "Title1"
+        feed.author = "Author1"
+        feed.url = "Url1"
+        feed.updated = time.time()
+        feed.unread = 1
+        feed.entries = [1, 2, 3]
+        self.feedMgr.feeds.add(feed)
+        feed = FeedMock()
+        feed.title = "Title2"
+        feed.author = "Author2"
+        feed.url = "Url2"
+        feed.updated = time.time()
+        feed.unread = 2
+        feed.entries = [1, 2]
+        self.feedMgr.feeds.add(feed)
         self.feedModel = FeedModel(self.feedMgr)
-        self.modeltest = ModelTest(self.feedModel,self.feedModel)
+        self.modeltest = ModelTest(self.feedModel, self.feedModel)
 
     def testData(self):
         self.assertEqual(self.feedModel.rowCount(), 2)

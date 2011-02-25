@@ -19,40 +19,40 @@
 class StoreMock:
     def __init__(self):
         self.data = {}
-        self.currentGroup = []
+        self.current_group = []
 
     def setValue(self, key, value):
-        if len(self.currentGroup) > 0:
-            self.data['/'.join(self.currentGroup + [key])] = value
+        if len(self.current_group) > 0:
+            self.data['/'.join(self.current_group + [key])] = value
         else:
             self.data[key] = value
 
     def value(self, key, default=None):
         try:
-            if len(self.currentGroup) > 0:
-                return self.data['/'.join(self.currentGroup + [key])]
+            if len(self.current_group) > 0:
+                return self.data['/'.join(self.current_group + [key])]
             else:
                 return self.data[key]
         except KeyError:
             return default
 
     def childGroups(self):
-        l = []
+        cgroups = []
         for k in self.data.keys():
-            if len(self.currentGroup) > 0:
-                if k.startswith('/'.join(self.currentGroup)):
-                    k = k[len('/'.join(self.currentGroup))+1:]
+            if len(self.current_group) > 0:
+                if k.startswith('/'.join(self.current_group)):
+                    k = k[len('/'.join(self.current_group))+1:]
                 else:
                     continue
             if '/' in k:
                 k = k[0:k.index('/')]
-                if not k in l:
-                    l.append(k)
-        return l
+                if not k in cgroups:
+                    cgroups.append(k)
+        return cgroups
 
     def beginGroup(self, grpname):
-        self.currentGroup.append(grpname)
+        self.current_group.append(grpname)
 
     def endGroup(self):
-        self.currentGroup.pop()
+        self.current_group.pop()
 

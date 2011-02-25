@@ -17,25 +17,29 @@
 #    02110-1301  USA.
 
 import initsip
-from entry import Entry
-from PyQt4.QtCore import QAbstractTableModel, Qt, QVariant, QModelIndex
+initsip.setupSipApi()
 
+from PyQt4.QtCore import QAbstractTableModel, Qt, QModelIndex
+
+# Disable 'method can be used as function' as it triggers on columnCount which
+# indeed does not need the self, but we can't change that due to inheritance
+# from Qt
+#pylint: disable=R0201
 class EntryModel(QAbstractTableModel):
     def __init__(self, feed=None, parent=None):
         QAbstractTableModel.__init__(self, parent)
         self._feed = feed
 
-    def setfeed(self, feed):
+    def _setfeed(self, feed):
         self._feed = feed
-    def getfeed(self):
+    def _getfeed(self):
         return self._feed
-    feed = property(getfeed, setfeed, None, "Feed that the model displays entries for")
+    feed = property(_getfeed, _setfeed, None, "Feed that the model displays entries for")
 
     def rowCount(self, parent=QModelIndex()):
         if parent.isValid() or self._feed is None:
             return 0
         return len(self._feed.entries)
-
     def columnCount(self, parent=QModelIndex()):
         if parent.isValid():
             return 0
@@ -52,13 +56,13 @@ class EntryModel(QAbstractTableModel):
         if role != Qt.DisplayRole:
             return None
 
-        f = list(self._feed.entries)[idx.row()]
+        entry = list(self._feed.entries)[idx.row()]
         if idx.column() == 0:
-            return f.title
+            return entry.title
         elif idx.column() == 1:
-            return f.author
+            return entry.author
         elif idx.column() == 2:
-            return f.updated
+            return entry.updated
         return None
 
     def headerData(self, col, orient, role=Qt.DisplayRole):

@@ -17,7 +17,8 @@
 #    02110-1301  USA.
 
 import initsip
-from PyQt4 import QtCore, QtGui, uic
+initsip.setupSipApi()
+from PyQt4 import QtGui, uic
 from feedmanager import FeedManager
 from feedmodel import FeedModel
 from entrymodel import EntryModel

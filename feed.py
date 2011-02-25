@@ -78,11 +78,11 @@ class Feed(object):
         self.author = store.value("Author", None)
         self.updated = store.value("Updated", None)
         self.url = store.value("Url", None)
-        for g in store.childGroups():
-            store.beginGroup(g)
-            e = Entry()
-            e.load(store)
-            self.entries.add(e)
+        for group in store.childGroups():
+            store.beginGroup(group)
+            entry = Entry()
+            entry.load(store)
+            self.entries.add(entry)
             store.endGroup()
 
     def save(self, store):

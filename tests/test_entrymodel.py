@@ -15,6 +15,9 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #    02110-1301  USA.
+# Disable complaints about our mock-object and the impossibility to import modeltest
+# both are ignorable here
+#pylint: disable=R0903,F0401
 
 import unittest
 import sys
@@ -32,38 +35,43 @@ from PyQt4.QtCore import Qt, QModelIndex
 class EntryMock(object):
     def __init__(self):
         import time
-        self.entries = []
         self.title = "Title"
         self.author = "Author"
         self.url = "Url"
+        self.content = "Content"
         self.updated = time.time()
-        self.unread = 0
 
 class EntryModelTest(unittest.TestCase):
     def setUp(self):
         import time
         self.feed = Feed()
-        f = EntryMock()
-        f.title = "Title1"
-        f.author = "Author1"
-        f.updated = time.time()
-        self.feed.entries.add(f)
-        f = EntryMock()
-        f.title = "Title2"
-        f.author = "Author2"
-        f.updated = time.time()
-        self.feed.entries.add(f)
+        entry = EntryMock()
+        entry.title = "Title1"
+        entry.author = "Author1"
+        entry.updated = time.time()
+        self.feed.entries.add(entry)
+        entry = EntryMock()
+        entry.title = "Title2"
+        entry.author = "Author2"
+        entry.updated = time.time()
+        self.feed.entries.add(entry)
         self.entryModel = EntryModel(self.feed)
-        self.modeltest = ModelTest(self.entryModel,self.entryModel)
+        self.modeltest = ModelTest(self.entryModel, self.entryModel)
 
     def testData(self):
         self.assertEqual(self.entryModel.rowCount(), 2)
-        self.assertEqual(self.entryModel.data(self.entryModel.index(0, 0, QModelIndex()), Qt.DisplayRole), "Title2")
-        self.assertEqual(self.entryModel.data(self.entryModel.index(0, 1, QModelIndex()), Qt.DisplayRole), "Author2")
-        self.assertEqual(self.entryModel.data(self.entryModel.index(0, 2, QModelIndex()), Qt.DisplayRole), list(self.feed.entries)[0].updated)
-        self.assertEqual(self.entryModel.data(self.entryModel.index(1, 0, QModelIndex()), Qt.DisplayRole), "Title1")
-        self.assertEqual(self.entryModel.data(self.entryModel.index(1, 1, QModelIndex()), Qt.DisplayRole), "Author1")
-        self.assertEqual(self.entryModel.data(self.entryModel.index(1, 2, QModelIndex()), Qt.DisplayRole), list(self.feed.entries)[1].updated)
+        self.assertEqual(self.entryModel.data(self.entryModel.index(0, 0, QModelIndex()), \
+                Qt.DisplayRole), "Title2")
+        self.assertEqual(self.entryModel.data(self.entryModel.index(0, 1, QModelIndex()), \
+                Qt.DisplayRole), "Author2")
+        self.assertEqual(self.entryModel.data(self.entryModel.index(0, 2, QModelIndex()), \
+                Qt.DisplayRole), list(self.feed.entries)[0].updated)
+        self.assertEqual(self.entryModel.data(self.entryModel.index(1, 0, QModelIndex()), \
+                Qt.DisplayRole), "Title1")
+        self.assertEqual(self.entryModel.data(self.entryModel.index(1, 1, QModelIndex()), \
+                Qt.DisplayRole), "Author1")
+        self.assertEqual(self.entryModel.data(self.entryModel.index(1, 2, QModelIndex()), \
+                Qt.DisplayRole), list(self.feed.entries)[1].updated)
 
 if __name__ == "__main__":
     unittest.main()

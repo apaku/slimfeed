@@ -26,25 +26,25 @@ from feedparserfactory import createFeedFromData, createEntryFromData
 class FeedParserFactoryTest(unittest.TestCase):
     def setUp(self):
         import time
-        t = time.time()
-        self.rssfeeddata = {"feed": {"title": "rsstitle", "author": "myauthor", "updated_parsed": t},
+        updated = time.time()
+        self.rssfeeddata = {"feed": {"title": "rsstitle", "author": "myauthor", "updated_parsed": updated},
                             "href": "feedurl",
                             "entries": [{"title": "entrytitle1", "id": "id1", "link": "url1", 
                                          "author": "author1", "summary": "content1", 
-                                         "updated_parsed": t},
+                                         "updated_parsed": updated},
                                         {"title": "entrytitle1", "id": "id1", "link": "url1", 
                                          "author": "author1", "summary": "content1", 
-                                         "updated_parsed": t}
+                                         "updated_parsed": updated}
                                        ]
                            }
-        self.atomfeeddata = {"feed": {"title": "atomtitle", "author": "myauthor", "updated_parsed": t},
+        self.atomfeeddata = {"feed": {"title": "atomtitle", "author": "myauthor", "updated_parsed": updated},
                              "href": "feedurl",
                              "entries": [{"title": "entrytitle1", "id": "id1", "link": "url1", 
                                           "author": "author1", "content": "content1", 
-                                          "updated_parsed": t},
+                                          "updated_parsed": updated},
                                          {"title": "entrytitle1", "id": "id1", "link": "url1", 
                                           "author": "author1", "content": "content1", 
-                                          "updated_parsed": t}
+                                          "updated_parsed": updated}
                                         ]
                             }
 

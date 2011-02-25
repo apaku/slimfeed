@@ -16,13 +16,13 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #    02110-1301  USA.
 
-# Setup PyQt stuff.
-import sip
-sip.setapi("QString", 2)
-sip.setapi("QDate", 2)
-sip.setapi("QDateTime", 2)
-sip.setapi("QTextStream", 2)
-sip.setapi("QTime", 2)
-sip.setapi("QUrl", 2)
-sip.setapi("QVariant", 2)
+def setupSipApi():
+    import sip
+    sip.setapi("QString", 2)
+    sip.setapi("QDate", 2)
+    sip.setapi("QDateTime", 2)
+    sip.setapi("QTextStream", 2)
+    sip.setapi("QTime", 2)
+    sip.setapi("QUrl", 2)
+    sip.setapi("QVariant", 2)
 

@@ -17,13 +17,18 @@
 #    02110-1301  USA.
 
 import initsip
-from feed import Feed
-from PyQt4.QtCore import QAbstractTableModel, Qt, QVariant, QModelIndex
+initsip.setupSipApi()
 
+from PyQt4.QtCore import QAbstractTableModel, Qt, QModelIndex
+
+# Disable 'method can be used as function' as it triggers on columnCount which
+# indeed does not need the self, but we can't change that due to inheritance
+# from Qt
+#pylint: disable=R0201
 class FeedModel(QAbstractTableModel):
-    def __init__(self, feedMgr, parent=None):
+    def __init__(self, feedmgr, parent=None):
         QAbstractTableModel.__init__(self, parent)
-        self._feedmgr = feedMgr
+        self._feedmgr = feedmgr
 
     def rowCount(self, parent=QModelIndex()):
         if parent.isValid():
@@ -45,13 +50,13 @@ class FeedModel(QAbstractTableModel):
         if role != Qt.DisplayRole:
             return None
 
-        f = list(self._feedmgr.feeds)[idx.row()]
+        feed = list(self._feedmgr.feeds)[idx.row()]
         if idx.column() == 0:
-            return f.title
+            return feed.title
         elif idx.column() == 1:
-            return f.unread
+            return feed.unread
         elif idx.column() == 2:
-            return len(f.entries)
+            return len(feed.entries)
         return None
 
     def headerData(self, col, orient, role=Qt.DisplayRole):

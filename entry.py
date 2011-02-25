@@ -31,61 +31,47 @@ class Entry(object):
             return hash(self._id)
         return 3*hash(self._title)+5*hash(self._author)+7*hash(self._url)
         
-    def getread(self):
+    def _getread(self):
         return self._read
-    def setread(self, read):
+    def _setread(self, read):
         self._read = read
-    def delread(self):
-        del self._read
-    read = property(getread, setread, delread, "Wether this entry was read already")
+    read = property(_getread, _setread, None, "Wether this entry was read already")
 
-    def geturl(self):
+    def _geturl(self):
         return self._url
-    def seturl(self, url):
+    def _seturl(self, url):
         self._url = url
-    def delurl(self):
-        del self._url
-    url = property(geturl, seturl, delurl, "Url of this entry")
+    url = property(_geturl, _seturl, None, "Url of this entry")
 
-    def getupdated(self):
+    def _getupdated(self):
         return self._updated
-    def setupdated(self, updated):
+    def _setupdated(self, updated):
         self._updated = updated
-    def delupdated(self):
-        del self._updated
-    updated = property(getupdated, setupdated, delupdated, "Date of last update of this entry")
+    updated = property(_getupdated, _setupdated, None, "Date of last update of this entry")
 
-    def gettitle(self):
+    def _gettitle(self):
         return self._title
-    def settitle(self, title):
+    def _settitle(self, title):
         self._title = title
-    def deltitle(self):
-        del self._title
-    title = property(gettitle, settitle, deltitle, "Title of this entry")
+    title = property(_gettitle, _settitle, None, "Title of this entry")
 
-    def getid(self):
+    def _getid(self):
         return self._id
-    def setid(self, id):
-        self._id = id
-    def delid(self):
-        del self._id
-    identity = property(getid, setid, delid, "Id of this entry")
+    def _setid(self, identity):
+        self._id = identity
+    identity = property(_getid, _setid, None, "Id of this entry")
 
-    def getauthor(self):
+    def _getauthor(self):
         return self._author
-    def setauthor(self, author):
+    def _setauthor(self, author):
         self._author = author
-    def delauthor(self):
-        del self._author
-    author = property(getauthor, setauthor, delauthor, "Author of this entry")
+    author = property(_getauthor, _setauthor, None, "Author of this entry")
 
-    def getcontent(self):
+    def _getcontent(self):
         return self._content
-    def setcontent(self, content):
+    def _setcontent(self, content):
         self._content = content
-    def delcontent(self):
-        del self._content
-    content = property(getcontent, setcontent, delcontent, "Content of this entry")
+    content = property(_getcontent, _setcontent, None, "Content of this entry")
 
     def load(self, store):
         self.title = store.value("Title", None)

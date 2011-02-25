@@ -23,11 +23,11 @@ class FeedManager(object):
         self._feeds = set()
 
     def load(self, store):
-        for g in store.childGroups():
-            store.beginGroup(g)
-            f = Feed()
-            f.load(store)
-            self.feeds.add(f)
+        for group in store.childGroups():
+            store.beginGroup(group)
+            feed = Feed()
+            feed.load(store)
+            self.feeds.add(feed)
             store.endGroup()
 
     def save(self, store):
