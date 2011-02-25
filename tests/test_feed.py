@@ -85,24 +85,18 @@ class FeedTest(unittest.TestCase):
         self.feed.title = "test"
         self.assertEqual(len(self.feed.title), len("test"))
         self.assertEqual(self.feed.title, "test")
-        del self.feed.title
-        self.assertFalse(hasattr(self.feed, "title"))
 
     def testAuthor(self):
         self.assertEqual(len(self.feed.author), 0)
         self.feed.author = "test"
         self.assertEqual(len(self.feed.author), len("test"))
         self.assertEqual(self.feed.author, "test")
-        del self.feed.author
-        self.assertFalse(hasattr(self.feed, "author"))
 
     def testUrl(self):
         self.assertEqual(len(self.feed.url), 0)
         self.feed.url = "test"
         self.assertEqual(len(self.feed.url), len("test"))
         self.assertEqual(self.feed.url, "test")
-        del self.feed.url
-        self.assertFalse(hasattr(self.feed, "url"))
 
     def testUpdated(self):
         import time
@@ -110,8 +104,6 @@ class FeedTest(unittest.TestCase):
         updated = time.time()
         self.feed.updated = updated
         self.assertEqual(self.feed.updated, updated)
-        del self.feed.updated
-        self.assertFalse(hasattr(self.feed, "updated"))
 
     def testAdd(self):
         self.assertEqual(len(self.feed.entries), 0)

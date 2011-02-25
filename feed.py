@@ -33,9 +33,8 @@ class Feed(object):
         return self._title
     def settitle(self, title):
         self._title = title
-    def deltitle(self):
-        del self._title
-    title = property(gettitle, settitle, deltitle, "Title of the feed")
+
+    title = property(gettitle, settitle, None, "Title of the feed")
 
     def getunread(self):
         return len([e for e in self.entries if not e.read])
@@ -45,33 +44,30 @@ class Feed(object):
         return self._author
     def setauthor(self, author):
         self._author = author
-    def delauthor(self):
-        del self._author
-    author = property(getauthor, setauthor, delauthor, "Author of the feed")
+
+    author = property(getauthor, setauthor, "Author of the feed")
 
     def geturl(self):
         return self._url
     def seturl(self, url):
         self._url = url
-    def delurl(self):
-        del self._url
-    url = property(geturl, seturl, delurl, "Url of the feed")
+
+    url = property(geturl, seturl, None, "Url of the feed")
 
     def getupdated(self):
         return self._updated
     def setupdated(self, updated):
         self._updated = updated
-    def delupdated(self):
-        del self._updated
-    updated = property(getupdated, setupdated, delupdated, "Date of last update of the feed")
+
+    updated = property(getupdated, setupdated, None, \
+            "Date of last update of the feed")
 
     def getentries(self):
         return self._entries
     def setentries(self, entries):
         self._entries = entries
-    def delentries(self):
-        del self._entries
-    entries = property(getentries, setentries, delentries, "Entries of the feed")
+
+    entries = property(getentries, setentries, None, "Entries of the feed")
 
     def load(self, store):
         self.title = store.value("Title", None)
