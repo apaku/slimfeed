@@ -33,7 +33,7 @@ load-plugins=
 # can either give multiple identifier separated by comma (,) or put this option
 # multiple time.
 # Disable docstrings until I have some and also the line-dupe checker as it throws up on the models
-disable=C0111,R0801
+disable=C0111,R0801,I0011
 
 
 [REPORTS]
