@@ -22,6 +22,7 @@
 import unittest
 import sys
 import os
+from minimock import Mock
 sys.path.append("..")
 sys.path.append(".")
 sys.path.append(os.path.join(os.getcwd(), "modeltest"))
@@ -33,22 +34,11 @@ from modeltest import ModelTest
 from PyQt4.QtCore import Qt, QModelIndex
 
 
-class FeedMock(object):
-    def __init__(self):
-        import time
-        self.entries = []
-        self.title = "Title"
-        self.author = "Author"
-        self.url = "Url"
-        self.updated = time.time()
-        self.unread = 0
-
-
 class FeedModelTest(unittest.TestCase):
     def setUp(self):
         import time
         self.feedMgr = FeedManager()
-        feed = FeedMock()
+        feed = Mock("Feed")
         feed.title = "Title1"
         feed.author = "Author1"
         feed.url = "Url1"
@@ -56,7 +46,7 @@ class FeedModelTest(unittest.TestCase):
         feed.unread = 1
         feed.entries = [1, 2, 3]
         self.feedMgr.feeds.add(feed)
-        feed = FeedMock()
+        feed = Mock("Feed")
         feed.title = "Title2"
         feed.author = "Author2"
         feed.url = "Url2"

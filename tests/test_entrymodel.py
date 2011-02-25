@@ -22,6 +22,7 @@
 import unittest
 import sys
 import os
+from minimock import Mock
 sys.path.append("..")
 sys.path.append(".")
 sys.path.append(os.path.join(os.getcwd(), "modeltest"))
@@ -33,26 +34,16 @@ from modeltest import ModelTest
 from PyQt4.QtCore import Qt, QModelIndex
 
 
-class EntryMock(object):
-    def __init__(self):
-        import time
-        self.title = "Title"
-        self.author = "Author"
-        self.url = "Url"
-        self.content = "Content"
-        self.updated = time.time()
-
-
 class EntryModelTest(unittest.TestCase):
     def setUp(self):
         import time
         self.feed = Feed()
-        entry = EntryMock()
+        entry = Mock("Entry")
         entry.title = "Title1"
         entry.author = "Author1"
         entry.updated = time.time()
         self.feed.entries.add(entry)
-        entry = EntryMock()
+        entry = Mock("Entry")
         entry.title = "Title2"
         entry.author = "Author2"
         entry.updated = time.time()
