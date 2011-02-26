@@ -25,14 +25,20 @@ from entrymodel import EntryModel
 import sys
 
 
+class MainWindow(QtGui.QMainWindow):
+    def __init__(self, parent=None):
+        QtGui.QMainWindow.__init__(self, parent)
+        uic.loadUi("slimfeed.ui", self)
+        self.feedMgr = FeedManager()
+        self.feedModel = FeedModel(self.feedMgr, self)
+        self.entryModel = EntryModel(parent=self)
+        self.feedList.setModel(self.feedModel)
+        self.entryList.setModel(self.entryModel)
+
+
 def main():
     app = QtGui.QApplication(sys.argv)
-    mainwin = uic.loadUi("slimfeed.ui")
-    mainwin.feedMgr = FeedManager()
-    mainwin.feedModel = FeedModel(mainwin.feedMgr, mainwin)
-    mainwin.entryModel = EntryModel(parent=mainwin)
-    mainwin.feedList.setModel(mainwin.feedModel)
-    mainwin.entryList.setModel(mainwin.entryModel)
+    mainwin = MainWindow()
     mainwin.actionQuit.triggered.connect(app.quit)
     mainwin.show()
     return app.exec_()
