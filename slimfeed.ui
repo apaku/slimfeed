@@ -55,7 +55,7 @@
    </property>
    <widget class="QMenu" name="menuFeed">
     <property name="title">
-     <string>Feed</string>
+     <string>&amp;Feed</string>
     </property>
     <addaction name="actionAdd"/>
     <addaction name="actionMarkAllFeedsRead"/>
@@ -63,13 +63,13 @@
    </widget>
    <widget class="QMenu" name="menuArticle">
     <property name="title">
-     <string>Article</string>
+     <string>&amp;Article</string>
     </property>
     <addaction name="actionMarkAllEntriesRead"/>
    </widget>
    <widget class="QMenu" name="menuSlimfeed">
     <property name="title">
-     <string>Slimfeed</string>
+     <string>&amp;Slimfeed</string>
     </property>
     <addaction name="actionAbout_SlimFeed"/>
     <addaction name="actionPreferences"/>
@@ -83,7 +83,7 @@
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionAdd">
    <property name="text">
-    <string>Add</string>
+    <string>&amp;Add</string>
    </property>
   </action>
   <action name="actionDelete">
@@ -93,32 +93,35 @@
   </action>
   <action name="actionMarkAllFeedsRead">
    <property name="text">
-    <string>Mark All As Read</string>
+    <string>Mark All As &amp;Read</string>
    </property>
   </action>
   <action name="actionMarkAllEntriesRead">
    <property name="text">
-    <string>Mark All As Read</string>
+    <string>Mark All As &amp;Read</string>
    </property>
   </action>
   <action name="actionFetchAllFeeds">
    <property name="text">
-    <string>Fetch All Feeds</string>
+    <string>&amp;Fetch All Feeds</string>
    </property>
   </action>
   <action name="actionAbout_SlimFeed">
    <property name="text">
-    <string>About SlimFeed</string>
+    <string>&amp;About SlimFeed</string>
    </property>
   </action>
   <action name="actionPreferences">
    <property name="text">
-    <string>Preferences...</string>
+    <string>&amp;Preferences...</string>
    </property>
   </action>
   <action name="actionQuit">
    <property name="text">
-    <string>Quit</string>
+    <string>&amp;Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
    </property>
   </action>
  </widget>
