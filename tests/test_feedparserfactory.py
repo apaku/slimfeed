@@ -18,6 +18,7 @@
 
 import unittest
 import sys
+import time
 sys.path.append("..")
 sys.path.append(".")
 
@@ -26,7 +27,6 @@ from feedparserfactory import createFeedFromData, createEntryFromData
 
 class FeedParserFactoryTest(unittest.TestCase):
     def setUp(self):
-        import time
         updated = time.time()
         self.rssfeeddata = {"feed": {"title": "rsstitle",
                             "author": "myauthor",
@@ -98,6 +98,24 @@ class FeedParserFactoryTest(unittest.TestCase):
         self.assertEqual(entry.identity, data["id"])
         self.assertEqual(entry.updated, data["updated_parsed"])
         self.assertEqual(entry.content, data["content"])
+
+    def testMissingDataFeed(self):
+        data = {"feed":{}, "entries":[]}
+        f = createFeedFromData(data=data)
+        self.assertEqual(f.title, "No Title provided")
+        self.assertEqual(f.author, "No Author provided")
+        self.assertEqual(f.updated, None)
+        self.assertEqual(f.url, None)
+
+    def testMissingDataEntry(self):
+        data = {}
+        entry = createEntryFromData(data=data)
+        self.assertEqual(entry.title, "No Title provided")
+        self.assertEqual(entry.author, "No Author provided")
+        self.assertEqual(entry.content, "No Content provided")
+        self.assertEqual(entry.updated, None)
+        self.assertEqual(entry.identity, None)
+        self.assertEqual(entry.url, None)
 
 if __name__ == "__main__":
     unittest.main()
