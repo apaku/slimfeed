@@ -16,7 +16,7 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #    02110-1301  USA.
 
-import unittest
+import unittest2
 import sys
 sys.path.append("..")
 sys.path.append(".")
@@ -27,7 +27,7 @@ from feed import Feed
 from storemock import StoreMock
 
 
-class TestFeedManager(unittest.TestCase):
+class TestFeedManager(unittest2.TestCase):
     def setUp(self):
         self.feedManager = FeedManager()
 
@@ -59,8 +59,10 @@ class TestFeedManager(unittest.TestCase):
         feed = Feed()
         feed.title = "T2"
         self.feedManager.feeds.add(feed)
+        feed = Feed()
+        self.feedManager.feeds.add(feed)
         self.feedManager.save(store)
-        self.assertEqual(len(store.childGroups()), 2)
+        self.assertEqual(len(store.childGroups()), 3)
 
     def testAdd(self):
         self.assertEqual(len(self.feedManager.feeds), 0)
@@ -84,4 +86,4 @@ class TestFeedManager(unittest.TestCase):
         self.assertEqual(len(self.feedManager.feeds), 1)
 
 if __name__ == "__main__":
-    unittest.main()
+    unittest2.main()

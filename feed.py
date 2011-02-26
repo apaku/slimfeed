@@ -22,10 +22,10 @@ from entry import Entry
 class Feed(object):
     def __init__(self):
         self._entries = set()
-        self._title = ""
-        self._author = ""
+        self._title = None
+        self._author = None
         self._updated = None
-        self._url = ""
+        self._url = None
 
     def __hash__(self):
         return 3 * hash(self.title) \
@@ -96,7 +96,7 @@ class Feed(object):
         store.setValue("Updated", self.updated)
         store.setValue("Author", self.author)
         for entry in self._entries:
-            store.beginGroup("Entry_%s" % b64encode(entry.identity))
+            store.beginGroup("Entry_%s" % b64encode(str(hash(entry.identity))))
             entry.save(store)
             store.endGroup()
 

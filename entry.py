@@ -19,16 +19,16 @@
 
 class Entry(object):
     def __init__(self):
-        self._url = ""
+        self._url = None
         self._updated = None
-        self._title = ""
-        self._id = ""
-        self._content = ""
-        self._author = ""
+        self._title = None
+        self._id = None
+        self._content = None
+        self._author = None
         self._read = False
 
     def __hash__(self):
-        if len(self._id) > 0:
+        if not self._id is None and len(self._id) > 0:
             return hash(self._id)
         return 3 * hash(self._title) \
                 + 5 * hash(self._author) \

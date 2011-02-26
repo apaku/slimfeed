@@ -34,7 +34,7 @@ class FeedManager(object):
     def save(self, store):
         from base64 import b64encode
         for feed in self._feeds:
-            store.beginGroup("Feed_%s" % b64encode(feed.title))
+            store.beginGroup("Feed_%s" % b64encode(str(hash(feed))))
             feed.save(store)
             store.endGroup()
 

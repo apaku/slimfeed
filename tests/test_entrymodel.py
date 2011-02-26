@@ -19,7 +19,7 @@
 # modeltest both are ignorable here
 #pylint: disable=R0903,F0401
 
-import unittest
+import unittest2
 import sys
 import os
 from minimock import Mock
@@ -34,7 +34,7 @@ from modeltest import ModelTest
 from PyQt4.QtCore import Qt, QModelIndex
 
 
-class EntryModelTest(unittest.TestCase):
+class EntryModelTest(unittest2.TestCase):
     def setUp(self):
         import time
         self.feed = Feed()
@@ -73,4 +73,4 @@ class EntryModelTest(unittest.TestCase):
                     Qt.DisplayRole), list(self.feed.entries)[1].updated)
 
 if __name__ == "__main__":
-    unittest.main()
+    unittest2.main()

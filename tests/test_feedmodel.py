@@ -19,7 +19,7 @@
 # modeltest both are ignorable here
 #pylint: disable=R0903,F0401
 
-import unittest
+import unittest2
 import sys
 import os
 from minimock import Mock
@@ -35,7 +35,7 @@ from PyQt4.QtCore import Qt, QModelIndex
 import time
 
 
-class FeedModelTest(unittest.TestCase):
+class FeedModelTest(unittest2.TestCase):
     def setUp(self):
         self.feedMgr = FeedManager()
         feed = Mock("Feed")
@@ -86,4 +86,4 @@ class FeedModelTest(unittest.TestCase):
         self.assertEqual(model.rowCount(), 3)
 
 if __name__ == "__main__":
-    unittest.main()
+    unittest2.main()

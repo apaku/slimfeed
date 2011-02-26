@@ -16,7 +16,7 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #    02110-1301  USA.
 
-import unittest
+import unittest2
 import sys
 import time
 sys.path.append("..")
@@ -25,7 +25,7 @@ sys.path.append(".")
 from feedparserfactory import createFeedFromData, createEntryFromData
 
 
-class FeedParserFactoryTest(unittest.TestCase):
+class FeedParserFactoryTest(unittest2.TestCase):
     def setUp(self):
         updated = time.time()
         self.rssfeeddata = {"feed": {"title": "rsstitle",
@@ -104,8 +104,8 @@ class FeedParserFactoryTest(unittest.TestCase):
         f = createFeedFromData(data=data)
         self.assertEqual(f.title, "No Title provided")
         self.assertEqual(f.author, "No Author provided")
-        self.assertEqual(f.updated, None)
-        self.assertEqual(f.url, None)
+        self.assertIsNone(f.updated)
+        self.assertIsNone(f.url)
 
     def testMissingDataEntry(self):
         data = {}
@@ -113,9 +113,9 @@ class FeedParserFactoryTest(unittest.TestCase):
         self.assertEqual(entry.title, "No Title provided")
         self.assertEqual(entry.author, "No Author provided")
         self.assertEqual(entry.content, "No Content provided")
-        self.assertEqual(entry.updated, None)
-        self.assertEqual(entry.identity, None)
-        self.assertEqual(entry.url, None)
+        self.assertIsNone(entry.updated)
+        self.assertIsNone(entry.identity)
+        self.assertIsNone(entry.url)
 
 if __name__ == "__main__":
-    unittest.main()
+    unittest2.main()

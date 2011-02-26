@@ -16,7 +16,7 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #    02110-1301  USA.
 
-import unittest
+import unittest2
 import sys
 sys.path.append("..")
 sys.path.append(".")
@@ -25,7 +25,7 @@ from entry import Entry
 from storemock import StoreMock
 
 
-class EntryTest(unittest.TestCase):
+class EntryTest(unittest2.TestCase):
     def setUp(self):
         import time
         self.entry = Entry()
@@ -39,27 +39,27 @@ class EntryTest(unittest.TestCase):
         self.saveentry.read = True
 
     def testTitle(self):
-        self.assertEqual(len(self.entry.title), 0)
+        self.assertIsNone(self.entry.title)
         self.entry.title = "test"
         self.assertEqual(self.entry.title, "test")
 
     def testUrl(self):
-        self.assertEqual(len(self.entry.url), 0)
+        self.assertIsNone(self.entry.url)
         self.entry.url = "test"
         self.assertEqual(self.entry.url, "test")
 
     def testAuthor(self):
-        self.assertEqual(len(self.entry.author), 0)
+        self.assertIsNone(self.entry.author)
         self.entry.author = "test"
         self.assertEqual(self.entry.author, "test")
 
     def testContent(self):
-        self.assertEqual(len(self.entry.content), 0)
+        self.assertIsNone(self.entry.content)
         self.entry.content = "test"
         self.assertEqual(self.entry.content, "test")
 
     def testIdentity(self):
-        self.assertEqual(len(self.entry.identity), 0)
+        self.assertIsNone(self.entry.identity)
         self.entry.identity = "test"
         self.assertEqual(self.entry.identity, "test")
 
@@ -102,4 +102,4 @@ class EntryTest(unittest.TestCase):
         self.assertEqual(store.value("Read"), self.saveentry.read)
 
 if __name__ == "__main__":
-    unittest.main()
+    unittest2.main()

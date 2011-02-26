@@ -16,7 +16,7 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #    02110-1301  USA.
 
-import unittest
+import unittest2
 import sys
 sys.path.append("..")
 sys.path.append(".")
@@ -26,7 +26,7 @@ from entry import Entry
 from storemock import StoreMock
 
 
-class FeedTest(unittest.TestCase):
+class FeedTest(unittest2.TestCase):
     def setUp(self):
         import time
         self.feed = Feed()
@@ -82,21 +82,18 @@ class FeedTest(unittest.TestCase):
         self.assertEqual(self.savefeed.updated, store.value("Updated"))
 
     def testTitle(self):
-        self.assertEqual(len(self.feed.title), 0)
+        self.assertIsNone(self.feed.title)
         self.feed.title = "test"
-        self.assertEqual(len(self.feed.title), len("test"))
         self.assertEqual(self.feed.title, "test")
 
     def testAuthor(self):
-        self.assertEqual(len(self.feed.author), 0)
+        self.assertIsNone(self.feed.author)
         self.feed.author = "test"
-        self.assertEqual(len(self.feed.author), len("test"))
         self.assertEqual(self.feed.author, "test")
 
     def testUrl(self):
-        self.assertEqual(len(self.feed.url), 0)
+        self.assertIsNone(self.feed.url)
         self.feed.url = "test"
-        self.assertEqual(len(self.feed.url), len("test"))
         self.assertEqual(self.feed.url, "test")
 
     def testUpdated(self):
@@ -129,4 +126,4 @@ class FeedTest(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main()
+    unittest2.main()
