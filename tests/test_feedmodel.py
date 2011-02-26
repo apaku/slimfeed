@@ -32,11 +32,11 @@ from feedmodel import FeedModel
 from feedmanager import FeedManager
 from modeltest import ModelTest
 from PyQt4.QtCore import Qt, QModelIndex
+import time
 
 
 class FeedModelTest(unittest.TestCase):
     def setUp(self):
-        import time
         self.feedMgr = FeedManager()
         feed = Mock("Feed")
         feed.title = "Title1"
@@ -72,6 +72,18 @@ class FeedModelTest(unittest.TestCase):
                 Qt.DisplayRole), 1)
         self.assertEqual(model.data(model.index(1, 2, QModelIndex()), \
                 Qt.DisplayRole), 3)
+
+    def testAddFeed(self):
+        model = self.feedModel
+        feed = Mock("Feed")
+        feed.title = "Title1"
+        feed.author = "Author1"
+        feed.updated = time.time()
+        feed.unread = 2
+        feed.entries = [1, 4]
+        self.assertEqual(model.rowCount(), 2)
+        model.addFeed(feed)
+        self.assertEqual(model.rowCount(), 3)
 
 if __name__ == "__main__":
     unittest.main()

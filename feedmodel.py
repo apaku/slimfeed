@@ -72,6 +72,11 @@ class FeedModel(QAbstractTableModel):
         elif col == 2:
             return "All"
 
+    def addFeed(self, feed):
+        self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
+        self._feedmgr.feeds.add(feed)
+        self.endInsertRows()
+
 if __name__ == "__main__":
     import sys
     print "Cannot run this module"
