@@ -71,7 +71,8 @@
     <property name="title">
      <string>&amp;Slimfeed</string>
     </property>
-    <addaction name="actionAbout_SlimFeed"/>
+    <addaction name="actionAbout"/>
+    <addaction name="actionAboutQt"/>
     <addaction name="actionPreferences"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
@@ -106,7 +107,7 @@
     <string>&amp;Fetch All Feeds</string>
    </property>
   </action>
-  <action name="actionAbout_SlimFeed">
+  <action name="actionAbout">
    <property name="text">
     <string>&amp;About SlimFeed</string>
    </property>
@@ -122,6 +123,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionAboutQt">
+   <property name="text">
+    <string>About Q&amp;t</string>
    </property>
   </action>
  </widget>

@@ -34,6 +34,23 @@ class MainWindow(QtGui.QMainWindow):
         self.entryModel = EntryModel(parent=self)
         self.feedList.setModel(self.feedModel)
         self.entryList.setModel(self.entryModel)
+        self.actionAbout.triggered.connect(self.showAbout)
+        self.actionAboutQt.triggered.connect(self.showAboutQt)
+
+    def showAbout(self):
+        txt = """
+<b>Slimfeed</b><br />
+<br />
+Version: 1.0.0<br />
+A samll and fast feed reader<br />
+<br />
+Copyright 2011 Andreas Pakulat <apaku@gmx.de>
+"""
+        QtGui.QMessageBox.about(self, "About Slimfeed", txt)
+    
+    
+    def showAboutQt(self):
+        QtGui.QMessageBox.aboutQt(self, "About Qt")
 
 
 def main():
