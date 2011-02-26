@@ -22,6 +22,7 @@ from PyQt4 import QtGui, uic
 from feedmanager import FeedManager
 from feedmodel import FeedModel
 from entrymodel import EntryModel
+from addfeeddlg import AddFeedDlg
 import sys
 
 
@@ -36,6 +37,10 @@ class MainWindow(QtGui.QMainWindow):
         self.entryList.setModel(self.entryModel)
         self.actionAbout.triggered.connect(self.showAbout)
         self.actionAboutQt.triggered.connect(self.showAboutQt)
+        self.actionAdd.triggered.connect(self.addFeed)
+
+    def addFeed(self):
+        AddFeedDlg.open(self,self.feedModel)
 
     def showAbout(self):
         txt = """
