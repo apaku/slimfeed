@@ -77,6 +77,15 @@ class Feed(object):
 
     entries = property(getentries, setentries, None, "Entries of the feed")
 
+    def __eq__(self, other):
+        if other is None:
+            return False
+        return (self.title == other.title \
+                and self.author == other.author \
+                and self.entries == other.entries \
+                and self.updated == other.updated \
+                and self.url == other.url)
+
     def load(self, store):
         self.title = store.value("Title", None)
         self.author = store.value("Author", None)

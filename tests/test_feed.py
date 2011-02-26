@@ -116,5 +116,14 @@ class FeedTest(unittest2.TestCase):
         self.feed.entries.remove(feed)
         self.assertEqual(len(self.feed.entries), 0)
 
+    def testEqual(self):
+        feed = Feed()
+        feed.title = self.feed.title
+        feed.updated = self.feed.updated
+        feed.entries = self.feed.entries
+        feed.url = self.feed.url
+        feed.author = self.feed.author
+        self.assertEqual(self.feed, feed)
+
 if __name__ == "__main__":
     unittest2.main()

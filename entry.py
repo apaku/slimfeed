@@ -109,6 +109,17 @@ class Entry(object):
         store.setValue("Id", self.identity)
         store.setValue("Read", self.read)
 
+    def __eq__(self, other):
+        if other is None:
+            return False
+        return (self.title == other.title \
+                and self.author == other.author \
+                and self.identity == other.identity \
+                and self.url == other.url \
+                and self.read == other.read \
+                and self.updated == other.updated \
+                and self.content == other.content)
+
 if __name__ == "__main__":
     import sys
     print "Cannot run this module"

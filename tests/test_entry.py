@@ -101,5 +101,16 @@ class EntryTest(unittest2.TestCase):
         self.assertEqual(store.value("Id"), self.saveentry.identity)
         self.assertEqual(store.value("Read"), self.saveentry.read)
 
+    def testEqual(self):
+        entry = Entry()
+        entry.title = self.entry.title
+        entry.updated = self.entry.updated
+        entry.identity = self.entry.identity
+        entry.content = self.entry.content
+        entry.read = self.entry.read
+        entry.url = self.entry.url
+        entry.author = self.entry.author
+        self.assertEqual(self.entry, entry)
+
 if __name__ == "__main__":
     unittest2.main()
