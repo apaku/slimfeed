@@ -76,8 +76,8 @@ class FeedModelTest(unittest2.TestCase):
     def testAddFeed(self):
         model = self.feedModel
         feed = Mock("Feed")
-        feed.title = "Title1"
-        feed.author = "Author1"
+        feed.title = "Title3"
+        feed.author = "Author3"
         feed.updated = time.time()
         feed.unread = 2
         feed.entries = [1, 4]
