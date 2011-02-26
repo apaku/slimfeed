@@ -23,7 +23,29 @@
       <property name="childrenCollapsible">
        <bool>false</bool>
       </property>
-      <widget class="QTableView" name="feedList"/>
+      <widget class="QTableView" name="feedList">
+       <property name="alternatingRowColors">
+        <bool>true</bool>
+       </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::SingleSelection</enum>
+       </property>
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
+       </property>
+       <property name="showGrid">
+        <bool>false</bool>
+       </property>
+       <property name="gridStyle">
+        <enum>Qt::SolidLine</enum>
+       </property>
+       <attribute name="verticalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="verticalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
+      </widget>
       <widget class="QSplitter" name="splitter">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
@@ -31,7 +53,26 @@
        <property name="childrenCollapsible">
         <bool>false</bool>
        </property>
-       <widget class="QTableView" name="entryList"/>
+       <widget class="QTableView" name="entryList">
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::SingleSelection</enum>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <property name="showGrid">
+         <bool>false</bool>
+        </property>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+       </widget>
        <widget class="QWebView" name="browser">
         <property name="url">
          <url>
@@ -50,7 +91,7 @@
      <x>0</x>
      <y>0</y>
      <width>1061</width>
-     <height>20</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFeed">
