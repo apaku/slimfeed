@@ -21,14 +21,14 @@ from feed import Feed
 
 class FeedManager(object):
     def __init__(self):
-        self._feeds = set()
+        self._feeds = []
 
     def load(self, store):
         for group in store.childGroups():
             store.beginGroup(group)
             feed = Feed()
             feed.load(store)
-            self.feeds.add(feed)
+            self.feeds.append(feed)
             store.endGroup()
 
     def save(self, store):

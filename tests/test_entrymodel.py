@@ -42,12 +42,12 @@ class EntryModelTest(unittest2.TestCase):
         entry.title = "Title1"
         entry.author = "Author1"
         entry.updated = time.time()
-        self.feed.entries.add(entry)
+        self.feed.entries.append(entry)
         entry = Mock("Entry")
         entry.title = "Title2"
         entry.author = "Author2"
         entry.updated = time.time()
-        self.feed.entries.add(entry)
+        self.feed.entries.append(entry)
         self.entryModel = EntryModel(self.feed)
         self.modeltest = ModelTest(self.entryModel, self.entryModel)
 
@@ -55,19 +55,19 @@ class EntryModelTest(unittest2.TestCase):
         self.assertEqual(self.entryModel.rowCount(), 2)
         self.assertEqual(self.entryModel.data(\
                 self.entryModel.index(0, 0, QModelIndex()), \
-                    Qt.DisplayRole), "Title2")
+                    Qt.DisplayRole), "Title1")
         self.assertEqual(self.entryModel.data(\
                 self.entryModel.index(0, 1, QModelIndex()), \
-                    Qt.DisplayRole), "Author2")
+                    Qt.DisplayRole), "Author1")
         self.assertEqual(self.entryModel.data(\
                 self.entryModel.index(0, 2, QModelIndex()), \
                     Qt.DisplayRole), list(self.feed.entries)[0].updated)
         self.assertEqual(self.entryModel.data(\
                 self.entryModel.index(1, 0, QModelIndex()), \
-                    Qt.DisplayRole), "Title1")
+                    Qt.DisplayRole), "Title2")
         self.assertEqual(self.entryModel.data(\
                 self.entryModel.index(1, 1, QModelIndex()), \
-                    Qt.DisplayRole), "Author1")
+                    Qt.DisplayRole), "Author2")
         self.assertEqual(self.entryModel.data(\
                 self.entryModel.index(1, 2, QModelIndex()), \
                     Qt.DisplayRole), list(self.feed.entries)[1].updated)

@@ -55,35 +55,28 @@ class TestFeedManager(unittest2.TestCase):
         store = StoreMock()
         feed = Feed()
         feed.title = "T1"
-        self.feedManager.feeds.add(feed)
+        self.feedManager.feeds.append(feed)
         feed = Feed()
         feed.title = "T2"
-        self.feedManager.feeds.add(feed)
+        self.feedManager.feeds.append(feed)
         feed = Feed()
-        self.feedManager.feeds.add(feed)
+        self.feedManager.feeds.append(feed)
         self.feedManager.save(store)
         self.assertEqual(len(store.childGroups()), 3)
 
     def testAdd(self):
         self.assertEqual(len(self.feedManager.feeds), 0)
-        self.feedManager.feeds.add(Feed())
+        self.feedManager.feeds.append(Feed())
         self.assertEqual(len(self.feedManager.feeds), 1)
 
     def testRemove(self):
         self.assertEqual(len(self.feedManager.feeds), 0)
         feed = Feed()
-        self.feedManager.feeds.add(feed)
+        self.feedManager.feeds.append(feed)
         self.assertEqual(len(self.feedManager.feeds), 1)
         self.feedManager.feeds.remove(feed)
         self.assertEqual(len(self.feedManager.feeds), 0)
 
-    def testAddDuplicate(self):
-        self.assertEqual(len(self.feedManager.feeds), 0)
-        feed = Feed()
-        self.feedManager.feeds.add(feed)
-        self.assertEqual(len(self.feedManager.feeds), 1)
-        self.feedManager.feeds.add(feed)
-        self.assertEqual(len(self.feedManager.feeds), 1)
 
 if __name__ == "__main__":
     unittest2.main()

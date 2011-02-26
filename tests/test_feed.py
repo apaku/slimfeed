@@ -73,7 +73,7 @@ class FeedTest(unittest2.TestCase):
     def testSave(self):
         entry = Entry()
         store = StoreMock()
-        self.savefeed.entries.add(entry)
+        self.savefeed.entries.append(entry)
         self.savefeed.save(store)
         self.assertEqual(len(store.childGroups()), 1)
         self.assertEqual(self.savefeed.title, store.value("Title"))
@@ -105,25 +105,16 @@ class FeedTest(unittest2.TestCase):
 
     def testAdd(self):
         self.assertEqual(len(self.feed.entries), 0)
-        self.feed.entries.add(Entry())
+        self.feed.entries.append(Entry())
         self.assertEqual(len(self.feed.entries), 1)
 
     def testRemove(self):
         self.assertEqual(len(self.feed.entries), 0)
         feed = Entry()
-        self.feed.entries.add(feed)
+        self.feed.entries.append(feed)
         self.assertEqual(len(self.feed.entries), 1)
         self.feed.entries.remove(feed)
         self.assertEqual(len(self.feed.entries), 0)
-
-    def testAddDuplicate(self):
-        self.assertEqual(len(self.feed.entries), 0)
-        feed = Entry()
-        self.feed.entries.add(feed)
-        self.assertEqual(len(self.feed.entries), 1)
-        self.feed.entries.add(feed)
-        self.assertEqual(len(self.feed.entries), 1)
-
 
 if __name__ == "__main__":
     unittest2.main()

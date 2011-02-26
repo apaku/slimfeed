@@ -21,7 +21,7 @@ from entry import Entry
 
 class Feed(object):
     def __init__(self):
-        self._entries = set()
+        self._entries = []
         self._title = None
         self._author = None
         self._updated = None
@@ -86,7 +86,7 @@ class Feed(object):
             store.beginGroup(group)
             entry = Entry()
             entry.load(store)
-            self.entries.add(entry)
+            self.entries.append(entry)
             store.endGroup()
 
     def save(self, store):

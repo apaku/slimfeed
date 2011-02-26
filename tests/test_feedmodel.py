@@ -45,7 +45,7 @@ class FeedModelTest(unittest2.TestCase):
         feed.updated = time.time()
         feed.unread = 1
         feed.entries = [1, 2, 3]
-        self.feedMgr.feeds.add(feed)
+        self.feedMgr.feeds.append(feed)
         feed = Mock("Feed")
         feed.title = "Title2"
         feed.author = "Author2"
@@ -53,7 +53,7 @@ class FeedModelTest(unittest2.TestCase):
         feed.updated = time.time()
         feed.unread = 2
         feed.entries = [1, 2]
-        self.feedMgr.feeds.add(feed)
+        self.feedMgr.feeds.append(feed)
         self.feedModel = FeedModel(self.feedMgr)
         self.modeltest = ModelTest(self.feedModel, self.feedModel)
 
@@ -61,17 +61,17 @@ class FeedModelTest(unittest2.TestCase):
         model = self.feedModel
         self.assertEqual(model.rowCount(), 2)
         self.assertEqual(model.data(model.index(0, 0, QModelIndex()), \
-                Qt.DisplayRole), "Title2")
-        self.assertEqual(model.data(model.index(0, 1, QModelIndex()), \
-                Qt.DisplayRole), 2)
-        self.assertEqual(model.data(model.index(0, 2, QModelIndex()), \
-                Qt.DisplayRole), 2)
-        self.assertEqual(model.data(model.index(1, 0, QModelIndex()), \
                 Qt.DisplayRole), "Title1")
-        self.assertEqual(model.data(model.index(1, 1, QModelIndex()), \
+        self.assertEqual(model.data(model.index(0, 1, QModelIndex()), \
                 Qt.DisplayRole), 1)
-        self.assertEqual(model.data(model.index(1, 2, QModelIndex()), \
+        self.assertEqual(model.data(model.index(0, 2, QModelIndex()), \
                 Qt.DisplayRole), 3)
+        self.assertEqual(model.data(model.index(1, 0, QModelIndex()), \
+                Qt.DisplayRole), "Title2")
+        self.assertEqual(model.data(model.index(1, 1, QModelIndex()), \
+                Qt.DisplayRole), 2)
+        self.assertEqual(model.data(model.index(1, 2, QModelIndex()), \
+                Qt.DisplayRole), 2)
 
     def testAddFeed(self):
         model = self.feedModel

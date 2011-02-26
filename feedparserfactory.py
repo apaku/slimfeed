@@ -35,7 +35,7 @@ def createFeedFromData(data, entryclz=Entry):
     if data["feed"].has_key("updated_parsed"):
         feed.updated = data["feed"]["updated_parsed"]
     for edata in data["entries"]:
-        feed.entries.add(createEntryFromData(data=edata, entryclz=entryclz))
+        feed.entries.append(createEntryFromData(data=edata, entryclz=entryclz))
     return feed
 
 

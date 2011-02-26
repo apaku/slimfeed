@@ -74,7 +74,7 @@ class FeedModel(QAbstractTableModel):
 
     def addFeed(self, feed):
         self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
-        self._feedmgr.feeds.add(feed)
+        self._feedmgr.feeds.append(feed)
         self.endInsertRows()
 
 if __name__ == "__main__":
