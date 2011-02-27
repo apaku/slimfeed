@@ -18,7 +18,7 @@
 
 import initsip
 initsip.setupSipApi()
-from PyQt4 import QtGui, uic
+from PyQt4 import QtCore, QtGui, uic
 from feedmanager import FeedManager
 from feedmodel import FeedModel
 from entrymodel import EntryModel
@@ -56,6 +56,14 @@ Copyright 2011 Andreas Pakulat <apaku@gmx.de>
 
 def main():
     app = QtGui.QApplication(sys.argv)
+    icon = QtGui.QIcon()
+    icon.addFile("icons/slimfeed_16.png", QtCore.QSize(16,16))
+    icon.addFile("icons/slimfeed_22.png", QtCore.QSize(22,22))
+    icon.addFile("icons/slimfeed_32.png", QtCore.QSize(32,32))
+    icon.addFile("icons/slimfeed_32.png", QtCore.QSize(32,32))
+    icon.addFile("icons/slimfeed_64.png", QtCore.QSize(64,64))
+    icon.addFile("icons/slimfeed_128.png", QtCore.QSize(128,128))
+    app.setWindowIcon(icon)
     mainwin = MainWindow()
     mainwin.actionQuit.triggered.connect(app.quit)
     mainwin.show()

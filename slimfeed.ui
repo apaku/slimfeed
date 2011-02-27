@@ -149,6 +149,10 @@
    </property>
   </action>
   <action name="actionAbout">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/slimfeed_16.png</normaloff>icons/slimfeed_16.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;About SlimFeed</string>
    </property>
