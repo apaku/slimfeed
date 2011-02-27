@@ -36,7 +36,7 @@ class MainWindow(QtGui.QMainWindow):
         self.feedList.setModel(self.feedModel)
         self.entryList.setModel(self.entryModel)
         self.actionAbout.triggered.connect(self.showAbout)
-        self.actionAboutQt.triggered.connect(self.showAboutQt)
+        self.actionAboutQt.triggered.connect(QtGui.qApp.aboutQt)
         self.actionAdd.triggered.connect(self.addFeed)
 
     def addFeed(self):
@@ -53,10 +53,6 @@ Copyright 2011 Andreas Pakulat <apaku@gmx.de>
 """
         QtGui.QMessageBox.about(self, "About Slimfeed", txt)
     
-    
-    def showAboutQt(self):
-        QtGui.QMessageBox.aboutQt(self, "About Qt")
-
 
 def main():
     app = QtGui.QApplication(sys.argv)
