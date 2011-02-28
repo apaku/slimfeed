@@ -32,7 +32,7 @@ from PyQt4 import uic
 class AddFeedDlg(QDialog):
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
-        uic.loadUi("addfeeddlg.ui", self )
+        uic.loadUi("addfeeddlg.ui", self)
         self.url.textEdited.connect(self.urlChanged)
         self.timer = QTimer(self)
         self.timer.setSingleShot(True)
@@ -44,11 +44,11 @@ class AddFeedDlg(QDialog):
 
     def updateTitleFromUrl(self):
         data = feedparser.parse(self.url.text())
-        if data.feed.has_key("title"):
+        if "title" in data.feed:
             self.title.setText(data.feed.title)
-    
+
     @classmethod
-    def open(clz, parentwin, feedmodel):
+    def open(cls, parentwin, feedmodel):
         dlg = AddFeedDlg(parentwin)
         if dlg.exec_() == QDialog.Accepted:
             feed = createFeedFromData(feedparser.parse(dlg.url.text()))

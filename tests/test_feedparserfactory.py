@@ -15,6 +15,7 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #    02110-1301  USA.
+#pylint: disable=R0904
 
 import unittest2
 import sys
@@ -101,11 +102,11 @@ class FeedParserFactoryTest(unittest2.TestCase):
 
     def testMissingDataFeed(self):
         data = {"feed":{}, "entries":[]}
-        f = createFeedFromData(data=data)
-        self.assertEqual(f.title, "No Title provided")
-        self.assertEqual(f.author, "No Author provided")
-        self.assertIsNone(f.updated)
-        self.assertIsNone(f.url)
+        feed = createFeedFromData(data=data)
+        self.assertEqual(feed.title, "No Title provided")
+        self.assertEqual(feed.author, "No Author provided")
+        self.assertIsNone(feed.updated)
+        self.assertIsNone(feed.url)
 
     def testMissingDataEntry(self):
         data = {}

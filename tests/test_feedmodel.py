@@ -17,7 +17,7 @@
 #    02110-1301  USA.
 # Disable complaints about our mock-object and the impossibility to import
 # modeltest both are ignorable here
-#pylint: disable=R0903,F0401
+#pylint: disable=R0903,F0401,R0904
 
 import unittest2
 import sys
