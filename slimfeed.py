@@ -52,7 +52,7 @@ A samll and fast feed reader<br />
 Copyright 2011 Andreas Pakulat <apaku@gmx.de>
 """
         QtGui.QMessageBox.about(self, "About Slimfeed", txt)
-    
+
 
 def main():
     app = QtGui.QApplication(sys.argv)

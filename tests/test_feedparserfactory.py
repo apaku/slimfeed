@@ -101,7 +101,7 @@ class FeedParserFactoryTest(unittest2.TestCase):
         self.assertEqual(entry.content, data["content"])
 
     def testMissingDataFeed(self):
-        data = {"feed":{}, "entries":[]}
+        data = {"feed": {}, "entries": []}
         feed = createFeedFromData(data=data)
         self.assertEqual(feed.title, "No Title provided")
         self.assertEqual(feed.author, "No Author provided")

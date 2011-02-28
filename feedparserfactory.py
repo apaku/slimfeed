@@ -22,17 +22,17 @@ from feed import Feed
 
 def createFeedFromData(data, entryclz=Entry):
     feed = Feed()
-    if data["feed"].has_key("title"):
+    if "title" in data["feed"]:
         feed.title = data["feed"]["title"]
     else:
         feed.title = "No Title provided"
-    if data.has_key("href"):
+    if "href" in data:
         feed.url = data["href"]
-    if data["feed"].has_key("author"):
+    if "author" in data["feed"]:
         feed.author = data["feed"]["author"]
     else:
         feed.author = "No Author provided"
-    if data["feed"].has_key("updated_parsed"):
+    if "updated_parsed" in data["feed"]:
         feed.updated = data["feed"]["updated_parsed"]
     for edata in data["entries"]:
         feed.entries.append(createEntryFromData(data=edata, entryclz=entryclz))
@@ -41,25 +41,25 @@ def createFeedFromData(data, entryclz=Entry):
 
 def createEntryFromData(data, entryclz=Entry):
     entry = entryclz()
-    if data.has_key("title"):
+    if "title" in data:
         entry.title = data["title"]
     else:
         entry.title = "No Title provided"
-    if data.has_key("author"):
+    if "author" in data:
         entry.author = data["author"]
     else:
         entry.author = "No Author provided"
     if "summary" in data.keys():
         entry.content = data["summary"]
-    elif data.has_key("content"):
+    elif "content" in data:
         entry.content = data["content"]
     else:
         entry.content = "No Content provided"
-    if data.has_key("updated_parsed"):
+    if "updated_parsed" in data:
         entry.updated = data["updated_parsed"]
-    if data.has_key("link"):
+    if "link" in data:
         entry.url = data["link"]
-    if data.has_key("id"):
+    if "id" in data:
         entry.identity = data["id"]
     return entry
 
