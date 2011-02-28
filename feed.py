@@ -32,50 +32,50 @@ class Feed(object):
                 + 5 * hash(self.url) \
                 + 7 * hash(self.author)
 
-    def gettitle(self):
+    def _gettitle(self):
         return self._title
 
-    def settitle(self, title):
+    def _settitle(self, title):
         self._title = title
 
-    title = property(gettitle, settitle, None, "Title of the feed")
+    title = property(_gettitle, _settitle, None, "Title of the feed")
 
-    def getunread(self):
+    def _getunread(self):
         return len([e for e in self.entries if not e.read])
-    unread = property(getunread, None, None, "Number of unread entries")
+    unread = property(_getunread, None, None, "Number of unread entries")
 
-    def getauthor(self):
+    def _getauthor(self):
         return self._author
 
-    def setauthor(self, author):
+    def _setauthor(self, author):
         self._author = author
 
-    author = property(getauthor, setauthor, "Author of the feed")
+    author = property(_getauthor, _setauthor, "Author of the feed")
 
-    def geturl(self):
+    def _geturl(self):
         return self._url
 
-    def seturl(self, url):
+    def _seturl(self, url):
         self._url = url
 
-    url = property(geturl, seturl, None, "Url of the feed")
+    url = property(_geturl, _seturl, None, "Url of the feed")
 
-    def getupdated(self):
+    def _getupdated(self):
         return self._updated
 
-    def setupdated(self, updated):
+    def _setupdated(self, updated):
         self._updated = updated
 
-    updated = property(getupdated, setupdated, None, \
+    updated = property(_getupdated, _setupdated, None, \
             "Date of last update of the feed")
 
-    def getentries(self):
+    def _getentries(self):
         return self._entries
 
-    def setentries(self, entries):
+    def _setentries(self, entries):
         self._entries = entries
 
-    entries = property(getentries, setentries, None, "Entries of the feed")
+    entries = property(_getentries, _setentries, None, "Entries of the feed")
 
     def __eq__(self, other):
         if other is None:
