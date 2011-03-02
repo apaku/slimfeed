@@ -72,6 +72,20 @@ class FeedModel(QAbstractTableModel):
         elif col == 2:
             return "All"
 
+    def getFeed(self, idx):
+        if idx.row() < 0 \
+            or idx.row() >= self.rowCount(idx.parent()) \
+            or idx.parent().isValid():
+            return None
+        return self._feedmgr.feeds[idx.row()]
+
+    def deleteFeed(self, feed):
+        assert (feed in self._feedmgr.feeds)
+        idx = self._feedmgr.feeds.index(feed)
+        self.beginRemoveRows(QModelIndex(), idx, idx)
+        self._feedmgr.feeds.remove(feed)
+        self.endRemoveRows()
+
     def addFeed(self, feed):
         self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
         self._feedmgr.feeds.append(feed)

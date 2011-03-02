@@ -73,6 +73,18 @@ class FeedModelTest(unittest2.TestCase):
         self.assertEqual(model.data(model.index(1, 2, QModelIndex()), \
                 Qt.DisplayRole), 2)
 
+    def testGetFeed(self):
+        model = self.feedModel
+        feed = model.getFeed(model.index(0, 0, QModelIndex()))
+        self.assertEqual(self.feedMgr.feeds[0], feed)
+        feed = model.getFeed(model.index(1, 0, QModelIndex()))
+        self.assertEqual(self.feedMgr.feeds[1], feed)
+
+    def testDeleteFeed(self):
+        model = self.feedModel
+        model.deleteFeed(self.feedMgr.feeds[0])
+        self.assertEqual(model.rowCount(), 1)
+
     def testAddFeed(self):
         model = self.feedModel
         feed = Mock("Feed")
