@@ -1,0 +1,8 @@
+- Toolbars+title label for the three views (add/delete, browser-stuff)
+- show entries for a given feed
+- properly set initial state of entry 'read' flag (seems not to work for some reason)
+- marking feeds and entries as read/unread
+- regularly updating of feeds, in the background
+- keyboard shortcuts
+- icons
+- preferences
