@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Project SYSTEM "Project-4.6.dtd">
+<!-- eric4 project file for project slimfeed -->
+<!-- Saved: 2011-03-02, 23:04:12 -->
+<!-- Copyright (C) 2011 Andreas Pakulat, apaku@gmx.de -->
+<Project version="4.6">
+  <Language>en</Language>
+  <ProgLanguage mixed="0">Python</ProgLanguage>
+  <ProjectType>Qt4</ProjectType>
+  <Description>Small and fast feed reader</Description>
+  <Version>0.1</Version>
+  <Author>Andreas Pakulat</Author>
+  <Email>apaku@gmx.de</Email>
+  <Sources>
+    <Source>slimfeed.py</Source>
+    <Source>feedmodel.py</Source>
+    <Source>entrymodel.py</Source>
+    <Source>feedmanager.py</Source>
+    <Source>feedparserfactory.py</Source>
+    <Source>tests/test_entrymodel.py</Source>
+    <Source>tests/test_entry.py</Source>
+    <Source>tests/storemock.py</Source>
+    <Source>tests/test_feedmodel.py</Source>
+    <Source>tests/run.py</Source>
+    <Source>tests/test_feedparserfactory.py</Source>
+    <Source>tests/test_feedmanager.py</Source>
+    <Source>tests/modeltest/modeltest.py</Source>
+    <Source>tests/test_feed.py</Source>
+    <Source>initsip.py</Source>
+    <Source>entry.py</Source>
+    <Source>feed.py</Source>
+    <Source>__init__.py</Source>
+  </Sources>
+  <Forms>
+    <Form>addfeeddlg.ui</Form>
+    <Form>slimfeed.ui</Form>
+  </Forms>
+  <Translations>
+  </Translations>
+  <Resources>
+  </Resources>
+  <Interfaces>
+  </Interfaces>
+  <Others>
+  </Others>
+  <MainScript>slimfeed.py</MainScript>
+  <Vcs>
+    <VcsType>None</VcsType>
+  </Vcs>
+  <FiletypeAssociations>
+    <FiletypeAssociation pattern="*.ui" type="FORMS" />
+    <FiletypeAssociation pattern="*.idl" type="INTERFACES" />
+    <FiletypeAssociation pattern="*.qm" type="TRANSLATIONS" />
+    <FiletypeAssociation pattern="*.ptl" type="SOURCES" />
+    <FiletypeAssociation pattern="*.pyw" type="SOURCES" />
+    <FiletypeAssociation pattern="*.ui.h" type="FORMS" />
+    <FiletypeAssociation pattern="*.ts" type="TRANSLATIONS" />
+    <FiletypeAssociation pattern="*.py" type="SOURCES" />
+    <FiletypeAssociation pattern="*.qrc" type="RESOURCES" />
+  </FiletypeAssociations>
+</Project>
