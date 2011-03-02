@@ -43,6 +43,24 @@ class MainWindow(QtGui.QMainWindow):
         self.actionAbout.triggered.connect(self.showAbout)
         self.actionAboutQt.triggered.connect(QtGui.qApp.aboutQt)
         self.actionAdd.triggered.connect(self.addFeed)
+        self.actionDeleteFeed.triggered.connect(self.deleteSelectedFeed)
+        self.feedList.selectionModel().selectionChanged.connect(
+                self.feedSelectionChanged)
+        self.feedList.addAction(self.actionDeleteFeed)
+
+    def feedSelectionChanged(self):
+        selection = self.feedList.selectionModel().selectedRows()
+        self.actionDeleteFeed.setEnabled((len(selection) > 0))
+
+    def deleteSelectedFeed(self):
+        selection = self.feedList.selectionModel().selectedRows()
+        feed = self.feedModel.getFeed(selection[0])
+        if QtGui.QMessageBox.question(self,
+                "Delete Feed",
+                "Do you really want to delete the feed '%s'" % (feed.title),
+                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
+                QtGui.QMessageBox.No) == QtGui.QMessageBox.Yes:
+            self.feedModel.deleteFeed(feed)
 
     def _readSettings(self):
         settings = QtCore.QSettings("de.apaku", "Slimfeed")

@@ -24,6 +24,9 @@
        <bool>false</bool>
       </property>
       <widget class="QTableView" name="feedList">
+       <property name="contextMenuPolicy">
+        <enum>Qt::ActionsContextMenu</enum>
+       </property>
        <property name="alternatingRowColors">
         <bool>true</bool>
        </property>
@@ -54,6 +57,9 @@
         <bool>false</bool>
        </property>
        <widget class="QTableView" name="entryList">
+        <property name="contextMenuPolicy">
+         <enum>Qt::ActionsContextMenu</enum>
+        </property>
         <property name="alternatingRowColors">
          <bool>true</bool>
         </property>
@@ -128,9 +134,9 @@
     <string>&amp;Add</string>
    </property>
   </action>
-  <action name="actionDelete">
+  <action name="actionDeleteFeed">
    <property name="text">
-    <string>Delete</string>
+    <string>&amp;Delete</string>
    </property>
   </action>
   <action name="actionMarkAllFeedsRead">
