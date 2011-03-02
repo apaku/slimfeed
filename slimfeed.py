@@ -32,6 +32,10 @@ class MainWindow(QtGui.QMainWindow):
         QtGui.QMainWindow.__init__(self, parent)
         uic.loadUi("slimfeed.ui", self)
         self.feedMgr = FeedManager()
+
+        # Restore settings, this includes feeds
+        self._readSettings()
+
         self.feedModel = FeedModel(self.feedMgr, self)
         self.entryModel = EntryModel(parent=self)
         self.feedList.setModel(self.feedModel)
@@ -39,17 +43,27 @@ class MainWindow(QtGui.QMainWindow):
         self.actionAbout.triggered.connect(self.showAbout)
         self.actionAboutQt.triggered.connect(QtGui.qApp.aboutQt)
         self.actionAdd.triggered.connect(self.addFeed)
-        self._readSettings()
 
     def _readSettings(self):
         settings = QtCore.QSettings("de.apaku", "Slimfeed")
         self.restoreGeometry(settings.value("geometry", QtCore.QByteArray()))
         self.restoreState(settings.value("state", QtCore.QByteArray()))
+        settings.beginGroup("Feeds")
+        self.feedMgr.load(settings)
+        settings.endGroup()
 
     def _writeSettings(self):
         settings = QtCore.QSettings("de.apaku", "Slimfeed")
         settings.setValue("geometry", self.saveGeometry())
         settings.setValue("state", self.saveState())
+        settings.beginGroup("Feeds")
+        # Clear out all stored feeds so we don't carry around
+        # any that might have been deleted meanwhile
+        for grp in settings.childGroups():
+            settings.remove(grp)
+        self.feedMgr.save(settings)
+        settings.endGroup()
+        settings.sync()
 
     def closeEvent(self, event):
         self._writeSettings()
