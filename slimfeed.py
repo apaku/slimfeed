@@ -22,7 +22,8 @@ from PyQt4 import QtCore, QtGui, uic
 from feedmanager import FeedManager
 from feedmodel import FeedModel
 from entrymodel import EntryModel
-from addfeeddlg import AddFeedDlg
+from feedparserfactory import createFeedFromData
+import feedparser
 import sys
 
 
@@ -40,7 +41,11 @@ class MainWindow(QtGui.QMainWindow):
         self.actionAdd.triggered.connect(self.addFeed)
 
     def addFeed(self):
-        AddFeedDlg.open(self, self.feedModel)
+        dlg = uic.loadUi("addfeeddlg.ui", QtGui.QDialog(self))
+        if dlg.exec_() == QtGui.QDialog.Accepted:
+            data = feedparser.parse(dlg.url.text())
+            feed = createFeedFromData(data)
+            self.feedModel.addFeed(feed)
 
     def showAbout(self):
         txt = """
