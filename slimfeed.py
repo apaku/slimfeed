@@ -37,6 +37,9 @@ class MainWindow(QtGui.QMainWindow):
         self._readSettings()
 
         self.feedModel = FeedModel(self.feedMgr, self)
+
+        self.setupListToolBars()
+
         self.entryModel = EntryModel(parent=self)
         self.feedList.setModel(self.feedModel)
         self.entryList.setModel(self.entryModel)
@@ -47,6 +50,21 @@ class MainWindow(QtGui.QMainWindow):
         self.feedList.selectionModel().selectionChanged.connect(
                 self.feedSelectionChanged)
         self.feedList.addAction(self.actionDeleteFeed)
+
+    def setupListToolBars(self):
+        self.feedToolBarContainer.setLayout(QtGui.QVBoxLayout())
+        self.feedToolBarContainer.layout().setSpacing(0)
+        self.feedToolBarContainer.layout().setContentsMargins(0, 0, 0, 0)
+        self.feedToolBar = QtGui.QToolBar(self.feedToolBarContainer)
+        self.feedToolBarContainer.layout().addWidget(self.feedToolBar)
+        self.feedToolBar.addAction(self.actionDeleteFeed)
+        self.feedToolBar.setIconSize(QtCore.QSize(8, 8))
+        self.entryToolBarContainer.setLayout(QtGui.QVBoxLayout())
+        self.entryToolBarContainer.layout().setSpacing(0)
+        self.entryToolBarContainer.layout().setContentsMargins(0, 0, 0, 0)
+        self.entryToolBar = QtGui.QToolBar(self.entryToolBarContainer)
+        self.entryToolBarContainer.layout().addWidget(self.entryToolBar)
+        self.entryToolBar.setIconSize(QtCore.QSize(8, 8))
 
     def feedSelectionChanged(self):
         selection = self.feedList.selectionModel().selectedRows()
