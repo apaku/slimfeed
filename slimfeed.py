@@ -39,6 +39,21 @@ class MainWindow(QtGui.QMainWindow):
         self.actionAbout.triggered.connect(self.showAbout)
         self.actionAboutQt.triggered.connect(QtGui.qApp.aboutQt)
         self.actionAdd.triggered.connect(self.addFeed)
+        self._readSettings()
+
+    def _readSettings(self):
+        settings = QtCore.QSettings("de.apaku", "Slimfeed")
+        self.restoreGeometry(settings.value("geometry", QtCore.QByteArray()))
+        self.restoreState(settings.value("state", QtCore.QByteArray()))
+
+    def _writeSettings(self):
+        settings = QtCore.QSettings("de.apaku", "Slimfeed")
+        settings.setValue("geometry", self.saveGeometry())
+        settings.setValue("state", self.saveState())
+
+    def closeEvent(self, event):
+        self._writeSettings()
+        return QtGui.QMainWindow.closeEvent(self, event)
 
     def addFeed(self):
         dlg = uic.loadUi("addfeeddlg.ui", QtGui.QDialog(self))
@@ -70,7 +85,7 @@ def main():
     icon.addFile("icons/slimfeed_128.png", QtCore.QSize(128, 128))
     app.setWindowIcon(icon)
     mainwin = MainWindow()
-    mainwin.actionQuit.triggered.connect(app.quit)
+    mainwin.actionQuit.triggered.connect(mainwin.close)
     mainwin.show()
     return app.exec_()
 
