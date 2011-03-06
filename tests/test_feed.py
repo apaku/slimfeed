@@ -35,6 +35,7 @@ class FeedTest(unittest2.TestCase):
         self.savefeed.title = "MyTitle"
         self.savefeed.author = "MyAuthor"
         self.savefeed.url = "MyUrl"
+        self.savefeed.homepage = "MyHomepage"
         self.savefeed.updated = time.time()
 
     def testLoad(self):
@@ -44,6 +45,7 @@ class FeedTest(unittest2.TestCase):
         store = StoreMock()
         store.setValue("Title", "TestTitle")
         store.setValue("Url", "TestUrl")
+        store.setValue("Homepage", "Homepage")
         store.setValue("Author", "TestAuthor")
         store.setValue("Updated", updated)
         store.beginGroup("Entry_%s" % b64encode("Id1"))
@@ -67,6 +69,7 @@ class FeedTest(unittest2.TestCase):
         self.assertEqual(self.savefeed.title, "TestTitle")
         self.assertEqual(self.savefeed.updated, updated)
         self.assertEqual(self.savefeed.url, "TestUrl")
+        self.assertEqual(self.savefeed.homepage, "Homepage")
         self.assertEqual(self.savefeed.author, "TestAuthor")
         self.assertEqual(self.savefeed.unread, 1)
         self.assertEqual(len(self.savefeed.entries), 2)
@@ -92,10 +95,16 @@ class FeedTest(unittest2.TestCase):
         self.feed.author = "test"
         self.assertEqual(self.feed.author, "test")
 
-    def testUrl(self):
+    def testHomepage(self):
+        self.assertIsNone(self.feed.homepage)
+        self.feed.homepage = "test"
+        self.assertEqual(self.feed.homepage, "test")
+
+    def testFeedUrl(self):
         self.assertIsNone(self.feed.url)
         self.feed.url = "test"
         self.assertEqual(self.feed.url, "test")
+
 
     def testUpdated(self):
         import time
@@ -123,6 +132,7 @@ class FeedTest(unittest2.TestCase):
         feed.updated = self.feed.updated
         feed.entries = self.feed.entries
         feed.url = self.feed.url
+        feed.homepage = self.feed.homepage
         feed.author = self.feed.author
         self.assertEqual(self.feed, feed)
 

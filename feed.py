@@ -26,6 +26,7 @@ class Feed(object):
         self._author = None
         self._updated = None
         self._url = None
+        self._homepage = None
 
     def __hash__(self):
         return 3 * hash(self.title) \
@@ -51,6 +52,14 @@ class Feed(object):
         self._author = author
 
     author = property(_getauthor, _setauthor, "Author of the feed")
+
+    def _gethomepage(self):
+        return self._homepage
+
+    def _sethomepage(self, homepage):
+        self._homepage = homepage
+
+    homepage = property(_gethomepage, _sethomepage, None, "Homepage of the feed")
 
     def _geturl(self):
         return self._url
@@ -91,6 +100,7 @@ class Feed(object):
         self.author = store.value("Author", None)
         self.updated = store.value("Updated", None)
         self.url = store.value("Url", None)
+        self.homepage = store.value("Homepage", None)
         for group in store.childGroups():
             store.beginGroup(group)
             entry = Entry()
@@ -102,6 +112,7 @@ class Feed(object):
         from base64 import b64encode
         store.setValue("Title", self.title)
         store.setValue("Url", self.url)
+        store.setValue("Homepage", self.homepage)
         store.setValue("Updated", self.updated)
         store.setValue("Author", self.author)
         for entry in self._entries:
