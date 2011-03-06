@@ -28,7 +28,7 @@ from feedparserfactory import createFeedFromData, createEntryFromData
 
 class FeedParserFactoryTest(unittest2.TestCase):
     def setUp(self):
-        updated = time.time()
+        updated = time.gmtime(time.time())
         self.rssfeeddata = {"feed": {"title": "rsstitle",
                                      "author": "myauthor",
                                      "updated_parsed": updated,

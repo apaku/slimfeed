@@ -36,7 +36,7 @@ class EntryTest(unittest2.TestCase):
         self.saveentry.url = "TestUrl"
         self.saveentry.content = "TestContent"
         self.saveentry.identity = "TestId"
-        self.saveentry.updated = time.time()
+        self.saveentry.updated = time.gmtime(time.time())
         self.saveentry.read = True
 
     def testTitle(self):
@@ -67,7 +67,7 @@ class EntryTest(unittest2.TestCase):
     def testUpdated(self):
         import time
         self.assertEqual(self.entry.updated, None)
-        update = time.time()
+        update = time.gmtime(time.time())
         self.entry.updated = update
         self.assertEqual(self.entry.updated, update)
 
@@ -81,7 +81,7 @@ class EntryTest(unittest2.TestCase):
         store = StoreMock()
         store.setValue("Title", "MyTitle")
         store.setValue("Content", "MyContent")
-        updated = time.time()
+        updated = time.gmtime(time.time())
         store.setValue("Updated", updated)
         store.setValue("Url", "MyUrl")
         store.setValue("Id", "MyId")

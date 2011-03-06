@@ -35,7 +35,7 @@ class TestFeedManager(unittest2.TestCase):
     def testLoad(self):
         import time
         from base64 import b64encode
-        updated = time.time()
+        updated = time.gmtime(time.time())
         store = StoreMock()
         store.beginGroup("Feed_%s" % b64encode("T1"))
         store.setValue("Title", "T1")

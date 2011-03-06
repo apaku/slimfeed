@@ -41,12 +41,12 @@ class EntryModelTest(unittest2.TestCase):
         entry = Mock("Entry")
         entry.title = "Title1"
         entry.author = "Author1"
-        entry.updated = time.time()
+        entry.updated = time.gmtime(time.time())
         self.feed.entries.append(entry)
         entry = Mock("Entry")
         entry.title = "Title2"
         entry.author = "Author2"
-        entry.updated = time.time()
+        entry.updated = time.gmtime(time.time())
         self.feed.entries.append(entry)
         self.entryModel = EntryModel(self.feed)
         self.modeltest = ModelTest(self.entryModel, self.entryModel)

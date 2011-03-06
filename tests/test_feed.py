@@ -36,12 +36,12 @@ class FeedTest(unittest2.TestCase):
         self.savefeed.author = "MyAuthor"
         self.savefeed.url = "MyUrl"
         self.savefeed.homepage = "MyHomepage"
-        self.savefeed.updated = time.time()
+        self.savefeed.updated = time.gmtime(time.time())
 
     def testLoad(self):
         import time
         from base64 import b64encode
-        updated = time.time()
+        updated = time.gmtime(time.time())
         store = StoreMock()
         store.setValue("Title", "TestTitle")
         store.setValue("Url", "TestUrl")
@@ -109,7 +109,7 @@ class FeedTest(unittest2.TestCase):
     def testUpdated(self):
         import time
         self.assertEqual(self.feed.updated, None)
-        updated = time.time()
+        updated = time.gmtime(time.time())
         self.feed.updated = updated
         self.assertEqual(self.feed.updated, updated)
 

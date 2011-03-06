@@ -42,7 +42,7 @@ class FeedModelTest(unittest2.TestCase):
         feed.title = "Title1"
         feed.author = "Author1"
         feed.url = "Url1"
-        feed.updated = time.time()
+        feed.updated = time.gmtime(time.time())
         feed.unread = 1
         feed.entries = [1, 2, 3]
         self.feedMgr.feeds.append(feed)
@@ -50,7 +50,7 @@ class FeedModelTest(unittest2.TestCase):
         feed.title = "Title2"
         feed.author = "Author2"
         feed.url = "Url2"
-        feed.updated = time.time()
+        feed.updated = time.gmtime(time.time())
         feed.unread = 2
         feed.entries = [1, 2]
         self.feedMgr.feeds.append(feed)
@@ -90,7 +90,7 @@ class FeedModelTest(unittest2.TestCase):
         feed = Mock("Feed")
         feed.title = "Title3"
         feed.author = "Author3"
-        feed.updated = time.time()
+        feed.updated = time.gmtime(time.time())
         feed.unread = 2
         feed.entries = [1, 4]
         self.assertEqual(model.rowCount(), 2)
