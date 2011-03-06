@@ -20,7 +20,7 @@ import initsip
 initsip.setupSipApi()
 
 from PyQt4.QtCore import QAbstractTableModel, Qt, QModelIndex
-
+from datetimeutils import qDateTimeFromTimeStruct
 
 # Disable 'method can be used as function' as it triggers on columnCount which
 # indeed does not need the self, but we can't change that due to inheritance
@@ -67,7 +67,7 @@ class EntryModel(QAbstractTableModel):
         elif idx.column() == 1:
             return entry.author
         elif idx.column() == 2:
-            return entry.updated
+            return qDateTimeFromTimeStruct(entry.updated)
         return None
 
     def headerData(self, col, orient, role=Qt.DisplayRole):

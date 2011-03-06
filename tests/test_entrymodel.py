@@ -31,7 +31,8 @@ sys.path.append(os.path.join(os.getcwd(), "tests", "modeltest"))
 from entrymodel import EntryModel
 from feed import Feed
 from modeltest import ModelTest
-from PyQt4.QtCore import Qt, QModelIndex
+from datetimeutils import qDateTimeFromTimeStruct
+from PyQt4.QtCore import Qt, QModelIndex, QDateTime
 
 
 class EntryModelTest(unittest2.TestCase):
@@ -61,7 +62,8 @@ class EntryModelTest(unittest2.TestCase):
                     Qt.DisplayRole), "Author1")
         self.assertEqual(self.entryModel.data(
                 self.entryModel.index(0, 2, QModelIndex()),
-                    Qt.DisplayRole), list(self.feed.entries)[0].updated)
+                    Qt.DisplayRole), qDateTimeFromTimeStruct(
+                        list(self.feed.entries)[0].updated))
         self.assertEqual(self.entryModel.data(
                 self.entryModel.index(1, 0, QModelIndex()),
                     Qt.DisplayRole), "Title2")
@@ -70,7 +72,8 @@ class EntryModelTest(unittest2.TestCase):
                     Qt.DisplayRole), "Author2")
         self.assertEqual(self.entryModel.data(
                 self.entryModel.index(1, 2, QModelIndex()), 
-                    Qt.DisplayRole), list(self.feed.entries)[1].updated)
+                    Qt.DisplayRole), qDateTimeFromTimeStruct(
+                        list(self.feed.entries)[1].updated))
 
 if __name__ == "__main__":
     unittest2.main()
