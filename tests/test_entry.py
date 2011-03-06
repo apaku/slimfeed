@@ -71,6 +71,11 @@ class EntryTest(unittest2.TestCase):
         self.entry.updated = update
         self.assertEqual(self.entry.updated, update)
 
+    def testRead(self):
+        self.assertEqual(self.entry.read, False)
+        self.entry.read = True
+        self.assertEqual(self.entry.read, True)
+
     def testLoad(self):
         import time
         store = StoreMock()
