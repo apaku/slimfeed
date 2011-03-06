@@ -33,12 +33,10 @@ class FeedParserFactoryTest(unittest2.TestCase):
                                      "author": "myauthor",
                                      "updated_parsed": updated,
                                      "link": "feedhomepage",
-                                     "links": [{"href": "feedurl", 
+                                     "links": [{"href": "feedurl",
                                                 "rel": "self"},
-                                               {"href": "feedhomepage", 
-                                                "rel": "alternate"}
-                                              ]
-                            },
+                                               {"href": "feedhomepage",
+                                                "rel": "alternate"}]},
                             "entries": [{"title": "entrytitle1",
                                          "id": "id1",
                                          "link": "url1",
@@ -55,12 +53,10 @@ class FeedParserFactoryTest(unittest2.TestCase):
                                       "author": "myauthor",
                                       "updated_parsed": updated,
                                       "link": "feedhomepage",
-                                      "links": [{"href": "feedurl", 
+                                      "links": [{"href": "feedurl",
                                                  "rel": "self"},
-                                                {"href": "feedhomepage", 
-                                                 "rel": "alternate"}
-                                               ]
-                            },
+                                                {"href": "feedhomepage",
+                                                 "rel": "alternate"}]},
                              "entries": [{"title": "entrytitle1",
                                           "id": "id1",
                                           "link": "url1",
@@ -82,7 +78,8 @@ class FeedParserFactoryTest(unittest2.TestCase):
         self.assertEqual(feed.author, \
                 self.atomfeeddata["feed"]["author"])
         self.assertEqual(feed.homepage, self.atomfeeddata["feed"]["link"])
-        self.assertEqual(feed.url, self.atomfeeddata["feed"]["links"][0]["href"])
+        self.assertEqual(feed.url,
+                         self.atomfeeddata["feed"]["links"][0]["href"])
 
     def testRssInitFeed(self):
         feed = createFeedFromData(data=self.rssfeeddata)
@@ -92,7 +89,8 @@ class FeedParserFactoryTest(unittest2.TestCase):
         self.assertEqual(feed.author, \
                 self.rssfeeddata["feed"]["author"])
         self.assertEqual(feed.homepage, self.rssfeeddata["feed"]["link"])
-        self.assertEqual(feed.url, self.rssfeeddata["feed"]["links"][0]["href"])
+        self.assertEqual(feed.url,
+                         self.rssfeeddata["feed"]["links"][0]["href"])
 
     def testRssInitEntry(self):
         data = self.rssfeeddata["entries"][0]

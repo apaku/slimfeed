@@ -105,7 +105,6 @@ class FeedTest(unittest2.TestCase):
         self.feed.url = "test"
         self.assertEqual(self.feed.url, "test")
 
-
     def testUpdated(self):
         import time
         self.assertEqual(self.feed.updated, None)

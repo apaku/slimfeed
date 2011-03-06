@@ -22,6 +22,7 @@ initsip.setupSipApi()
 from PyQt4.QtCore import QAbstractTableModel, Qt, QModelIndex
 from datetimeutils import qDateTimeFromTimeStruct
 
+
 # Disable 'method can be used as function' as it triggers on columnCount which
 # indeed does not need the self, but we can't change that due to inheritance
 # from Qt

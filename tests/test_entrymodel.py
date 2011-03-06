@@ -71,7 +71,7 @@ class EntryModelTest(unittest2.TestCase):
                 self.entryModel.index(1, 1, QModelIndex()),
                     Qt.DisplayRole), "Author2")
         self.assertEqual(self.entryModel.data(
-                self.entryModel.index(1, 2, QModelIndex()), 
+                self.entryModel.index(1, 2, QModelIndex()),
                     Qt.DisplayRole), qDateTimeFromTimeStruct(
                         list(self.feed.entries)[1].updated))
 

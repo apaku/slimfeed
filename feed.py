@@ -59,7 +59,8 @@ class Feed(object):
     def _sethomepage(self, homepage):
         self._homepage = homepage
 
-    homepage = property(_gethomepage, _sethomepage, None, "Homepage of the feed")
+    homepage = property(_gethomepage, _sethomepage, None,
+                        "Homepage of the feed")
 
     def _geturl(self):
         return self._url
