@@ -53,23 +53,23 @@ class EntryModelTest(unittest2.TestCase):
 
     def testData(self):
         self.assertEqual(self.entryModel.rowCount(), 2)
-        self.assertEqual(self.entryModel.data(\
-                self.entryModel.index(0, 0, QModelIndex()), \
+        self.assertEqual(self.entryModel.data(
+                self.entryModel.index(0, 0, QModelIndex()),
                     Qt.DisplayRole), "Title1")
-        self.assertEqual(self.entryModel.data(\
-                self.entryModel.index(0, 1, QModelIndex()), \
+        self.assertEqual(self.entryModel.data(
+                self.entryModel.index(0, 1, QModelIndex()),
                     Qt.DisplayRole), "Author1")
-        self.assertEqual(self.entryModel.data(\
-                self.entryModel.index(0, 2, QModelIndex()), \
+        self.assertEqual(self.entryModel.data(
+                self.entryModel.index(0, 2, QModelIndex()),
                     Qt.DisplayRole), list(self.feed.entries)[0].updated)
-        self.assertEqual(self.entryModel.data(\
-                self.entryModel.index(1, 0, QModelIndex()), \
+        self.assertEqual(self.entryModel.data(
+                self.entryModel.index(1, 0, QModelIndex()),
                     Qt.DisplayRole), "Title2")
-        self.assertEqual(self.entryModel.data(\
-                self.entryModel.index(1, 1, QModelIndex()), \
+        self.assertEqual(self.entryModel.data(
+                self.entryModel.index(1, 1, QModelIndex()),
                     Qt.DisplayRole), "Author2")
-        self.assertEqual(self.entryModel.data(\
-                self.entryModel.index(1, 2, QModelIndex()), \
+        self.assertEqual(self.entryModel.data(
+                self.entryModel.index(1, 2, QModelIndex()), 
                     Qt.DisplayRole), list(self.feed.entries)[1].updated)
 
 if __name__ == "__main__":
