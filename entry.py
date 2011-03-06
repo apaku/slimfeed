@@ -16,6 +16,12 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #    02110-1301  USA.
 
+from initsip import setupSipApi
+
+setupSipApi()
+
+from PyQt4 import QtCore
+
 
 class Entry(object):
     def __init__(self):
@@ -98,18 +104,23 @@ class Entry(object):
         self.updated = store.value("Updated", None)
         self.url = store.value("Url", None)
         self.identity = store.value("Id", None)
-        data = store.value("Read", False)
-        # Workaround for QSettings returning wrong type from
-        # value if its not been used to set the value in this
-        # python interpreter instance
-        if isinstance(data, str) or isinstance(data, unicode):
-            if data.lower() in ["true","1"]:
-                data = True
-            elif data.lower() in ["false", "0"]:
-                data = False
-            else:
-                assert None, "Cannot convert string to bool: %s" % data
-        self.read = data
+        if QtCore.PYQT_VERSION >= 0x040800:
+            self.read = store.value("Read", False, bool)
+        else:
+            # Workaround for QSettings returning wrong type from
+            # value if its not been used to set the value in this
+            # python interpreter instance
+            # In PyQt 4.8 and later there's a new overload for value to
+            # specify the return type
+            data = store.value("Read", False)
+            if isinstance(data, str) or isinstance(data, unicode):
+                if data.lower() in ["true", "1"]:
+                    data = True
+                elif data.lower() in ["false", "0"]:
+                    data = False
+                else:
+                    assert None, "Cannot convert string to bool: %s" % data
+            self.read = data
 
     def save(self, store):
         store.setValue("Title", self.title)

@@ -32,7 +32,7 @@ from entrymodel import EntryModel
 from feed import Feed
 from modeltest import ModelTest
 from datetimeutils import qDateTimeFromTimeStruct
-from PyQt4.QtCore import Qt, QModelIndex, QDateTime
+from PyQt4.QtCore import Qt, QModelIndex
 
 
 class EntryModelTest(unittest2.TestCase):
