@@ -98,7 +98,18 @@ class Entry(object):
         self.updated = store.value("Updated", None)
         self.url = store.value("Url", None)
         self.identity = store.value("Id", None)
-        self.read = store.value("Read", False)
+        data = store.value("Read", False)
+        # Workaround for QSettings returning wrong type from
+        # value if its not been used to set the value in this
+        # python interpreter instance
+        if isinstance(data, str) or isinstance(data, unicode):
+            if data.lower() in ["true","1"]:
+                data = True
+            elif data.lower() in ["false", "0"]:
+                data = False
+            else:
+                assert None, "Cannot convert string to bool: %s" % data
+        self.read = data
 
     def save(self, store):
         store.setValue("Title", self.title)
