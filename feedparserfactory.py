@@ -26,8 +26,13 @@ def createFeedFromData(data, entryclz=Entry):
         feed.title = data["feed"]["title"]
     else:
         feed.title = "No Title provided"
-    if "href" in data:
-        feed.url = data["href"]
+
+    if "links" in data["feed"]:
+        for link in data["feed"]["links"]:
+            if "rel" in link and link["rel"] == "self":
+                feed.url = link["href"]
+    if "link" in data["feed"]:
+        feed.homepage = data["feed"]["link"]
     if "author" in data["feed"]:
         feed.author = data["feed"]["author"]
     else:
