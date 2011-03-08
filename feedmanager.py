@@ -17,6 +17,8 @@
 #    02110-1301  USA.
 
 from feed import Feed
+import feedparser
+from feedparserfactory import createFeedFromData
 
 
 class FeedManager(object):
@@ -37,6 +39,18 @@ class FeedManager(object):
             store.beginGroup("Feed_%s" % b64encode(str(hash(feed))))
             feed.save(store)
             store.endGroup()
+
+    def update(self):
+        for feed in self.feeds:
+            newfeed = createFeedFromData(feedparser.parse(feed.url))
+            feed.title = newfeed.title
+            feed.url = newfeed.url
+            feed.author = newfeed.author
+            feed.homepage = newfeed.homepage
+            feed.updated = newfeed.updated
+            for entry in newfeed.entries:
+                if not entry in feed.entries:
+                    feed.entries.append(entry)
 
     def getfeeds(self):
         return self._feeds

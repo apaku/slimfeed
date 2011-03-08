@@ -23,9 +23,15 @@ from feedmanager import FeedManager
 from feedmodel import FeedModel
 from entrymodel import EntryModel
 from feedparserfactory import createFeedFromData
+from threading import Thread
 import feedparser
 import sys
 
+
+def updateFeeds(*args):
+    mainwin = args[0]
+    mainwin.feedMgr.update()
+    QtCore.QMetaObject.invokeMethod(mainwin, "feedsUpdated", QtCore.Qt.QueuedConnection)
 
 class MainWindow(QtGui.QMainWindow):
     def __init__(self, parent=None):
@@ -52,6 +58,20 @@ class MainWindow(QtGui.QMainWindow):
         self.feedList.selectionModel().selectionChanged.connect(
                 self.feedSelectionChanged)
         self.feedList.addAction(self.actionDeleteFeed)
+        self.updateTimer = QtCore.QTimer()
+        self.updateTimer.timeout.connect(self.updateFeeds)
+        self.updateTimer.start(6000)
+
+    def updateFeeds(self):
+        self.updateThread = Thread(target=updateFeeds, name="Updating Feeds", args=(self,))
+        self.updateThread.start()
+
+    @QtCore.pyqtSlot()
+    def feedsUpdated(self):
+        self.updateThread = None
+        self.feedModel.feedsUpdated()
+        self.entryModel.feedsUpdated()
+        self.updateTimer.start(6000)
 
     def setupListToolBars(self):
         self.feedToolBarContainer.setLayout(QtGui.QVBoxLayout())

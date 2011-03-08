@@ -83,6 +83,9 @@ class EntryModel(QAbstractTableModel):
         elif col == 2:
             return "Updated"
 
+    def feedsUpdated(self):
+        self.reset()
+
 if __name__ == "__main__":
     import sys
     print "Cannot run this module"
