@@ -61,6 +61,9 @@ class MainWindow(QtGui.QMainWindow):
         self.updateTimer = QtCore.QTimer()
         self.updateTimer.timeout.connect(self.updateFeeds)
         self.updateTimer.start(6000)
+        # Need to do this async, _readSettings is done too early and
+        # hence the size is being overwritten somehow later on
+        QtCore.QTimer.singleShot(0, self._loadViewSizes)
 
     def updateFeeds(self):
         self.updateThread = Thread(target=updateFeeds, name="Updating Feeds", args=(self,))
@@ -104,6 +107,27 @@ class MainWindow(QtGui.QMainWindow):
                 QtGui.QMessageBox.No) == QtGui.QMessageBox.Yes:
             self.feedModel.deleteFeed(feed)
 
+    def _restoreHeaderView(self, settings, view):
+        view.horizontalHeader().restoreState(
+                settings.value("Horizontal Header State", QtCore.QByteArray()))
+        for grp in settings.childGroups():
+            if "Column" in grp:
+                col = int(grp.split(" ")[1])
+                settings.beginGroup(grp)
+                size = view.horizontalHeader().sectionSize(col)
+                newsize = int(settings.value("Width", size))
+                view.horizontalHeader().resizeSection(col, newsize)
+                settings.endGroup()
+
+    def _loadViewSizes(self):
+        settings = QtCore.QSettings("de.apaku", "Slimfeed")
+        settings.beginGroup("EntryList")
+        self._restoreHeaderView(settings, self.entryList)
+        settings.endGroup()
+        settings.beginGroup("FeedList")
+        self._restoreHeaderView(settings, self.feedList)
+        settings.endGroup()
+
     def _readSettings(self):
         settings = QtCore.QSettings("de.apaku", "Slimfeed")
         self.restoreGeometry(settings.value("geometry", QtCore.QByteArray()))
@@ -116,6 +140,24 @@ class MainWindow(QtGui.QMainWindow):
         settings = QtCore.QSettings("de.apaku", "Slimfeed")
         settings.setValue("geometry", self.saveGeometry())
         settings.setValue("state", self.saveState())
+        settings.beginGroup("EntryList")
+        settings.setValue("Horizontal Header State", 
+                self.entryList.horizontalHeader().saveState())
+        for col in range(0, self.entryList.horizontalHeader().count()):
+            settings.beginGroup("Column %d" % col)
+            settings.setValue("Width", 
+                    self.entryList.horizontalHeader().sectionSize(col))
+            settings.endGroup()
+        settings.endGroup()
+        settings.beginGroup("FeedList")
+        settings.setValue("Horizontal Header State", 
+                self.feedList.horizontalHeader().saveState())
+        for col in range(0, self.feedList.horizontalHeader().count()):
+            settings.beginGroup("Column %d" % col)
+            settings.setValue("Width", 
+                    self.feedList.horizontalHeader().sectionSize(col))
+            settings.endGroup()
+        settings.endGroup()
         settings.beginGroup("Feeds")
         # Clear out all stored feeds so we don't carry around
         # any that might have been deleted meanwhile
