@@ -91,14 +91,17 @@
           <property name="gridStyle">
            <enum>Qt::SolidLine</enum>
           </property>
-          <attribute name="horizontalHeaderCascadingSectionResizes">
-           <bool>true</bool>
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>150</number>
           </attribute>
           <attribute name="verticalHeaderVisible">
            <bool>false</bool>
           </attribute>
-          <attribute name="verticalHeaderCascadingSectionResizes">
-           <bool>true</bool>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>150</number>
           </attribute>
          </widget>
         </item>
@@ -163,6 +166,9 @@
            <property name="showGrid">
             <bool>false</bool>
            </property>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
            <attribute name="verticalHeaderVisible">
             <bool>false</bool>
            </attribute>
