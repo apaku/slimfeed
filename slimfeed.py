@@ -89,6 +89,10 @@ class MainWindow(QtGui.QMainWindow):
     def feedSelectionChanged(self):
         selection = self.feedList.selectionModel().selectedRows()
         self.actionDeleteFeed.setEnabled((len(selection) > 0))
+        if len(selection) > 0:
+            self.entryModel.feed = self.feedModel.getFeed(selection[0])
+        else:
+            self.entryModel.feed = None
 
     def deleteSelectedFeed(self):
         selection = self.feedList.selectionModel().selectedRows()

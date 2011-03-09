@@ -34,6 +34,7 @@ class EntryModel(QAbstractTableModel):
 
     def _setfeed(self, feed):
         self._feed = feed
+        self.reset()
 
     def _getfeed(self):
         return self._feed
