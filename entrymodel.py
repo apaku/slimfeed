@@ -19,9 +19,10 @@
 import initsip
 initsip.setupSipApi()
 
-from PyQt4.QtCore import QAbstractTableModel, Qt, QModelIndex
+from PyQt4.QtCore import QAbstractTableModel, Qt, QModelIndex, pyqtSignal
 from PyQt4.QtGui import QFont
 from datetimeutils import qDateTimeFromTimeStruct
+from feed import Feed
 
 
 # Disable 'method can be used as function' as it triggers on columnCount which
@@ -29,6 +30,9 @@ from datetimeutils import qDateTimeFromTimeStruct
 # from Qt
 #pylint: disable=R0201
 class EntryModel(QAbstractTableModel):
+
+    entriesChanged = pyqtSignal(Feed)
+
     def __init__(self, feed=None, parent=None):
         QAbstractTableModel.__init__(self, parent)
         self._feed = feed
@@ -90,6 +94,13 @@ class EntryModel(QAbstractTableModel):
             return "Author"
         elif col == 2:
             return "Updated"
+
+    def markRead(self, idx):
+        if idx.isValid() and idx.row() >= 0 and idx.row() < self.rowCount(idx.parent()):
+            e = self._feed.entries[idx.row()]
+            if e.read == False:
+                e.read = True
+                self.entriesChanged.emit(self._feed)
 
     def feedsUpdated(self):
         self.reset()

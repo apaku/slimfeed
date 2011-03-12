@@ -30,8 +30,12 @@ sys.path.append(os.path.join(os.getcwd(), "tests", "modeltest"))
 
 from feedmodel import FeedModel
 from feedmanager import FeedManager
+from entry import Entry
+from entrymodel import EntryModel
 from modeltest import ModelTest
+from signalspy import SignalSpy
 from PyQt4.QtCore import Qt, QModelIndex
+from PyQt4.QtGui import QFont
 import time
 
 
@@ -56,6 +60,21 @@ class FeedModelTest(unittest2.TestCase):
         self.feedMgr.feeds.append(feed)
         self.feedModel = FeedModel(self.feedMgr)
         self.modeltest = ModelTest(self.feedModel, self.feedModel)
+        self.entryModel = EntryModel()
+
+    def testUpdateDataFromRead(self):
+        model = self.entryModel
+        model.entriesChanged.connect(self.feedModel.entriesUpdated)
+        spy = SignalSpy(self.feedModel.dataChanged)
+        model.feed = self.feedMgr.feeds[0]
+        idx = model.index(0, 0, QModelIndex())
+        model.markRead(idx)
+        feedmodel = self.feedModel
+        idx1 = feedmodel.index(0, 0, QModelIndex())
+        idx2 = feedmodel.index(0, 2, QModelIndex())
+        self.assertEqual(spy.slotTriggered, 1)
+        self.assertEqual(spy.arguments[0][0], idx1)
+        self.assertEqual(spy.arguments[0][1], idx2)
 
     def testData(self):
         model = self.feedModel

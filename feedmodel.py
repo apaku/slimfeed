@@ -101,6 +101,12 @@ class FeedModel(QAbstractTableModel):
     def feedsUpdated(self):
         self.dataChanged.emit(self.index(0, 0, QModelIndex()), self.index(self.columnCount()-1, self.rowCount()-1, QModelIndex()))
 
+    def entriesUpdated(self, feed):
+        if feed in self._feedmgr.feeds:
+            idx1 = self.index(self._feedmgr.feeds.index(feed), 0, QModelIndex())
+            idx2 = self.index(idx1.row(), 2, QModelIndex())
+            self.dataChanged.emit(idx1, idx2)
+
 if __name__ == "__main__":
     import sys
     print "Cannot run this module"

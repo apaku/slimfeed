@@ -33,7 +33,8 @@ from feed import Feed
 from modeltest import ModelTest
 from datetimeutils import qDateTimeFromTimeStruct
 from PyQt4.QtCore import Qt, QModelIndex
-
+from PyQt4.QtGui import QFont
+from signalspy import SignalSpy
 
 class EntryModelTest(unittest2.TestCase):
     def setUp(self):
@@ -42,15 +43,25 @@ class EntryModelTest(unittest2.TestCase):
         entry = Mock("Entry")
         entry.title = "Title1"
         entry.author = "Author1"
+        entry.read = False
         entry.updated = time.gmtime(time.time())
         self.feed.entries.append(entry)
         entry = Mock("Entry")
         entry.title = "Title2"
         entry.author = "Author2"
+        entry.read = True
         entry.updated = time.gmtime(time.time())
         self.feed.entries.append(entry)
         self.entryModel = EntryModel(self.feed)
         self.modeltest = ModelTest(self.entryModel, self.entryModel)
+
+    def testUpdateReadStatus(self):
+        model = self.entryModel
+        spy = SignalSpy(model.entriesChanged)
+        idx = model.index(0, 0, QModelIndex())
+        model.markRead(idx)
+        self.assertEqual(spy.slotTriggered, 1)
+        self.assertEqual(spy.arguments[0][0], self.feed)
 
     def testData(self):
         self.assertEqual(self.entryModel.rowCount(), 2)

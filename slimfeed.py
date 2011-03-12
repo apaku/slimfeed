@@ -51,6 +51,9 @@ class MainWindow(QtGui.QMainWindow):
         self.entryModel = EntryModel(parent=self)
         self.feedList.setModel(self.feedModel)
         self.entryList.setModel(self.entryModel)
+
+        self.entryModel.entriesChanged.connect(self.feedModel.entriesUpdated)
+
         self.actionAbout.triggered.connect(self.showAbout)
         self.actionAboutQt.triggered.connect(QtGui.qApp.aboutQt)
         self.actionAdd.triggered.connect(self.addFeed)
@@ -64,6 +67,20 @@ class MainWindow(QtGui.QMainWindow):
         # Need to do this async, _readSettings is done too early and
         # hence the size is being overwritten somehow later on
         QtCore.QTimer.singleShot(0, self._loadViewSizes)
+
+        self.entryList.selectionModel().currentChanged.connect(self.currentEntryChanged)
+        self.markReadTimer = QtCore.QTimer()
+        self.markReadTimer.timeout.connect(self.markEntryRead)
+
+    def markEntryRead(self):
+        if self.markReadIdx is not None and self.markReadIdx.isValid():
+            print "marking as read:", self.markReadIdx.row(), self.markReadIdx.column(), self.markReadIdx.parent()
+            self.entryModel.markRead(self.markReadIdx)
+
+    def currentEntryChanged(self, idx1, idx2):
+        self.markReadIdx = idx1
+        self.markReadTimer.stop()
+        self.markReadTimer.start(1500)
 
     def updateFeeds(self):
         self.updateThread = Thread(target=updateFeeds, name="Updating Feeds", args=(self,))
