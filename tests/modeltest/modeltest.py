@@ -260,7 +260,7 @@ class ModelTest(QtCore.QObject):
         # General Purpose roles that should return a QFont
         variant = self.model.data(self.model.index(0,0,QtCore.QModelIndex()), QtCore.Qt.FontRole)
         if variant is not None:
-            assert( variant.canConvert( QtCore.QVariant.Font ) )
+            assert( isinstance( variant, QtGui.QFont ) )
         
         # Check that the alignment is one we know about
         variant = self.model.data(self.model.index(0,0,QtCore.QModelIndex()), QtCore.Qt.TextAlignmentRole)
