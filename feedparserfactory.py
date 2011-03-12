@@ -21,6 +21,8 @@ from feed import Feed
 
 
 def createFeedFromData(data, entryclz=Entry):
+    if data["bozo"] == 1:
+        return None
     feed = Feed()
     if "title" in data["feed"]:
         feed.title = data["feed"]["title"]

@@ -43,14 +43,15 @@ class FeedManager(object):
     def update(self):
         for feed in self.feeds:
             newfeed = createFeedFromData(feedparser.parse(feed.url))
-            feed.title = newfeed.title
-            feed.url = newfeed.url
-            feed.author = newfeed.author
-            feed.homepage = newfeed.homepage
-            feed.updated = newfeed.updated
-            for entry in newfeed.entries:
-                if not entry in feed.entries:
-                    feed.entries.append(entry)
+            if newfeed is not None:
+                feed.title = newfeed.title
+                feed.url = newfeed.url
+                feed.author = newfeed.author
+                feed.homepage = newfeed.homepage
+                feed.updated = newfeed.updated
+                for entry in newfeed.entries:
+                    if not entry in feed.entries:
+                        feed.entries.append(entry)
 
     def getfeeds(self):
         return self._feeds

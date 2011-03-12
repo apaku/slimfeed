@@ -37,6 +37,7 @@ class FeedParserFactoryTest(unittest2.TestCase):
                                                 "rel": "self"},
                                                {"href": "feedhomepage",
                                                 "rel": "alternate"}]},
+                            "bozo": 0,
                             "entries": [{"title": "entrytitle1",
                                          "id": "id1",
                                          "link": "url1",
@@ -57,6 +58,7 @@ class FeedParserFactoryTest(unittest2.TestCase):
                                                  "rel": "self"},
                                                 {"href": "feedhomepage",
                                                  "rel": "alternate"}]},
+                             "bozo": 0,
                              "entries": [{"title": "entrytitle1",
                                           "id": "id1",
                                           "link": "url1",
@@ -113,7 +115,7 @@ class FeedParserFactoryTest(unittest2.TestCase):
         self.assertEqual(entry.content, data["content"])
 
     def testMissingDataFeed(self):
-        data = {"feed": {}, "entries": []}
+        data = {"feed": {}, "entries": [], "bozo": 0}
         feed = createFeedFromData(data=data)
         self.assertEqual(feed.title, "No Title provided")
         self.assertEqual(feed.author, "No Author provided")
@@ -121,7 +123,7 @@ class FeedParserFactoryTest(unittest2.TestCase):
         self.assertIsNone(feed.url)
 
     def testMissingDataEntry(self):
-        data = {}
+        data = {"bozo": 0}
         entry = createEntryFromData(data=data)
         self.assertEqual(entry.title, "No Title provided")
         self.assertEqual(entry.author, "No Author provided")
@@ -129,6 +131,11 @@ class FeedParserFactoryTest(unittest2.TestCase):
         self.assertIsNone(entry.updated)
         self.assertIsNone(entry.identity)
         self.assertIsNone(entry.url)
+
+    def testErrorInParsing(self):
+        data = {"bozo": 1}
+        feed = createFeedFromData(data=data)
+        self.assertIsNone(feed)
 
 if __name__ == "__main__":
     unittest2.main()
