@@ -65,6 +65,9 @@ class EntryModelTest(unittest2.TestCase):
                     Qt.DisplayRole), qDateTimeFromTimeStruct(
                         list(self.feed.entries)[0].updated))
         self.assertEqual(self.entryModel.data(
+                self.entryModel.index(0, 0, QModelIndex()),
+                    Qt.FontRole).bold(), True)
+        self.assertEqual(self.entryModel.data(
                 self.entryModel.index(1, 0, QModelIndex()),
                     Qt.DisplayRole), "Title2")
         self.assertEqual(self.entryModel.data(
@@ -74,6 +77,9 @@ class EntryModelTest(unittest2.TestCase):
                 self.entryModel.index(1, 2, QModelIndex()),
                     Qt.DisplayRole), qDateTimeFromTimeStruct(
                         list(self.feed.entries)[1].updated))
+        self.assertEqual(self.entryModel.data(
+                self.entryModel.index(1, 0, QModelIndex()),
+                    Qt.FontRole).bold(), False)
 
 if __name__ == "__main__":
     unittest2.main()

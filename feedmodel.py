@@ -20,6 +20,7 @@ import initsip
 initsip.setupSipApi()
 
 from PyQt4.QtCore import QAbstractTableModel, Qt, QModelIndex
+from PyQt4.QtGui import QFont
 
 
 # Disable 'method can be used as function' as it triggers on columnCount which
@@ -48,16 +49,22 @@ class FeedModel(QAbstractTableModel):
                 idx.column() < 0 or \
                 idx.column() >= self.columnCount():
             return None
-        if role != Qt.DisplayRole:
+        if role != Qt.DisplayRole and role != Qt.FontRole:
             return None
 
         feed = list(self._feedmgr.feeds)[idx.row()]
-        if idx.column() == 0:
-            return feed.title
-        elif idx.column() == 1:
-            return feed.unread
-        elif idx.column() == 2:
-            return len(feed.entries)
+        if role == Qt.DisplayRole:
+            if idx.column() == 0:
+                return feed.title
+            elif idx.column() == 1:
+                return feed.unread
+            elif idx.column() == 2:
+                return len(feed.entries)
+        elif role == Qt.FontRole:
+            fnt = QFont()
+            if feed.unread > 0:
+                fnt.setBold(True)
+            return fnt
         return None
 
     def headerData(self, col, orient, role=Qt.DisplayRole):

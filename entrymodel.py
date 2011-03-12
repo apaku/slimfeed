@@ -20,6 +20,7 @@ import initsip
 initsip.setupSipApi()
 
 from PyQt4.QtCore import QAbstractTableModel, Qt, QModelIndex
+from PyQt4.QtGui import QFont
 from datetimeutils import qDateTimeFromTimeStruct
 
 
@@ -60,16 +61,22 @@ class EntryModel(QAbstractTableModel):
                 idx.column() >= self.columnCount() or \
                 self._feed is None:
             return None
-        if role != Qt.DisplayRole:
+        if role != Qt.DisplayRole and role != Qt.FontRole:
             return None
 
         entry = list(self._feed.entries)[idx.row()]
-        if idx.column() == 0:
-            return entry.title
-        elif idx.column() == 1:
-            return entry.author
-        elif idx.column() == 2:
-            return qDateTimeFromTimeStruct(entry.updated)
+        if role == Qt.DisplayRole:
+            if idx.column() == 0:
+                return entry.title
+            elif idx.column() == 1:
+                return entry.author
+            elif idx.column() == 2:
+                return qDateTimeFromTimeStruct(entry.updated)
+        elif role == Qt.FontRole:
+            fnt = QFont()
+            if not entry.read:
+                fnt.setBold(True)
+            return fnt
         return None
 
     def headerData(self, col, orient, role=Qt.DisplayRole):
