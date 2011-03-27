@@ -19,6 +19,8 @@
 import initsip
 initsip.setupSipApi()
 from PyQt4 import QtCore, QtGui, uic
+from PyQt4.QtCore import QModelIndex
+from PyQt4.QtGui import QItemSelectionModel
 from feedmanager import FeedManager
 from feedmodel import FeedModel
 from entrymodel import EntryModel
@@ -88,8 +90,12 @@ class MainWindow(QtGui.QMainWindow):
     @QtCore.pyqtSlot()
     def feedsUpdated(self):
         self.updateThread = None
+        feedModelRow = self.feedList.currentIndex().row()
+        entryModelRow = self.entryList.currentIndex().row()
         self.feedModel.feedsUpdated()
         self.entryModel.feedsUpdated()
+        self.entryList.selectionModel().setCurrentIndex(self.entryModel.index(entryModelRow, 0, QModelIndex()), QItemSelectionModel.ClearAndSelect | QItemSelectionModel.SelectCurrent | QItemSelectionModel.Rows )
+        self.feedList.selectionModel().setCurrentIndex(self.feedModel.index(feedModelRow, 0, QModelIndex()), QItemSelectionModel.ClearAndSelect | QItemSelectionModel.SelectCurrent | QItemSelectionModel.Rows )
         self.updateTimer.start(6000)
 
     def setupListToolBars(self):
