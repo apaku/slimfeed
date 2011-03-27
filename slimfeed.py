@@ -70,6 +70,7 @@ class MainWindow(QtGui.QMainWindow):
 
         self.entryList.selectionModel().currentChanged.connect(self.currentEntryChanged)
         self.markReadTimer = QtCore.QTimer()
+        self.markReadTimer.setSingleShot(True)
         self.markReadTimer.timeout.connect(self.markEntryRead)
 
     def markEntryRead(self):
@@ -78,8 +79,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def currentEntryChanged(self, idx1, idx2):
         self.markReadIdx = idx1
-        self.markReadTimer.stop()
-        self.markReadTimer.start(1500)
+        self.markReadTimer.start(500)
 
     def updateFeeds(self):
         self.updateThread = Thread(target=updateFeeds, name="Updating Feeds", args=(self,))
