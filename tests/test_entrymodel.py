@@ -57,11 +57,15 @@ class EntryModelTest(unittest2.TestCase):
 
     def testUpdateReadStatus(self):
         model = self.entryModel
-        spy = SignalSpy(model.entriesChanged)
+        spyEntriesChanged = SignalSpy(model.entriesChanged)
+        spyDataChanged = SignalSpy(model.dataChanged)
         idx = model.index(0, 0, QModelIndex())
         model.markRead(idx)
-        self.assertEqual(spy.slotTriggered, 1)
-        self.assertEqual(spy.arguments[0][0], self.feed)
+        self.assertEqual(spyEntriesChanged.slotTriggered, 1)
+        self.assertEqual(spyEntriesChanged.arguments[0][0], self.feed)
+        self.assertEqual(spyDataChanged.slotTriggered, 1)
+        self.assertEqual(spyDataChanged.arguments[0][0].row(), model.index(0, 0, QModelIndex()).row())
+        self.assertEqual(spyDataChanged.arguments[0][1].row(), model.index(0, 2, QModelIndex()).row())
 
     def testData(self):
         self.assertEqual(self.entryModel.rowCount(), 2)

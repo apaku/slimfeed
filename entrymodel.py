@@ -100,6 +100,8 @@ class EntryModel(QAbstractTableModel):
             e = self._feed.entries[idx.row()]
             if e.read == False:
                 e.read = True
+                self.dataChanged.emit(self.index(idx.row(), 0, idx.parent()), 
+                                      self.index(idx.row(), self.columnCount(idx.parent()) - 1, idx.parent()))
                 self.entriesChanged.emit(self._feed)
 
     def feedsUpdated(self):
