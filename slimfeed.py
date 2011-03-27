@@ -74,7 +74,6 @@ class MainWindow(QtGui.QMainWindow):
 
     def markEntryRead(self):
         if self.markReadIdx is not None and self.markReadIdx.isValid():
-            print "marking as read:", self.markReadIdx.row(), self.markReadIdx.column(), self.markReadIdx.parent()
             self.entryModel.markRead(self.markReadIdx)
 
     def currentEntryChanged(self, idx1, idx2):
