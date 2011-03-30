@@ -19,7 +19,7 @@
 import initsip
 initsip.setupSipApi()
 from PyQt4 import QtCore, QtGui, uic
-from PyQt4.QtCore import QModelIndex
+from PyQt4.QtCore import QModelIndex, QUrl
 from PyQt4.QtGui import QItemSelectionModel
 from feedmanager import FeedManager
 from feedmodel import FeedModel
@@ -83,6 +83,8 @@ class MainWindow(QtGui.QMainWindow):
     def currentEntryChanged(self, idx1, idx2):
         self.markReadIdx = idx1
         self.markReadTimer.start(500)
+        entry = self.entryModel.entryFromIndex(idx1)
+        self.browser.setUrl(QUrl(entry.url))
 
     def updateFeeds(self):
         self.updateThread = Thread(target=updateFeeds, name="Updating Feeds", args=(self,))

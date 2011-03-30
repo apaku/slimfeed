@@ -107,6 +107,12 @@ class EntryModel(QAbstractTableModel):
     def feedsUpdated(self):
         self.reset()
 
+    def entryFromIndex(self, idx):
+        if not idx.isValid() or idx.row() < 0 or idx.row() >= self.rowCount(idx.parent()):
+            return None
+
+        return self._feed.entries[idx.row()]
+
 if __name__ == "__main__":
     import sys
     print "Cannot run this module"
