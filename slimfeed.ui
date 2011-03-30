@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <widget class="QSplitter" name="splitter_2">
+     <widget class="QSplitter" name="splitterVertical">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -97,17 +97,11 @@
           <attribute name="verticalHeaderVisible">
            <bool>false</bool>
           </attribute>
-          <attribute name="verticalHeaderVisible">
-           <bool>false</bool>
-          </attribute>
-          <attribute name="horizontalHeaderDefaultSectionSize">
-           <number>150</number>
-          </attribute>
          </widget>
         </item>
        </layout>
       </widget>
-      <widget class="QSplitter" name="splitter">
+      <widget class="QSplitter" name="splitterHorizontal">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
@@ -169,19 +163,49 @@
            <attribute name="verticalHeaderVisible">
             <bool>false</bool>
            </attribute>
-           <attribute name="verticalHeaderVisible">
-            <bool>false</bool>
-           </attribute>
           </widget>
          </item>
         </layout>
        </widget>
-       <widget class="QWebView" name="browser">
-        <property name="url">
-         <url>
-          <string>about:blank</string>
-         </url>
-        </property>
+       <widget class="QWidget" name="layoutWidget">
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>Browser</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QWidget" name="browserToolBarContainer" native="true"/>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QWebView" name="browser">
+           <property name="url">
+            <url>
+             <string>about:blank</string>
+            </url>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </widget>
      </widget>
@@ -194,7 +218,7 @@
      <x>0</x>
      <y>0</y>
      <width>1061</width>
-     <height>24</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFeed">
@@ -221,9 +245,19 @@
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
+   <widget class="QMenu" name="menuBrowser">
+    <property name="title">
+     <string>Browser</string>
+    </property>
+    <addaction name="actionBack"/>
+    <addaction name="actionForward"/>
+    <addaction name="actionStop"/>
+    <addaction name="actionReload"/>
+   </widget>
    <addaction name="menuSlimfeed"/>
    <addaction name="menuFeed"/>
    <addaction name="menuArticle"/>
+   <addaction name="menuBrowser"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionAdd">
@@ -283,6 +317,26 @@
   <action name="actionAboutQt">
    <property name="text">
     <string>About Q&amp;t</string>
+   </property>
+  </action>
+  <action name="actionBack">
+   <property name="text">
+    <string>Back</string>
+   </property>
+  </action>
+  <action name="actionForward">
+   <property name="text">
+    <string>Forward</string>
+   </property>
+  </action>
+  <action name="actionStop">
+   <property name="text">
+    <string>Stop</string>
+   </property>
+  </action>
+  <action name="actionReload">
+   <property name="text">
+    <string>Reload</string>
    </property>
   </action>
  </widget>
