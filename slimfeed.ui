@@ -261,6 +261,10 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionAdd">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/list-add.png</normaloff>icons/list-add.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Add</string>
    </property>
@@ -278,16 +282,28 @@
    </property>
   </action>
   <action name="actionMarkAllFeedsRead">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/mail-mark-read.png</normaloff>icons/mail-mark-read.png</iconset>
+   </property>
    <property name="text">
     <string>Mark All As &amp;Read</string>
    </property>
   </action>
   <action name="actionMarkAllEntriesRead">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/mail-mark-read.png</normaloff>icons/mail-mark-read.png</iconset>
+   </property>
    <property name="text">
     <string>Mark All As &amp;Read</string>
    </property>
   </action>
   <action name="actionFetchAllFeeds">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/download.png</normaloff>icons/download.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Fetch All Feeds</string>
    </property>
@@ -302,11 +318,19 @@
    </property>
   </action>
   <action name="actionPreferences">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/configure.png</normaloff>icons/configure.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Preferences...</string>
    </property>
   </action>
   <action name="actionQuit">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/application-exit.png</normaloff>icons/application-exit.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Quit</string>
    </property>
@@ -320,21 +344,37 @@
    </property>
   </action>
   <action name="actionBack">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/go-previous.png</normaloff>icons/go-previous.png</iconset>
+   </property>
    <property name="text">
     <string>Back</string>
    </property>
   </action>
   <action name="actionForward">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/go-next.png</normaloff>icons/go-next.png</iconset>
+   </property>
    <property name="text">
     <string>Forward</string>
    </property>
   </action>
   <action name="actionStop">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/process-stop.png</normaloff>icons/process-stop.png</iconset>
+   </property>
    <property name="text">
     <string>Stop</string>
    </property>
   </action>
   <action name="actionReload">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/view-refresh.png</normaloff>icons/view-refresh.png</iconset>
+   </property>
    <property name="text">
     <string>Reload</string>
    </property>
@@ -356,8 +396,8 @@
    <slot>stop()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>660</x>
-     <y>477</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
     <hint type="destinationlabel">
      <x>660</x>
