@@ -41,17 +41,26 @@ class FeedManager(object):
             store.endGroup()
 
     def update(self):
+        updated = []
         for feed in self.feeds:
             newfeed = createFeedFromData(feedparser.parse(feed.url))
             if newfeed is not None:
-                feed.title = newfeed.title
-                feed.url = newfeed.url
-                feed.author = newfeed.author
-                feed.homepage = newfeed.homepage
-                feed.updated = newfeed.updated
+                updateinfo = {'title':feed.title, 'keys':[], 'entries':[]}
+                # These things should actually not be set from the update
+                # the user may have changed at least the title
+                #feed.title = newfeed.title
+                #feed.url = newfeed.url
+                #feed.author = newfeed.author
+                #feed.homepage = newfeed.homepage
+                if feed.updated != newfeed.updated:
+                    feed.updated = newfeed.updated
+                    updateinfo["keys"].append("updated")
                 for entry in newfeed.entries:
                     if not entry in feed.entries:
+                        updateinfo["entries"].append(entry)
                         feed.entries.append(entry)
+                updated.append(updateinfo)
+        return updated
 
     def getfeeds(self):
         return self._feeds

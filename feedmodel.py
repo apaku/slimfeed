@@ -98,8 +98,11 @@ class FeedModel(QAbstractTableModel):
         self._feedmgr.feeds.append(feed)
         self.endInsertRows()
 
-    def feedsUpdated(self):
-        self.dataChanged.emit(self.index(0, 0, QModelIndex()), self.index(self.columnCount()-1, self.rowCount()-1, QModelIndex()))
+    def feedsUpdated(self, updated):
+        titles = [ info["title"] for info in updated]
+        for feed in self._feedmgr.feeds:
+            if feed.title in titles:
+                self.dataChanged.emit(self.index(0, 0, QModelIndex()), self.index(self.columnCount()-1, self.rowCount()-1, QModelIndex()))
 
     def entriesUpdated(self, feed):
         if feed in self._feedmgr.feeds:

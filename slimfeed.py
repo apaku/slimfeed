@@ -19,7 +19,7 @@
 import initsip
 initsip.setupSipApi()
 from PyQt4 import QtCore, QtGui, uic
-from PyQt4.QtCore import QModelIndex, QUrl
+from PyQt4.QtCore import QModelIndex, QUrl, pyqtSignal
 from PyQt4.QtGui import QItemSelectionModel
 from feedmanager import FeedManager
 from feedmodel import FeedModel
@@ -32,10 +32,11 @@ import sys
 
 def updateFeeds(*args):
     mainwin = args[0]
-    mainwin.feedMgr.update()
-    QtCore.QMetaObject.invokeMethod(mainwin, "feedsUpdated", QtCore.Qt.QueuedConnection)
+    updated = mainwin.feedMgr.update()
+    mainwin.updated.emit(updated)
 
 class MainWindow(QtGui.QMainWindow):
+    updated = pyqtSignal(list)
     def __init__(self, parent=None):
         QtGui.QMainWindow.__init__(self, parent)
         uic.loadUi("slimfeed.ui", self)
@@ -76,6 +77,8 @@ class MainWindow(QtGui.QMainWindow):
         self.markReadTimer.setSingleShot(True)
         self.markReadTimer.timeout.connect(self.markEntryRead)
 
+        self.updated.connect(self.feedsUpdated, QtCore.Qt.QueuedConnection)
+
     def markEntryRead(self):
         if self.markReadIdx is not None and self.markReadIdx.isValid():
             self.entryModel.markRead(self.markReadIdx)
@@ -90,15 +93,13 @@ class MainWindow(QtGui.QMainWindow):
         self.updateThread = Thread(target=updateFeeds, name="Updating Feeds", args=(self,))
         self.updateThread.start()
 
-    @QtCore.pyqtSlot()
-    def feedsUpdated(self):
+    @QtCore.pyqtSlot(list)
+    def feedsUpdated(self, updated):
         self.updateThread = None
         feedModelRow = self.feedList.currentIndex().row()
         entryModelRow = self.entryList.currentIndex().row()
-        self.feedModel.feedsUpdated()
-        self.entryModel.feedsUpdated()
-        self.entryList.selectionModel().setCurrentIndex(self.entryModel.index(entryModelRow, 0, QModelIndex()), QItemSelectionModel.ClearAndSelect | QItemSelectionModel.SelectCurrent | QItemSelectionModel.Rows )
-        self.feedList.selectionModel().setCurrentIndex(self.feedModel.index(feedModelRow, 0, QModelIndex()), QItemSelectionModel.ClearAndSelect | QItemSelectionModel.SelectCurrent | QItemSelectionModel.Rows )
+        self.feedModel.feedsUpdated(updated)
+        self.entryModel.feedsUpdated(updated)
         self.updateTimer.start(6000)
 
     def _setupToolBar(self, toolbar, container, actions):

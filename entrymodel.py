@@ -104,8 +104,11 @@ class EntryModel(QAbstractTableModel):
                                       self.index(idx.row(), self.columnCount(idx.parent()) - 1, idx.parent()))
                 self.entriesChanged.emit(self._feed)
 
-    def feedsUpdated(self):
-        self.reset()
+    def feedsUpdated(self, updated):
+        for info in updated:
+            if info["title"] == self._feed.title:
+                self.beginInsertRows(QModelIndex(), len(self._feed.entries)-len(info["entries"]), len(self._feed.entries))
+                self.endInsertRows()
 
     def entryFromIndex(self, idx):
         if not idx.isValid() or idx.row() < 0 or idx.row() >= self.rowCount(idx.parent()):
