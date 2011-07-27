@@ -62,8 +62,11 @@ class MainWindow(QtGui.QMainWindow):
         self.actionAboutQt.triggered.connect(QtGui.qApp.aboutQt)
         self.actionAdd.triggered.connect(self.addFeed)
         self.actionDeleteFeed.triggered.connect(self.deleteSelectedFeed)
+        self.actionDeleteEntry.triggered.connect(self.deleteSelectedEntry)
         self.feedList.selectionModel().selectionChanged.connect(
                 self.feedSelectionChanged)
+        self.entryList.selectionModel().selectionChanged.connect(
+                self.entrySelectionChanged)
         self.feedList.addAction(self.actionDeleteFeed)
         self.updateTimer = QtCore.QTimer()
         self.updateTimer.timeout.connect(self.updateFeeds)
@@ -113,7 +116,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def setupListToolBars(self):
         self._setupToolBar(self.feedToolBar, self.feedToolBarContainer, [self.actionDeleteFeed,])
-        self._setupToolBar(self.entryToolBar, self.entryToolBarContainer, [])
+        self._setupToolBar(self.entryToolBar, self.entryToolBarContainer, [self.actionDeleteEntry, ])
         self._setupToolBar(self.browserToolBar, self.browserToolBarContainer, [self.actionBack,self.actionForward,self.actionStop,self.actionReload])
 
     def feedSelectionChanged(self):
@@ -123,6 +126,22 @@ class MainWindow(QtGui.QMainWindow):
             self.entryModel.feed = self.feedModel.getFeed(selection[0])
         else:
             self.entryModel.feed = None
+
+    def entrySelectionChanged(self):
+        selection = self.entryList.selectionModel().selectedRows()
+        self.actionDeleteEntry.setEnabled((len(selection) > 0))
+
+    def deleteSelectedEntry(self):
+        selection = self.entryList.selectionModel().selectedRows()
+        if len(selection) > 0:
+            entry = self.entryModel.entryFromIndex(selection[0])
+            if QtGui.QMessageBox.question(self,
+                    "Delete Feed",
+                    "Do you really want to delete the article '%s'" % (entry.title),
+                    QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
+                    QtGui.QMessageBox.No) == QtGui.QMessageBox.Yes:
+                self.entryModel.removeEntry(selection[0])
+
 
     def deleteSelectedFeed(self):
         selection = self.feedList.selectionModel().selectedRows()

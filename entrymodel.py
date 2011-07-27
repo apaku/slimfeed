@@ -116,6 +116,14 @@ class EntryModel(QAbstractTableModel):
 
         return self._feed.entries[idx.row()]
 
+    def removeEntry(self, idx):
+        if not idx.isValid() or idx.row() < 0 or idx.row() >= self.rowCount(idx.parent()):
+            return
+        
+        self.beginRemoveRows(idx.parent(), idx.row(), idx.row())
+        del self._feed.entries[idx.row()]
+        self.endRemoveRows()
+
 if __name__ == "__main__":
     import sys
     print "Cannot run this module"

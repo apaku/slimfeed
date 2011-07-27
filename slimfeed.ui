@@ -234,6 +234,7 @@
      <string>&amp;Article</string>
     </property>
     <addaction name="actionMarkAllEntriesRead"/>
+    <addaction name="actionDeleteEntry"/>
    </widget>
    <widget class="QMenu" name="menuSlimfeed">
     <property name="title">
@@ -377,6 +378,18 @@
    </property>
    <property name="text">
     <string>Reload</string>
+   </property>
+  </action>
+  <action name="actionDeleteEntry">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/edit-delete.png</normaloff>icons/edit-delete.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Delete</string>
    </property>
   </action>
  </widget>
