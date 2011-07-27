@@ -145,13 +145,14 @@ class MainWindow(QtGui.QMainWindow):
 
     def deleteSelectedFeed(self):
         selection = self.feedList.selectionModel().selectedRows()
-        feed = self.feedModel.getFeed(selection[0])
-        if QtGui.QMessageBox.question(self,
-                "Delete Feed",
-                "Do you really want to delete the feed '%s'" % (feed.title),
-                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
-                QtGui.QMessageBox.No) == QtGui.QMessageBox.Yes:
-            self.feedModel.deleteFeed(feed)
+        if len(selection) > 0:
+            feed = self.feedModel.getFeed(selection[0])
+            if QtGui.QMessageBox.question(self,
+                    "Delete Feed",
+                    "Do you really want to delete the feed '%s'" % (feed.title),
+                    QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
+                    QtGui.QMessageBox.No) == QtGui.QMessageBox.Yes:
+                self.feedModel.deleteFeed(feed)
 
     def _restoreHeaderView(self, settings, view):
         view.horizontalHeader().restoreState(
