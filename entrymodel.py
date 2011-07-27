@@ -123,6 +123,7 @@ class EntryModel(QAbstractTableModel):
         self.beginRemoveRows(idx.parent(), idx.row(), idx.row())
         del self._feed.entries[idx.row()]
         self.endRemoveRows()
+        self.entriesChanged.emit(self._feed)
 
 if __name__ == "__main__":
     import sys
