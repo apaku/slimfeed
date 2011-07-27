@@ -112,7 +112,7 @@ class MainWindow(QtGui.QMainWindow):
         container.layout().addWidget(toolbar)
         for action in actions:
             toolbar.addAction(action)
-        toolbar.setIconSize(QtCore.QSize(8, 8))
+        toolbar.setIconSize(QtCore.QSize(16, 16))
 
     def setupListToolBars(self):
         self._setupToolBar(self.feedToolBar, self.feedToolBarContainer, [self.actionDeleteFeed,])
