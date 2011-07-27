@@ -28,7 +28,7 @@ class StoreMock:
         else:
             self.data[key] = value
 
-    def value(self, key, default=None):
+    def value(self, key, default=None, type=None):
         try:
             if len(self.current_group) > 0:
                 return self.data['/'.join(self.current_group + [key])]
