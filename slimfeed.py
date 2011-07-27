@@ -19,8 +19,7 @@
 import initsip
 initsip.setupSipApi()
 from PyQt4 import QtCore, QtGui, uic
-from PyQt4.QtCore import QModelIndex, QUrl, pyqtSignal
-from PyQt4.QtGui import QItemSelectionModel
+from PyQt4.QtCore import QUrl, pyqtSignal
 from feedmanager import FeedManager
 from feedmodel import FeedModel
 from entrymodel import EntryModel
@@ -99,8 +98,6 @@ class MainWindow(QtGui.QMainWindow):
     @QtCore.pyqtSlot(list)
     def feedsUpdated(self, updated):
         self.updateThread = None
-        feedModelRow = self.feedList.currentIndex().row()
-        entryModelRow = self.entryList.currentIndex().row()
         self.feedModel.feedsUpdated(updated)
         self.entryModel.feedsUpdated(updated)
         self.updateTimer.start(6000)
