@@ -34,10 +34,26 @@ def updateFeeds(*args):
     updated = mainwin.feedMgr.update()
     mainwin.updated.emit(updated)
 
+class SlimApp(QtGui.QApplication):
+    def __init__(self, args):
+        QtGui.QApplication.__init__(self,args)
+        self._aboutToQuit = False
+        
+    def commitData(self, sessMgr):
+        self._aboutToQuit = True
+        
+    def isAboutToQuit(self):
+        return self._aboutToQuit
+
 class MainWindow(QtGui.QMainWindow):
     updated = pyqtSignal(list)
     def __init__(self, parent=None):
         QtGui.QMainWindow.__init__(self, parent)
+        
+        # To be able to just hide to systray when closing the window and restore
+        # the window via the systray icon need to set this to false
+        QtGui.QApplication.setQuitOnLastWindowClosed(False)
+        
         uic.loadUi("slimfeed.ui", self)
         self.feedMgr = FeedManager()
 
@@ -56,7 +72,10 @@ class MainWindow(QtGui.QMainWindow):
         self.entryList.setModel(self.entryModel)
 
         self.entryModel.entriesChanged.connect(self.feedModel.entriesUpdated)
-
+        
+        # Directly call quit from our quit-action instead of going through the close
+        # event since that just hides to systray
+        self.actionQuit.triggered.connect(self.quit)
         self.actionAbout.triggered.connect(self.showAbout)
         self.actionAboutQt.triggered.connect(QtGui.qApp.aboutQt)
         self.actionAdd.triggered.connect(self.addFeed)
@@ -80,6 +99,17 @@ class MainWindow(QtGui.QMainWindow):
         self.markReadTimer.timeout.connect(self.markEntryRead)
 
         self.updated.connect(self.feedsUpdated, QtCore.Qt.QueuedConnection)
+        self.sysTray = QtGui.QSystemTrayIcon(QtGui.qApp.windowIcon(), self)
+        self.sysTray.show()
+        self.sysTray.activated.connect(self.sysTrayActivated)
+        
+    def sysTrayActivated(self, reason):
+        if reason == QtGui.QSystemTrayIcon.Trigger:
+            if self.isVisible():
+                self.hide()
+            else:
+                self.show()
+                self.activateWindow()
 
     def markEntryRead(self):
         if self.markReadIdx is not None and self.markReadIdx.isValid():
@@ -211,9 +241,20 @@ class MainWindow(QtGui.QMainWindow):
         settings.endGroup()
         settings.sync()
 
-    def closeEvent(self, event):
+    def quit(self):
+        # Really Quit from here
         self._writeSettings()
-        return QtGui.QMainWindow.closeEvent(self, event)
+        QtGui.QApplication.quit()
+
+    def closeEvent(self, event):
+        # If we're closed by the user, lets just hide
+        # but if the close comes due to session-shutdown lets really quit
+        if not QtGui.qApp.isAboutToQuit():
+            self.hide()
+            event.ignore()
+        else:
+            event.accept()
+            quit()
 
     def addFeed(self):
         dlg = uic.loadUi("addfeeddlg.ui", QtGui.QDialog(self))
@@ -235,7 +276,7 @@ Copyright 2011 Andreas Pakulat <apaku@gmx.de>
 
 
 def main():
-    app = QtGui.QApplication(sys.argv)
+    QtGui.qApp = app = SlimApp(sys.argv)
     icon = QtGui.QIcon()
     icon.addFile("icons/slimfeed_16.png", QtCore.QSize(16, 16))
     icon.addFile("icons/slimfeed_22.png", QtCore.QSize(22, 22))
@@ -245,7 +286,6 @@ def main():
     icon.addFile("icons/slimfeed_128.png", QtCore.QSize(128, 128))
     app.setWindowIcon(icon)
     mainwin = MainWindow()
-    mainwin.actionQuit.triggered.connect(mainwin.close)
     mainwin.show()
     return app.exec_()
 
