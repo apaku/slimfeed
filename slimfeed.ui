@@ -226,6 +226,7 @@
      <string>&amp;Feed</string>
     </property>
     <addaction name="actionAdd"/>
+    <addaction name="actionDeleteFeed"/>
     <addaction name="actionMarkAllFeedsRead"/>
     <addaction name="actionFetchAllFeeds"/>
    </widget>
