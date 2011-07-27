@@ -106,7 +106,7 @@ class EntryModel(QAbstractTableModel):
 
     def feedsUpdated(self, updated):
         for info in updated:
-            if info["title"] == self._feed.title:
+            if self._feed is not None and info["title"] == self._feed.title:
                 self.beginInsertRows(QModelIndex(), len(self._feed.entries)-len(info["entries"]), len(self._feed.entries))
                 self.endInsertRows()
 
