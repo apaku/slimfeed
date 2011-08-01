@@ -66,10 +66,14 @@ class MainWindow(QtGui.QMainWindow):
         self.browserToolBar = QtGui.QToolBar(self.browserToolBarContainer)
 
         self.setupListToolBars()
+        self.entryList.sortByColumn(2, QtCore.Qt.AscendingOrder) 
 
         self.entryModel = EntryModel(parent=self)
+        self.entryProxyModel = QtGui.QSortFilterProxyModel()
+        self.entryProxyModel.setDynamicSortFilter(True)
+        self.entryProxyModel.setSourceModel(self.entryModel)
         self.feedList.setModel(self.feedModel)
-        self.entryList.setModel(self.entryModel)
+        self.entryList.setModel(self.entryProxyModel)
 
         self.entryModel.entriesChanged.connect(self.feedModel.entriesUpdated)
         
@@ -116,9 +120,9 @@ class MainWindow(QtGui.QMainWindow):
             self.entryModel.markRead(self.markReadIdx)
 
     def currentEntryChanged(self, idx1, idx2):
-        self.markReadIdx = idx1
+        self.markReadIdx = self.entryProxyModel.mapToSource(idx1)
         self.markReadTimer.start(500)
-        entry = self.entryModel.entryFromIndex(idx1)
+        entry = self.entryModel.entryFromIndex(self.markReadIdx)
         self.browser.setUrl(QUrl(entry.url))
 
     def updateFeeds(self):
@@ -161,13 +165,14 @@ class MainWindow(QtGui.QMainWindow):
     def deleteSelectedEntry(self):
         selection = self.entryList.selectionModel().selectedRows()
         if len(selection) > 0:
-            entry = self.entryModel.entryFromIndex(selection[0])
+            srcIdx = self.entryProxyModel.mapToSource(selection[0])
+            entry = self.entryModel.entryFromIndex(srcIdx)
             if QtGui.QMessageBox.question(self,
                     "Delete Feed",
                     "Do you really want to delete the article '%s'" % (entry.title),
                     QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                     QtGui.QMessageBox.No) == QtGui.QMessageBox.Yes:
-                self.entryModel.removeEntry(selection[0])
+                self.entryModel.removeEntry(srcIdx)
 
 
     def deleteSelectedFeed(self):
@@ -197,6 +202,9 @@ class MainWindow(QtGui.QMainWindow):
         settings = QtCore.QSettings("de.apaku", "Slimfeed")
         settings.beginGroup("EntryList")
         self._restoreHeaderView(settings, self.entryList)
+        # Ensure that the sort indicator is always shown on the entryList, even if restoring from
+        # a state before this property was used
+        self.entryList.horizontalHeader().setSortIndicatorShown(True)
         settings.endGroup()
         settings.beginGroup("FeedList")
         self._restoreHeaderView(settings, self.feedList)
