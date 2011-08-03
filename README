@@ -1,0 +1,19 @@
+Slimfeed
+
+This is a small and fast feed reader. 
+
+Requirements:
+Python 2.6 or later
+PyQt4 4.7 or later
+Qt4 4.6 or later
+python-feedparser
+
+For the unit-tests
+python-minimock
+python-unittest2
+python-nose
+
+This code was not tested against Python3
+
+Start it by running ./slimfeed.py
+
