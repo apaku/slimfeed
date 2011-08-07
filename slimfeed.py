@@ -104,17 +104,29 @@ class MainWindow(QtGui.QMainWindow):
         self.markReadTimer.timeout.connect(self.markEntryRead)
 
         self.updated.connect(self.feedsUpdated, QtCore.Qt.QueuedConnection)
+
+        # Set up systray
         self.sysTray = QtGui.QSystemTrayIcon(QtGui.qApp.windowIcon(), self)
         self.sysTray.show()
         self.sysTray.activated.connect(self.sysTrayActivated)
+        self.showAction = QtGui.QAction("Restore", self)
+        self.showAction.triggered.connect(self.doShow)
+        self.sysTrayMenu = QtGui.QMenu(self)
+        self.sysTrayMenu.addAction(self.showAction)
+        self.sysTrayMenu.addSeparator()
+        self.sysTrayMenu.addAction(self.actionQuit)
+        self.sysTray.setContextMenu(self.sysTrayMenu)
+
+    def doShow(self):
+        self.show()
+        self.activateWindow()
         
     def sysTrayActivated(self, reason):
         if reason == QtGui.QSystemTrayIcon.Trigger:
             if self.isVisible():
                 self.hide()
             else:
-                self.show()
-                self.activateWindow()
+                self.doShow()
 
     def markEntryRead(self):
         if self.markReadIdx is not None and self.markReadIdx.isValid():
