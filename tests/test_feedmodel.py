@@ -34,10 +34,12 @@ from entry import Entry
 from entrymodel import EntryModel
 from modeltest import ModelTest
 from signalspy import SignalSpy
-from PyQt4.QtCore import Qt, QModelIndex
+from PyQt4.QtCore import Qt, QModelIndex, pyqtSignal
 from PyQt4.QtGui import QFont
 import time
 
+class MockEntryModel(EntryModel):
+    entriesChanged = pyqtSignal(Mock)
 
 class FeedModelTest(unittest2.TestCase):
     def setUp(self):
@@ -60,7 +62,7 @@ class FeedModelTest(unittest2.TestCase):
         self.feedMgr.feeds.append(feed)
         self.feedModel = FeedModel(self.feedMgr)
         self.modeltest = ModelTest(self.feedModel, self.feedModel)
-        self.entryModel = EntryModel()
+        self.entryModel = MockEntryModel()
 
     def testUpdateDataFromRead(self):
         model = self.entryModel
