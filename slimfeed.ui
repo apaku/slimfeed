@@ -241,6 +241,7 @@
      <string>&amp;Article</string>
     </property>
     <addaction name="actionMarkAllEntriesRead"/>
+    <addaction name="actionMarkEntryAsImportant"/>
     <addaction name="actionDeleteEntry"/>
    </widget>
    <widget class="QMenu" name="menuSlimfeed">
@@ -397,6 +398,18 @@
    </property>
    <property name="text">
     <string>&amp;Delete</string>
+   </property>
+  </action>
+  <action name="actionMarkEntryAsImportant">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/mail-mark-important.png</normaloff>icons/mail-mark-important.png</iconset>
+   </property>
+   <property name="text">
+    <string>Mark As Important</string>
    </property>
   </action>
  </widget>

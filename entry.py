@@ -22,6 +22,24 @@ setupSipApi()
 
 from PyQt4 import QtCore
 
+def _readQSettingsBoolEntry(store, key, defValue):
+    if QtCore.PYQT_VERSION >= 0x040800:
+        return store.value(key, defValue, bool)
+    else:
+        # Workaround for QSettings returning wrong type from
+        # value if its not been used to set the value in this
+        # python interpreter instance
+        # In PyQt 4.8 and later there's a new overload for value to
+        # specify the return type
+        data = store.value(key, defValue)
+        if isinstance(data, str) or isinstance(data, unicode):
+            if data.lower() in ["true", "1"]:
+                data = True
+            elif data.lower() in ["false", "0"]:
+                data = False
+            else:
+                assert None, "Cannot convert string to bool: %s" % data
+        return data
 
 class Entry(object):
     def __init__(self):
@@ -32,6 +50,7 @@ class Entry(object):
         self._content = None
         self._author = None
         self._read = False
+        self._important = False
 
     def __hash__(self):
         if not self._id is None and len(self._id) > 0:
@@ -39,6 +58,7 @@ class Entry(object):
         return 3 * hash(self._title) \
                 + 5 * hash(self._author) \
                 + 7 * hash(self._url) \
+                + 13 * hash(self._important) \
                 + 17 * hash(self._read)
 
     def _getread(self):
@@ -56,6 +76,13 @@ class Entry(object):
     def _seturl(self, url):
         self._url = url
     url = property(_geturl, _seturl, None, "Url of this entry")
+
+    def _getimportant(self):
+        return self._important
+
+    def _setimportant(self, important):
+        self._important = important
+    important = property(_getimportant, _setimportant, None, "Important Mark")
 
     def _getupdated(self):
         return self._updated
@@ -105,23 +132,8 @@ class Entry(object):
         self.updated = store.value("Updated", None)
         self.url = store.value("Url", None)
         self.identity = store.value("Id", None)
-        if QtCore.PYQT_VERSION >= 0x040800:
-            self.read = store.value("Read", False, bool)
-        else:
-            # Workaround for QSettings returning wrong type from
-            # value if its not been used to set the value in this
-            # python interpreter instance
-            # In PyQt 4.8 and later there's a new overload for value to
-            # specify the return type
-            data = store.value("Read", False)
-            if isinstance(data, str) or isinstance(data, unicode):
-                if data.lower() in ["true", "1"]:
-                    data = True
-                elif data.lower() in ["false", "0"]:
-                    data = False
-                else:
-                    assert None, "Cannot convert string to bool: %s" % data
-            self.read = data
+        self.read = _readQSettingsBoolEntry(store, "Read", False)
+        self.important = _readQSettingsBoolEntry(store, "Important", False)
 
     def save(self, store):
         store.setValue("Title", self.title)
@@ -131,6 +143,7 @@ class Entry(object):
         store.setValue("Url", self.url)
         store.setValue("Id", self.identity)
         store.setValue("Read", self.read)
+        store.setValue("Important", self.important)
 
     def __eq__(self, other):
         if other is None:
@@ -140,6 +153,7 @@ class Entry(object):
                 and self.identity == other.identity \
                 and self.url == other.url \
                 and self.read == other.read \
+                and self.important == other.important \
                 and self.updated == other.updated \
                 and self.content == other.content)
 

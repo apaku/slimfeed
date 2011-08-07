@@ -55,7 +55,7 @@ class EntryModel(QAbstractTableModel):
     def columnCount(self, parent=QModelIndex()):
         if parent.isValid():
             return 0
-        return 3
+        return 4
 
     def data(self, idx, role=Qt.DisplayRole):
         if not idx.isValid() or \
@@ -71,15 +71,21 @@ class EntryModel(QAbstractTableModel):
         entry = list(self._feed.entries)[idx.row()]
         if role == Qt.DisplayRole:
             if idx.column() == 0:
-                return entry.title
+                if entry.important:
+                    return "!"
+                return ""
             elif idx.column() == 1:
-                return entry.author
+                return entry.title
             elif idx.column() == 2:
+                return entry.author
+            elif idx.column() == 3:
                 return qDateTimeFromTimeStruct(entry.updated)
         elif role == Qt.FontRole:
             fnt = QFont()
             if not entry.read:
                 fnt.setBold(True)
+            if entry.important:
+                fnt.setItalic(True)
             return fnt
         return None
 
@@ -89,10 +95,12 @@ class EntryModel(QAbstractTableModel):
                 orient != Qt.Horizontal:
             return None
         if col == 0:
-            return "Title"
+            return ""
         elif col == 1:
-            return "Author"
+            return "Title"
         elif col == 2:
+            return "Author"
+        elif col == 3:
             return "Updated"
 
     def markRead(self, idx):
@@ -103,6 +111,13 @@ class EntryModel(QAbstractTableModel):
                 self.dataChanged.emit(self.index(idx.row(), 0, idx.parent()), 
                                       self.index(idx.row(), self.columnCount(idx.parent()) - 1, idx.parent()))
                 self.entriesChanged.emit(self._feed)
+    def markImportant(self, idx):
+        if idx.isValid() and idx.row() >= 0 and idx.row() < self.rowCount(idx.parent()):
+            e = self._feed.entries[idx.row()]
+            e.important = not e.important
+            self.dataChanged.emit(self.index(idx.row(), 0, idx.parent()), 
+                                  self.index(idx.row(), self.columnCount(idx.parent()) - 1, idx.parent()))
+            self.entriesChanged.emit(self._feed)
 
     def feedsUpdated(self, updated):
         for info in updated:

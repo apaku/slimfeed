@@ -38,6 +38,7 @@ class EntryTest(unittest2.TestCase):
         self.saveentry.identity = "TestId"
         self.saveentry.updated = time.gmtime(time.time())
         self.saveentry.read = True
+        self.saveentry.important = True
 
     def testTitle(self):
         self.assertIsNone(self.entry.title)
@@ -48,6 +49,11 @@ class EntryTest(unittest2.TestCase):
         self.assertIsNone(self.entry.url)
         self.entry.url = "test"
         self.assertEqual(self.entry.url, "test")
+
+    def testImportant(self):
+        self.assertFalse(self.entry.important)
+        self.entry.important = True
+        self.assertTrue(self.entry.important)
 
     def testAuthor(self):
         self.assertIsNone(self.entry.author)
@@ -87,6 +93,7 @@ class EntryTest(unittest2.TestCase):
         store.setValue("Id", "MyId")
         store.setValue("Author", "MyAuthor")
         store.setValue("Read", True)
+        store.setValue("Important", True)
         entry = Entry()
         entry.load(store)
         self.assertEqual(entry.title, "MyTitle")
@@ -96,6 +103,7 @@ class EntryTest(unittest2.TestCase):
         self.assertEqual(entry.updated, updated)
         self.assertEqual(entry.content, "MyContent")
         self.assertEqual(entry.read, True)
+        self.assertEqual(entry.important, True)
 
     def testSave(self):
         store = StoreMock()
@@ -107,17 +115,19 @@ class EntryTest(unittest2.TestCase):
         self.assertEqual(store.value("Updated"), self.saveentry.updated)
         self.assertEqual(store.value("Id"), self.saveentry.identity)
         self.assertEqual(store.value("Read"), self.saveentry.read)
+        self.assertEqual(store.value("Important"), self.saveentry.important)
 
     def testEqual(self):
         entry = Entry()
-        entry.title = self.entry.title
-        entry.updated = self.entry.updated
-        entry.identity = self.entry.identity
-        entry.content = self.entry.content
-        entry.read = self.entry.read
-        entry.url = self.entry.url
-        entry.author = self.entry.author
-        self.assertEqual(self.entry, entry)
+        entry.title = self.saveentry.title
+        entry.updated = self.saveentry.updated
+        entry.identity = self.saveentry.identity
+        entry.content = self.saveentry.content
+        entry.read = self.saveentry.read
+        entry.url = self.saveentry.url
+        entry.important = self.saveentry.important
+        entry.author = self.saveentry.author
+        self.assertEqual(self.saveentry, entry)
 
 if __name__ == "__main__":
     unittest2.main()

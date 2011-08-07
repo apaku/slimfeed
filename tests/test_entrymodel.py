@@ -44,16 +44,43 @@ class EntryModelTest(unittest2.TestCase):
         entry.title = "Title1"
         entry.author = "Author1"
         entry.read = False
+        entry.important = False
         entry.updated = time.gmtime(time.time())
         self.feed.entries.append(entry)
         entry = Mock("Entry")
         entry.title = "Title2"
         entry.author = "Author2"
         entry.read = True
+        entry.important = True
         entry.updated = time.gmtime(time.time())
         self.feed.entries.append(entry)
         self.entryModel = EntryModel(self.feed)
         self.modeltest = ModelTest(self.entryModel, self.entryModel)
+
+    def testUpdateImportantStatus(self):
+        model = self.entryModel
+        spyEntriesChanged = SignalSpy(model.entriesChanged)
+        spyDataChanged = SignalSpy(model.dataChanged)
+        idx = model.index(0, 0, QModelIndex())
+        self.assertEqual(model.data(idx, Qt.DisplayRole), "")
+        model.markImportant(idx)
+        self.assertEqual(spyEntriesChanged.slotTriggered, 1)
+        self.assertEqual(spyEntriesChanged.arguments[0][0], self.feed)
+        self.assertEqual(spyDataChanged.slotTriggered, 1)
+        self.assertEqual(spyDataChanged.arguments[0][0].row(), model.index(0, 0, QModelIndex()).row())
+        self.assertEqual(spyDataChanged.arguments[0][1].row(), model.index(0, 2, QModelIndex()).row())
+        self.assertEqual(model.data(idx, Qt.DisplayRole), "!")
+        spyEntriesChanged = SignalSpy(model.entriesChanged)
+        spyDataChanged = SignalSpy(model.dataChanged)
+        idx = model.index(0, 0, QModelIndex())
+        model.markImportant(idx)
+        self.assertEqual(spyEntriesChanged.slotTriggered, 1)
+        self.assertEqual(spyEntriesChanged.arguments[0][0], self.feed)
+        self.assertEqual(spyDataChanged.slotTriggered, 1)
+        self.assertEqual(spyDataChanged.arguments[0][0].row(), model.index(0, 0, QModelIndex()).row())
+        self.assertEqual(spyDataChanged.arguments[0][1].row(), model.index(0, 2, QModelIndex()).row())
+        self.assertEqual(model.data(idx, Qt.DisplayRole), "")
+
 
     def testUpdateReadStatus(self):
         model = self.entryModel
@@ -67,33 +94,52 @@ class EntryModelTest(unittest2.TestCase):
         self.assertEqual(spyDataChanged.arguments[0][0].row(), model.index(0, 0, QModelIndex()).row())
         self.assertEqual(spyDataChanged.arguments[0][1].row(), model.index(0, 2, QModelIndex()).row())
 
+    def testHeader(self):
+        self.assertEqual(self.entryModel.headerData(0, Qt.Horizontal, Qt.DisplayRole), "")
+        self.assertEqual(self.entryModel.headerData(1, Qt.Horizontal, Qt.DisplayRole), "Title")
+        self.assertEqual(self.entryModel.headerData(2, Qt.Horizontal, Qt.DisplayRole), "Author")
+        self.assertEqual(self.entryModel.headerData(3, Qt.Horizontal, Qt.DisplayRole), "Updated")
+
     def testData(self):
         self.assertEqual(self.entryModel.rowCount(), 2)
+        self.assertEqual(self.entryModel.columnCount(), 4)
+        self.assertEqual(self.entryModel.data(
+                self.entryModel.index(0, 0, QModelIndex()), 
+                    Qt.DisplayRole), "")
         self.assertEqual(self.entryModel.data(
                 self.entryModel.index(0, 0, QModelIndex()),
-                    Qt.DisplayRole), "Title1")
+                    Qt.FontRole).italic(), False)
         self.assertEqual(self.entryModel.data(
                 self.entryModel.index(0, 1, QModelIndex()),
-                    Qt.DisplayRole), "Author1")
+                    Qt.DisplayRole), "Title1")
         self.assertEqual(self.entryModel.data(
                 self.entryModel.index(0, 2, QModelIndex()),
+                    Qt.DisplayRole), "Author1")
+        self.assertEqual(self.entryModel.data(
+                self.entryModel.index(0, 3, QModelIndex()),
                     Qt.DisplayRole), qDateTimeFromTimeStruct(
                         list(self.feed.entries)[0].updated))
         self.assertEqual(self.entryModel.data(
-                self.entryModel.index(0, 0, QModelIndex()),
+                self.entryModel.index(0, 1, QModelIndex()),
                     Qt.FontRole).bold(), True)
         self.assertEqual(self.entryModel.data(
-                self.entryModel.index(1, 0, QModelIndex()),
+                self.entryModel.index(1, 1, QModelIndex()),
                     Qt.DisplayRole), "Title2")
         self.assertEqual(self.entryModel.data(
-                self.entryModel.index(1, 1, QModelIndex()),
-                    Qt.DisplayRole), "Author2")
+                self.entryModel.index(1, 0, QModelIndex()), 
+                    Qt.DisplayRole), "!")
+        self.assertEqual(self.entryModel.data(
+                self.entryModel.index(1, 0, QModelIndex()),
+                    Qt.FontRole).italic(), True)
         self.assertEqual(self.entryModel.data(
                 self.entryModel.index(1, 2, QModelIndex()),
+                    Qt.DisplayRole), "Author2")
+        self.assertEqual(self.entryModel.data(
+                self.entryModel.index(1, 3, QModelIndex()),
                     Qt.DisplayRole), qDateTimeFromTimeStruct(
                         list(self.feed.entries)[1].updated))
         self.assertEqual(self.entryModel.data(
-                self.entryModel.index(1, 0, QModelIndex()),
+                self.entryModel.index(1, 1, QModelIndex()),
                     Qt.FontRole).bold(), False)
 
 if __name__ == "__main__":

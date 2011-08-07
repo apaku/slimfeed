@@ -85,6 +85,7 @@ class MainWindow(QtGui.QMainWindow):
         self.actionAdd.triggered.connect(self.addFeed)
         self.actionDeleteFeed.triggered.connect(self.deleteSelectedFeed)
         self.actionDeleteEntry.triggered.connect(self.deleteSelectedEntry)
+        self.actionMarkEntryAsImportant.triggered.connect(self.markSelectedEntriesImportant)
         self.feedList.selectionModel().selectionChanged.connect(
                 self.feedSelectionChanged)
         self.entryList.selectionModel().selectionChanged.connect(
@@ -125,6 +126,13 @@ class MainWindow(QtGui.QMainWindow):
         entry = self.entryModel.entryFromIndex(self.markReadIdx)
         self.browser.setUrl(QUrl(entry.url))
 
+    def markSelectedEntriesImportant(self):
+        selection = self.entryList.selectionModel().selectedRows()
+        if len(selection) > 0:
+            for idx in selection:
+                srcIdx = self.entryProxyModel.mapToSource(idx)
+                self.entryModel.markImportant(srcIdx)
+
     def updateFeeds(self):
         self.updateThread = Thread(target=updateFeeds, name="Updating Feeds", args=(self,))
         self.updateThread.start()
@@ -147,7 +155,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def setupListToolBars(self):
         self._setupToolBar(self.feedToolBar, self.feedToolBarContainer, [self.actionDeleteFeed,])
-        self._setupToolBar(self.entryToolBar, self.entryToolBarContainer, [self.actionDeleteEntry, ])
+        self._setupToolBar(self.entryToolBar, self.entryToolBarContainer, [self.actionMarkEntryAsImportant, self.actionDeleteEntry])
         self._setupToolBar(self.browserToolBar, self.browserToolBarContainer, [self.actionBack,self.actionForward,self.actionStop,self.actionReload])
 
     def feedSelectionChanged(self):
@@ -161,6 +169,7 @@ class MainWindow(QtGui.QMainWindow):
     def entrySelectionChanged(self):
         selection = self.entryList.selectionModel().selectedRows()
         self.actionDeleteEntry.setEnabled((len(selection) > 0))
+        self.actionMarkEntryAsImportant.setEnabled((len(selection) > 0))
 
     def deleteSelectedEntry(self):
         selection = self.entryList.selectionModel().selectedRows()
