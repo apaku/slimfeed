@@ -38,7 +38,8 @@ class Entry(object):
             return hash(self._id)
         return 3 * hash(self._title) \
                 + 5 * hash(self._author) \
-                + 7 * hash(self._url)
+                + 7 * hash(self._url) \
+                + 17 * hash(self._read)
 
     def _getread(self):
         return self._read
