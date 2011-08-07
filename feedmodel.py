@@ -79,7 +79,7 @@ class FeedModel(QAbstractTableModel):
         elif col == 2:
             return "All"
 
-    def getFeed(self, idx):
+    def feedFromIndex(self, idx):
         if idx.row() < 0 \
             or idx.row() >= self.rowCount(idx.parent()) \
             or idx.parent().isValid():

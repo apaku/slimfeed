@@ -174,7 +174,7 @@ class MainWindow(QtGui.QMainWindow):
         selection = self.feedList.selectionModel().selectedRows()
         self.actionDeleteFeed.setEnabled((len(selection) > 0))
         if len(selection) > 0:
-            self.entryModel.feed = self.feedModel.getFeed(selection[0])
+            self.entryModel.feed = self.feedModel.feedFromIndex(selection[0])
         else:
             self.entryModel.feed = None
 
@@ -199,7 +199,7 @@ class MainWindow(QtGui.QMainWindow):
     def deleteSelectedFeed(self):
         selection = self.feedList.selectionModel().selectedRows()
         if len(selection) > 0:
-            feed = self.feedModel.getFeed(selection[0])
+            feed = self.feedModel.feedFromIndex(selection[0])
             if QtGui.QMessageBox.question(self,
                     "Delete Feed",
                     "Do you really want to delete the feed '%s'" % (feed.title),

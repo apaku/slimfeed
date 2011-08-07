@@ -102,9 +102,9 @@ class FeedModelTest(unittest2.TestCase):
 
     def testGetFeed(self):
         model = self.feedModel
-        feed = model.getFeed(model.index(0, 0, QModelIndex()))
+        feed = model.feedFromIndex(model.index(0, 0, QModelIndex()))
         self.assertEqual(self.feedMgr.feeds[0], feed)
-        feed = model.getFeed(model.index(1, 0, QModelIndex()))
+        feed = model.feedFromIndex(model.index(1, 0, QModelIndex()))
         self.assertEqual(self.feedMgr.feeds[1], feed)
 
     def testDeleteFeed(self):
