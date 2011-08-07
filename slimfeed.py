@@ -96,7 +96,7 @@ class MainWindow(QtGui.QMainWindow):
         self.updateTimer.start(6000)
         # Need to do this async, _readSettings is done too early and
         # hence the size is being overwritten somehow later on
-        QtCore.QTimer.singleShot(0, self._loadViewSizes)
+        QtCore.QTimer.singleShot(0, self._restoreViews)
 
         self.entryList.selectionModel().currentChanged.connect(self.currentEntryChanged)
         self.markReadTimer = QtCore.QTimer()
@@ -219,7 +219,7 @@ class MainWindow(QtGui.QMainWindow):
                 view.horizontalHeader().resizeSection(col, newsize)
                 settings.endGroup()
 
-    def _loadViewSizes(self):
+    def _restoreViews(self):
         settings = QtCore.QSettings("de.apaku", "Slimfeed")
         settings.beginGroup("EntryList")
         self._restoreHeaderView(settings, self.entryList)
