@@ -140,6 +140,14 @@ class EntryModel(QAbstractTableModel):
         self.endRemoveRows()
         self.entriesChanged.emit(self._feed)
 
+    def indexForFeed(self, entry):
+        if self._feed is None:
+            return None
+        for i in range(0, len(self._feed.entries)):
+            if self._feed.entries[i] == entry:
+                return self.index(i, 0, QModelIndex())
+        return None
+
 if __name__ == "__main__":
     import sys
     print "Cannot run this module"

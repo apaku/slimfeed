@@ -221,14 +221,40 @@ class MainWindow(QtGui.QMainWindow):
 
     def _restoreViews(self):
         settings = QtCore.QSettings("de.apaku", "Slimfeed")
+        settings.beginGroup("FeedList")
+        self._restoreHeaderView(settings, self.feedList)
+        currentFeedId = settings.value("CurrentFeedUrl", None)
+        currentFeed = None
+        if currentFeedId is not None:
+            for feed in self.feedMgr.feeds:
+                if feed.url == currentFeedId:
+                    currentFeed = feed
+                    break
+        if currentFeed is not None:
+            # Make sure to select the complete row, to be consistent with what the user
+            # can select
+            topleft = self.feedModel.indexForFeed(currentFeed)
+            self.feedList.selectionModel().select(topleft, QtGui.QItemSelectionModel.ClearAndSelect|QtGui.QItemSelectionModel.Rows)
+            self.feedList.selectionModel().setCurrentIndex(topleft, QtGui.QItemSelectionModel.Current)
+        settings.endGroup()
         settings.beginGroup("EntryList")
         self._restoreHeaderView(settings, self.entryList)
         # Ensure that the sort indicator is always shown on the entryList, even if restoring from
         # a state before this property was used
         self.entryList.horizontalHeader().setSortIndicatorShown(True)
-        settings.endGroup()
-        settings.beginGroup("FeedList")
-        self._restoreHeaderView(settings, self.feedList)
+        currentEntryId = settings.value("CurrentEntryId", None)
+        currentEntry = None
+        if currentEntryId is not None and currentFeed is not None:
+            for entry in currentFeed.entries:
+                if entry.identity == currentEntryId:
+                    currentEntry = entry
+                    break
+        if currentEntry is not None:
+            # Make sure to select the complete row, to be consistent with what the user
+            # can select
+            topleft = self.entryProxyModel.mapFromSource(self.entryModel.indexForFeed(currentEntry))
+            self.entryList.selectionModel().select(topleft, QtGui.QItemSelectionModel.ClearAndSelect | QtGui.QItemSelectionModel.Rows)
+            self.entryList.selectionModel().setCurrentIndex(topleft, QtGui.QItemSelectionModel.Current)
         settings.endGroup()
 
     def _readSettings(self):
@@ -244,6 +270,12 @@ class MainWindow(QtGui.QMainWindow):
         settings.setValue("geometry", self.saveGeometry())
         settings.setValue("state", self.saveState())
         settings.beginGroup("EntryList")
+        currentEntry = self.entryModel.entryFromIndex(self.entryProxyModel.mapToSource(
+                       self.entryList.selectionModel().currentIndex()))
+        if currentEntry is not None:
+            settings.setValue("CurrentEntryId", currentEntry.identity)
+        else:
+            settings.setValue("CurrentEntryId", None)
         settings.setValue("Horizontal Header State", 
                 self.entryList.horizontalHeader().saveState())
         for col in range(0, self.entryList.horizontalHeader().count()):
@@ -253,6 +285,11 @@ class MainWindow(QtGui.QMainWindow):
             settings.endGroup()
         settings.endGroup()
         settings.beginGroup("FeedList")
+        currentFeed = self.feedModel.feedFromIndex(self.feedList.selectionModel().currentIndex())
+        if currentFeed is not None:
+            settings.setValue("CurrentFeedUrl", currentFeed.url)
+        else:
+            settings.setValue("CurrentFeedUrl", None)
         settings.setValue("Horizontal Header State", 
                 self.feedList.horizontalHeader().saveState())
         for col in range(0, self.feedList.horizontalHeader().count()):

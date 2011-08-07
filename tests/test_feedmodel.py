@@ -124,5 +124,9 @@ class FeedModelTest(unittest2.TestCase):
         model.addFeed(feed)
         self.assertEqual(model.rowCount(), 3)
 
+    def testIndexFromFeed(self):
+        self.assertEqual(self.feedModel.indexForFeed(self.feedMgr.feeds[0]), self.feedModel.index(0, 0, QModelIndex()))
+        self.assertEqual(self.feedModel.indexForFeed(self.feedMgr.feeds[1]), self.feedModel.index(1, 0, QModelIndex()))
+
 if __name__ == "__main__":
     unittest2.main()
