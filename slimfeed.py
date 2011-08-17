@@ -28,11 +28,14 @@ from threading import Thread
 import feedparser
 import sys
 
+class UpdateThread(Thread):
+    def __init__(self, mainwin):
+        Thread.__init__(self, name="Update Feeds")
+        self.mainwin = mainwin
 
-def updateFeeds(*args):
-    mainwin = args[0]
-    updated = mainwin.feedMgr.update()
-    mainwin.updated.emit(updated)
+    def run(self):
+        updated = self.mainwin.feedMgr.update()
+        self.mainwin.updated.emit(updated)
 
 class SlimApp(QtGui.QApplication):
     def __init__(self, args):
@@ -93,6 +96,7 @@ class MainWindow(QtGui.QMainWindow):
         self.feedList.addAction(self.actionDeleteFeed)
         self.updateTimer = QtCore.QTimer()
         self.updateTimer.timeout.connect(self.updateFeeds)
+        self.updateThread = None
         self.updateTimer.start(6000)
         # Need to do this async, _readSettings is done too early and
         # hence the size is being overwritten somehow later on
@@ -146,8 +150,10 @@ class MainWindow(QtGui.QMainWindow):
                 self.entryModel.markImportant(srcIdx)
 
     def updateFeeds(self):
-        self.updateThread = Thread(target=updateFeeds, name="Updating Feeds", args=(self,))
-        self.updateThread.start()
+        if self.updateThread is None or not self.updateThread.isAlive():
+            self.updateThread = UpdateThread(self)
+            self.updateThread.setDaemon(True)
+            self.updateThread.start()
 
     @QtCore.pyqtSlot(list)
     def feedsUpdated(self, updated):
