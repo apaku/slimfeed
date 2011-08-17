@@ -38,3 +38,17 @@ def _readQSettingsBoolEntry(store, key, defValue):
             else:
                 assert None, "Cannot convert string to bool: %s" % data
         return data
+
+def _readQSettingsIntEntry(store, key, defValue):
+    if QtCore.PYQT_VERSION >= 0x040800:
+        return store.value(key, defValue, int)
+    else:
+        # Workaround for QSettings returning wrong type from
+        # value if its not been used to set the value in this
+        # python interpreter instance
+        # In PyQt 4.8 and later there's a new overload for value to
+        # specify the return type
+        data = store.value(key, defValue)
+        if isinstance(data, str) or isinstance(data, unicode):
+            data = int(data)
+        return data

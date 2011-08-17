@@ -23,8 +23,10 @@ from PyQt4.QtCore import QUrl, pyqtSignal
 from feedmanager import FeedManager
 from feedmodel import FeedModel
 from entrymodel import EntryModel
+from preferences import Preferences
 from feedparserfactory import createFeedFromData
 from threading import Thread
+from qsettingsutils import _readQSettingsIntEntry
 import feedparser
 import sys
 
@@ -85,6 +87,7 @@ class MainWindow(QtGui.QMainWindow):
         self.actionQuit.triggered.connect(self.quit)
         self.actionAbout.triggered.connect(self.showAbout)
         self.actionAboutQt.triggered.connect(QtGui.qApp.aboutQt)
+        self.actionPreferences.triggered.connect(self.showPreferences)
         self.actionAdd.triggered.connect(self.addFeed)
         self.actionDeleteFeed.triggered.connect(self.deleteSelectedFeed)
         self.actionDeleteEntry.triggered.connect(self.deleteSelectedEntry)
@@ -97,7 +100,7 @@ class MainWindow(QtGui.QMainWindow):
         self.updateTimer = QtCore.QTimer()
         self.updateTimer.timeout.connect(self.updateFeeds)
         self.updateThread = None
-        self.updateTimer.start(6000)
+        self.updateTimer.start(self.updateTimeout)
         # Need to do this async, _readSettings is done too early and
         # hence the size is being overwritten somehow later on
         QtCore.QTimer.singleShot(0, self._restoreViews)
@@ -125,6 +128,17 @@ class MainWindow(QtGui.QMainWindow):
         self.show()
         self.activateWindow()
         
+    def showPreferences(self):
+        prefs = Preferences(self)
+        prefs.setWindowTitle("Slimfeed Preferences")
+        prefs.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        prefs.updateTimeout = self.updateTimeout
+        prefs.markReadTimeout = self.markReadTimeout
+        if prefs.exec_() == QtGui.QDialog.Accepted:
+            self.updateTimeout = prefs.updateTimeout
+            self.markReadTimeout = prefs.markReadTimeout
+            print self.updateTimeout, self.markReadTimeout
+
     def sysTrayActivated(self, reason):
         if reason == QtGui.QSystemTrayIcon.Trigger:
             if self.isVisible():
@@ -138,7 +152,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def currentEntryChanged(self, idx1, idx2):
         self.markReadIdx = self.entryProxyModel.mapToSource(idx1)
-        self.markReadTimer.start(500)
+        self.markReadTimer.start(self.markReadTimeout)
         entry = self.entryModel.entryFromIndex(self.markReadIdx)
         self.browser.setUrl(QUrl(entry.url))
 
@@ -160,7 +174,7 @@ class MainWindow(QtGui.QMainWindow):
         self.updateThread = None
         self.feedModel.feedsUpdated(updated)
         self.entryModel.feedsUpdated(updated)
-        self.updateTimer.start(6000)
+        self.updateTimer.start(self.updateTimeout)
 
     def _setupToolBar(self, toolbar, container, actions):
         container.setLayout(QtGui.QVBoxLayout())
@@ -267,6 +281,8 @@ class MainWindow(QtGui.QMainWindow):
         settings = QtCore.QSettings("de.apaku", "Slimfeed")
         self.restoreGeometry(settings.value("geometry", QtCore.QByteArray()))
         self.restoreState(settings.value("state", QtCore.QByteArray()))
+        self.updateTimeout = _readQSettingsIntEntry(settings, "UpdateTimeout", 6000)
+        self.markReadTimeout = _readQSettingsIntEntry(settings, "MarkReadTimeout", 500)
         settings.beginGroup("Feeds")
         self.feedMgr.load(settings)
         settings.endGroup()
@@ -275,6 +291,8 @@ class MainWindow(QtGui.QMainWindow):
         settings = QtCore.QSettings("de.apaku", "Slimfeed")
         settings.setValue("geometry", self.saveGeometry())
         settings.setValue("state", self.saveState())
+        settings.setValue("UpdateTimeout", self.updateTimeout)
+        settings.setValue("MarkReadTimeout", self.markReadTimeout)
         settings.beginGroup("EntryList")
         currentEntry = self.entryModel.entryFromIndex(self.entryProxyModel.mapToSource(
                        self.entryList.selectionModel().currentIndex()))
