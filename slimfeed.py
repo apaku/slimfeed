@@ -138,7 +138,6 @@ class MainWindow(QtGui.QMainWindow):
         if prefs.exec_() == QtGui.QDialog.Accepted:
             self.updateTimeout = prefs.updateTimeout
             self.markReadTimeout = prefs.markReadTimeout
-            print self.updateTimeout, self.markReadTimeout
 
     def sysTrayActivated(self, reason):
         if reason == QtGui.QSystemTrayIcon.Trigger:
