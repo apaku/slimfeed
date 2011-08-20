@@ -114,6 +114,7 @@ class MainWindow(QtGui.QMainWindow):
 
         # Set up systray
         self.sysTray = QtGui.QSystemTrayIcon(QtGui.qApp.windowIcon(), self)
+        self.updateSystrayIcon()
         self.sysTray.show()
         self.sysTray.activated.connect(self.sysTrayActivated)
         self.showAction = QtGui.QAction("Restore", self)
@@ -149,6 +150,7 @@ class MainWindow(QtGui.QMainWindow):
     def markEntryRead(self):
         if self.markReadIdx is not None and self.markReadIdx.isValid():
             self.entryModel.markRead(self.markReadIdx)
+        self.updateSystrayIcon()
 
     def currentEntryChanged(self, idx1, idx2):
         self.markReadIdx = self.entryProxyModel.mapToSource(idx1)
@@ -169,11 +171,28 @@ class MainWindow(QtGui.QMainWindow):
             self.updateThread.setDaemon(True)
             self.updateThread.start()
 
+    def updateSystrayIcon(self):
+        numUnread = 0
+        for feed in self.feedMgr.feeds:
+            numUnread += feed.unread
+        pixmap = self.windowIcon().pixmap(self.sysTray.geometry().size())
+        if not pixmap.isNull():
+            painter = QtGui.QPainter()
+            painter.begin(pixmap)
+            font = painter.font()
+            font.setBold(True)
+            painter.setFont(font)
+            painter.drawText(pixmap.rect(), QtCore.Qt.AlignCenter | QtCore.Qt.AlignHCenter, str(numUnread) );
+            painter.end()
+            self.sysTrayIcon = QtGui.QIcon(pixmap)
+            self.sysTray.setIcon(self.sysTrayIcon)
+
     @QtCore.pyqtSlot(list)
     def feedsUpdated(self, updated):
         self.updateThread = None
         self.feedModel.feedsUpdated(updated)
         self.entryModel.feedsUpdated(updated)
+        self.updateSystrayIcon()
         self.updateTimer.start(self.updateTimeout)
 
     def _setupToolBar(self, toolbar, container, actions):
