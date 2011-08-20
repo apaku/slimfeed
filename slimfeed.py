@@ -134,9 +134,14 @@ class MainWindow(QtGui.QMainWindow):
         prefs.setWindowTitle("Slimfeed Preferences")
         prefs.updateTimeout = self.updateTimeout
         prefs.markReadTimeout = self.markReadTimeout
+        prefs.systrayFont = self.systrayFont
+        prefs.systrayFontColor = self.systrayFontColor
         if prefs.exec_() == QtGui.QDialog.Accepted:
             self.updateTimeout = prefs.updateTimeout
             self.markReadTimeout = prefs.markReadTimeout
+            self.systrayFont = prefs.systrayFont
+            self.systrayFontColor = prefs.systrayFontColor
+            self.updateSystrayIcon()
 
     def sysTrayActivated(self, reason):
         if reason == QtGui.QSystemTrayIcon.Trigger:
@@ -177,9 +182,8 @@ class MainWindow(QtGui.QMainWindow):
         if not pixmap.isNull():
             painter = QtGui.QPainter()
             painter.begin(pixmap)
-            font = painter.font()
-            font.setBold(True)
-            painter.setFont(font)
+            painter.setFont(self.systrayFont)
+            painter.setPen(self.systrayFontColor)
             painter.drawText(pixmap.rect(), QtCore.Qt.AlignCenter | QtCore.Qt.AlignHCenter, str(numUnread) );
             painter.end()
             self.sysTrayIcon = QtGui.QIcon(pixmap)
@@ -300,6 +304,11 @@ class MainWindow(QtGui.QMainWindow):
         self.restoreState(settings.value("state", QtCore.QByteArray()))
         self.updateTimeout = _readQSettingsIntEntry(settings, "UpdateTimeout", 6000)
         self.markReadTimeout = _readQSettingsIntEntry(settings, "MarkReadTimeout", 500)
+        self.systrayFontColor = settings.value("SystrayFontColor", QtGui.qApp.palette().color(QtGui.QPalette.Active,QtGui.QPalette.Text))
+        # The default font for the systray overlay text should be bold
+        defFont = QtGui.qApp.font()
+        defFont.setBold(True)
+        self.systrayFont = settings.value("SystrayFont", defFont)
         settings.beginGroup("Feeds")
         self.feedMgr.load(settings)
         settings.endGroup()
@@ -310,6 +319,8 @@ class MainWindow(QtGui.QMainWindow):
         settings.setValue("state", self.saveState())
         settings.setValue("UpdateTimeout", self.updateTimeout)
         settings.setValue("MarkReadTimeout", self.markReadTimeout)
+        settings.setValue("SystrayFont", self.systrayFont)
+        settings.setValue("SystrayFontColor", self.systrayFontColor)
         settings.beginGroup("EntryList")
         currentEntry = self.entryModel.entryFromIndex(self.entryProxyModel.mapToSource(
                        self.entryList.selectionModel().currentIndex()))
