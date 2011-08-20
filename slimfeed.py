@@ -132,7 +132,6 @@ class MainWindow(QtGui.QMainWindow):
     def showPreferences(self):
         prefs = Preferences(self)
         prefs.setWindowTitle("Slimfeed Preferences")
-        prefs.setAttribute(QtCore.Qt.WA_DeleteOnClose)
         prefs.updateTimeout = self.updateTimeout
         prefs.markReadTimeout = self.markReadTimeout
         if prefs.exec_() == QtGui.QDialog.Accepted:
