@@ -60,3 +60,33 @@ class Preferences(QtGui.QDialog):
     def _systrayFont(self):
         return self.systrayFontCombo.currentFont()
     systrayFont = property(_systrayFont, _setSystrayFont, None, "Font to be used for the system tray")
+
+    def _setArticleDeletionEnabled(self, enableArticleDeletion):
+        self.articleDeletionGroup.setChecked(enableArticleDeletion)
+    def _articleDeletionEnabled(self):
+        return self.articleDeletionGroup.isChecked()
+    articleDeletionEnabled = property(_articleDeletionEnabled, _setArticleDeletionEnabled, None, "Deletion of articles should be enabled")
+
+    def _setNumberOfDaysEnabled(self, enableArticleDeletionAfterDays):
+        self.numberOfDaysRadio.setChecked(enableArticleDeletionAfterDays)
+    def _numberOfDaysEnabled(self):
+        return self.numberOfDaysRadio.isChecked()
+    numberOfDaysEnabled = property(_numberOfDaysEnabled, _setNumberOfDaysEnabled, None, "Deletion of articles after X days enabled")
+
+    def _setNumberOfDays(self, numDays):
+        self.numberOfDaysEdit.setValue(numDays)
+    def _numberOfDays(self):
+        return self.numberOfDaysEdit.value()
+    numberOfDays = property(_numberOfDays, _setNumberOfDays, None, "Deletion of articles after X days")
+
+    def _setNumberOfArticlesEnabled(self, enableLimitNumberOfArticles):
+        self.numberOfArticlesRadio.setChecked(enableLimitNumberOfArticles)
+    def _numberOfArticlesEnabled(self):
+        return self.numberOfArticlesRadio.isChecked()
+    numberOfArticlesEnabled = property(_numberOfArticlesEnabled, _setNumberOfArticlesEnabled, None, "Limit Number of Articles enabled")
+
+    def _setNumberOfArticles(self, numArticles):
+        self.numberOfArticlesEdit.setValue(numArticles)
+    def _numberOfArticles(self):
+        return self.numberOfArticlesEdit.value()
+    numberOfArticles = property(_numberOfArticles, _setNumberOfArticles, None, "Maxium number of articles per feed")

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>428</width>
-    <height>220</height>
+    <width>382</width>
+    <height>321</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,109 +15,180 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QFormLayout" name="formLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Update Interval</string>
-       </property>
-       <property name="buddy">
-        <cstring>updateTimeoutBox</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QSpinBox" name="updateTimeoutBox">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="toolTip">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Time Intervals</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Update feeds every:</string>
+        </property>
+        <property name="buddy">
+         <cstring>updateTimeoutBox</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QSpinBox" name="updateTimeoutBox">
+        <property name="toolTip">
          <string>Specifies the number of seconds to wait between updating the feeds from their urls.</string>
-       </property>
-       <property name="suffix">
+        </property>
+        <property name="suffix">
          <string> s</string>
-       </property>
-       <property name="maximum">
-        <number>999999</number>
-       </property>
-       <property name="value">
-        <number>0</number>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Mark Read Interval</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QSpinBox" name="markReadTimeoutBox">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="toolTip">
-        <string>Specifies the number of milliseconds after which a selected article is automatically marked as being read.</string>
-       </property>
-       <property name="suffix">
-        <string> ms</string>
-       </property>
-       <property name="minimum">
-        <number>0</number>
-       </property>
-       <property name="maximum">
-        <number>999999</number>
-       </property>
-       <property name="value">
-        <number>0</number>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>System Tray Font</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QFontComboBox" name="systrayFontCombo">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>System Tray Font Color</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QPushButton" name="systrayColorChooser">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Choose Color</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+        </property>
+        <property name="maximum">
+         <number>999999</number>
+        </property>
+        <property name="value">
+         <number>300</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Mark selected articles as Read after:</string>
+        </property>
+        <property name="buddy">
+         <cstring>markReadTimeoutBox</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="markReadTimeoutBox">
+        <property name="toolTip">
+         <string>Specifies the number of milliseconds after which a selected article is automatically marked as being read.</string>
+        </property>
+        <property name="suffix">
+         <string> ms</string>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>999999</number>
+        </property>
+        <property name="value">
+         <number>500</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>System Tray</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>System Tray Font:</string>
+        </property>
+        <property name="buddy">
+         <cstring>systrayFontCombo</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QFontComboBox" name="systrayFontCombo"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>System Tray Font Color:</string>
+        </property>
+        <property name="buddy">
+         <cstring>systrayColorChooser</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="systrayColorChooser">
+        <property name="text">
+         <string>Choose Color</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="articleDeletionGroup">
+     <property name="toolTip">
+      <string>If enabled articles older than the specified number of days or the oldest articles that fall out of the maximum number will be deleted</string>
+     </property>
+     <property name="title">
+      <string>Article Deletion</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <layout class="QFormLayout" name="formLayout_3">
+      <property name="labelAlignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="numberOfDaysRadio">
+        <property name="text">
+         <string>Delete articles in a feed after:</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QSpinBox" name="numberOfDaysEdit">
+        <property name="toolTip">
+         <string>Specifies the number of days to keep read articles before automatically deleting them</string>
+        </property>
+        <property name="suffix">
+         <string> days</string>
+        </property>
+        <property name="maximum">
+         <number>9999</number>
+        </property>
+        <property name="value">
+         <number>60</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QRadioButton" name="numberOfArticlesRadio">
+        <property name="text">
+         <string>Limit number of articles per feed to:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="numberOfArticlesEdit">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>Specifies the maximum number of articles to keep before automatically deleting the oldest ones</string>
+        </property>
+        <property name="suffix">
+         <string/>
+        </property>
+        <property name="maximum">
+         <number>999999</number>
+        </property>
+        <property name="value">
+         <number>100</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <widget class="Line" name="line">
@@ -138,6 +209,18 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>updateTimeoutBox</tabstop>
+  <tabstop>markReadTimeoutBox</tabstop>
+  <tabstop>systrayFontCombo</tabstop>
+  <tabstop>systrayColorChooser</tabstop>
+  <tabstop>articleDeletionGroup</tabstop>
+  <tabstop>numberOfDaysRadio</tabstop>
+  <tabstop>numberOfDaysEdit</tabstop>
+  <tabstop>numberOfArticlesRadio</tabstop>
+  <tabstop>numberOfArticlesEdit</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -147,8 +230,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>254</x>
+     <y>314</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -163,12 +246,76 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>322</x>
+     <y>314</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
      <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>numberOfDaysRadio</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>numberOfDaysEdit</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>154</x>
+     <y>218</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>295</x>
+     <y>218</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>numberOfArticlesRadio</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>numberOfArticlesEdit</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>125</x>
+     <y>242</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>265</x>
+     <y>241</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>numberOfDaysRadio</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>numberOfArticlesEdit</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>88</x>
+     <y>217</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>269</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>numberOfArticlesRadio</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>numberOfDaysEdit</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>67</x>
+     <y>244</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>272</x>
+     <y>214</y>
     </hint>
    </hints>
   </connection>

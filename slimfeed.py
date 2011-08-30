@@ -26,7 +26,7 @@ from entrymodel import EntryModel
 from preferences import Preferences
 from feedparserfactory import createFeedFromData
 from threading import Thread
-from qsettingsutils import _readQSettingsIntEntry
+from qsettingsutils import _readQSettingsIntEntry, _readQSettingsBoolEntry
 import feedparser
 import sys
 
@@ -139,11 +139,21 @@ class MainWindow(QtGui.QMainWindow):
         prefs.markReadTimeout = self.markReadTimeout
         prefs.systrayFont = self.systrayFont
         prefs.systrayFontColor = self.systrayFontColor
+        prefs.articleDeletionEnabled = self.enableArticleDeletion
+        prefs.numberOfArticlesEnabled = self.numberOfArticlesEnabled
+        prefs.numberOfArticles = self.numberOfArticles
+        prefs.numberOfDaysEnabled = self.numberOfDaysEnabled
+        prefs.numberOfDays = self.numberOfDays
         if prefs.exec_() == QtGui.QDialog.Accepted:
             self.updateTimeout = prefs.updateTimeout
             self.markReadTimeout = prefs.markReadTimeout
             self.systrayFont = prefs.systrayFont
             self.systrayFontColor = prefs.systrayFontColor
+            self.enableArticleDeletion = prefs.articleDeletionEnabled
+            self.numberOfArticlesEnabled = prefs.numberOfArticlesEnabled
+            self.numberOfArticles = prefs.numberOfArticles
+            self.numberOfDaysEnabled = prefs.numberOfDaysEnabled
+            self.numberOfDays = prefs.numberOfDays
             self.updateSystrayIcon()
 
     def sysTrayActivated(self, reason):
@@ -308,6 +318,15 @@ class MainWindow(QtGui.QMainWindow):
         self.updateTimeout = _readQSettingsIntEntry(settings, "UpdateTimeout", 300)
         self.markReadTimeout = _readQSettingsIntEntry(settings, "MarkReadTimeout", 500)
         self.systrayFontColor = settings.value("SystrayFontColor", QtGui.qApp.palette().color(QtGui.QPalette.Active,QtGui.QPalette.Text))
+        settings.beginGroup("ArticleDeletion")
+
+        self.enableArticleDeletion = _readQSettingsBoolEntry(settings, "Enabled", False)
+        self.numberOfArticlesEnabled = _readQSettingsBoolEntry(settings, "NumberOfArticlesEnabled", False)
+        self.numberOfArticles = _readQSettingsIntEntry(settings, "NumberOfArticles", 100)
+        self.numberOfDaysEnabled = _readQSettingsBoolEntry(settings, "NumberOfDaysEnabled", True)
+        self.numberOfDays = _readQSettingsIntEntry(settings, "NumberOfDays", 60)
+        settings.endGroup()
+
         # The default font for the systray overlay text should be bold
         defFont = QtGui.qApp.font()
         defFont.setBold(True)
@@ -322,6 +341,15 @@ class MainWindow(QtGui.QMainWindow):
         settings.setValue("state", self.saveState())
         settings.setValue("UpdateTimeout", self.updateTimeout)
         settings.setValue("MarkReadTimeout", self.markReadTimeout)
+
+        settings.beginGroup("ArticleDeletion")
+        settings.setValue("Enabled", self.enableArticleDeletion)
+        settings.setValue("NumberOfArticlesEnabled", self.numberOfArticlesEnabled)
+        settings.setValue("NumberOfArticles", self.numberOfArticles)
+        settings.setValue("NumberOfDaysEnabled", self.numberOfDaysEnabled)
+        settings.setValue("NumberOfDays", self.numberOfDays)
+        settings.endGroup()
+
         settings.setValue("SystrayFont", self.systrayFont)
         settings.setValue("SystrayFontColor", self.systrayFontColor)
         settings.beginGroup("EntryList")
