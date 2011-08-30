@@ -37,6 +37,7 @@ class FeedTest(unittest2.TestCase):
         self.savefeed.url = "MyUrl"
         self.savefeed.homepage = "MyHomepage"
         self.savefeed.updated = time.gmtime(time.time())
+        self.savefeed.deleted_entry_ids = ["123", "456"]
 
     def testLoad(self):
         import time
@@ -48,6 +49,7 @@ class FeedTest(unittest2.TestCase):
         store.setValue("Homepage", "Homepage")
         store.setValue("Author", "TestAuthor")
         store.setValue("Updated", updated)
+        store.setValue("DeletedEntryIds", ["789","101112"])
         store.beginGroup("Entry_%s" % b64encode("Id1"))
         store.setValue("Title", "T1")
         store.setValue("Updated", updated)
@@ -72,6 +74,8 @@ class FeedTest(unittest2.TestCase):
         self.assertEqual(self.savefeed.homepage, "Homepage")
         self.assertEqual(self.savefeed.author, "TestAuthor")
         self.assertEqual(self.savefeed.unread, 1)
+        self.assertEqual(len(self.savefeed.deleted_entry_ids), 2)
+        self.assertEqual(self.savefeed.deleted_entry_ids, ["789","101112"])
         self.assertEqual(len(self.savefeed.entries), 2)
 
     def testSave(self):
@@ -84,6 +88,7 @@ class FeedTest(unittest2.TestCase):
         self.assertEqual(self.savefeed.author, store.value("Author"))
         self.assertEqual(self.savefeed.url, store.value("Url"))
         self.assertEqual(self.savefeed.updated, store.value("Updated"))
+        self.assertEqual(self.savefeed.deleted_entry_ids, store.value("DeletedEntryIds", []))
 
     def testTitle(self):
         self.assertIsNone(self.feed.title)
@@ -119,11 +124,14 @@ class FeedTest(unittest2.TestCase):
 
     def testRemove(self):
         self.assertEqual(len(self.feed.entries), 0)
+        self.assertEqual(len(self.feed.deleted_entry_ids), 0)
         feed = Entry()
         self.feed.entries.append(feed)
+        self.assertEqual(len(self.feed.deleted_entry_ids), 0)
         self.assertEqual(len(self.feed.entries), 1)
         self.feed.entries.remove(feed)
         self.assertEqual(len(self.feed.entries), 0)
+        self.assertEqual(len(self.feed.deleted_entry_ids), 1)
 
     def testEqual(self):
         feed = Feed()

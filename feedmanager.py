@@ -56,7 +56,7 @@ class FeedManager(object):
                     feed.updated = newfeed.updated
                     updateinfo["keys"].append("updated")
                 for entry in newfeed.entries:
-                    if not entry in feed.entries:
+                    if not entry in feed.entries and not entry.identity in feed.deleted_entry_ids:
                         updateinfo["entries"].append(entry)
                         feed.entries.append(entry)
                 updated.append(updateinfo)

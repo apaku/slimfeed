@@ -18,10 +18,27 @@
 
 from entry import Entry
 
+# Customized list who tells the feed about the id of removed entries
+# Necessary so updating from a feed does not re-add already-deleted entries
+class EntryList(list):
+    def __init__(self, feed, deflist=[]):
+        self._feed = feed
+        list.__init__(self, deflist)
+
+    def __delitem__(self, idx):
+        entryid = self[idx].identity
+        list.__delitem__(self, idx)
+        self._feed.deleted_entry_ids.append(entryid)
+
+    def remove(self, value):
+        entryid = value.identity
+        list.remove(self, value)
+        self._feed.deleted_entry_ids.append(entryid)
 
 class Feed(object):
     def __init__(self):
-        self._entries = []
+        self._entries = EntryList(self, [])
+        self._deleted_entry_ids = []
         self._title = None
         self._author = None
         self._updated = None
@@ -79,6 +96,14 @@ class Feed(object):
     updated = property(_getupdated, _setupdated, None, \
             "Date of last update of the feed")
 
+    def _getdeleted_entry_ids(self):
+        return self._deleted_entry_ids
+
+    def _setdeleted_entry_ids(self, ids):
+        self._deleted_entry_ids = ids
+
+    deleted_entry_ids = property(_getdeleted_entry_ids, _setdeleted_entry_ids, None, "Id's of Entries that have been deleted")
+
     def _getentries(self):
         return self._entries
 
@@ -94,7 +119,8 @@ class Feed(object):
                 and self.author == other.author \
                 and self.entries == other.entries \
                 and self.updated == other.updated \
-                and self.url == other.url)
+                and self.url == other.url \
+                and self.deleted_entry_ids == other.deleted_entry_ids)
 
     def load(self, store):
         self.title = store.value("Title", None)
@@ -102,6 +128,12 @@ class Feed(object):
         self.updated = store.value("Updated", None)
         self.url = store.value("Url", None)
         self.homepage = store.value("Homepage", None)
+        self.deleted_entry_ids = store.value("DeletedEntryIds", [])
+        # This seems to be a PyQt quirk during storage, the QSettings store @Invalid in the file
+        # when self.deleted_entry_ids is an empty list. So if its set to None, lets re-set to an
+        # empty list since we don't want None there
+        if self.deleted_entry_ids is None:
+            self.deleted_entry_ids = []
         for group in store.childGroups():
             store.beginGroup(group)
             entry = Entry()
@@ -116,6 +148,7 @@ class Feed(object):
         store.setValue("Homepage", self.homepage)
         store.setValue("Updated", self.updated)
         store.setValue("Author", self.author)
+        store.setValue("DeletedEntryIds", self.deleted_entry_ids)
         for entry in self._entries:
             store.beginGroup("Entry_%s" % b64encode(str(hash(entry.identity))))
             entry.save(store)
