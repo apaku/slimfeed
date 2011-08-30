@@ -47,7 +47,7 @@ class Preferences(QtGui.QDialog):
     def _setSystrayFontColor(self, color):
         # size needs to match the one from the button
         self._systraycolor = color
-        pixmap = QtGui.QPixmap(16,16)
+        pixmap = QtGui.QPixmap(16, 16)
         pixmap.fill(color)
         self._systraycolorchooseIcon = QtGui.QIcon(pixmap)
         self.systrayColorChooser.setIcon(self._systraycolorchooseIcon)

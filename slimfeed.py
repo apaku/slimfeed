@@ -41,12 +41,12 @@ class UpdateThread(Thread):
 
 class SlimApp(QtGui.QApplication):
     def __init__(self, args):
-        QtGui.QApplication.__init__(self,args)
+        QtGui.QApplication.__init__(self, args)
         self._aboutToQuit = False
-        
+
     def commitData(self, sessMgr):
         self._aboutToQuit = True
-        
+
     def isAboutToQuit(self):
         return self._aboutToQuit
 
@@ -54,11 +54,11 @@ class MainWindow(QtGui.QMainWindow):
     updated = pyqtSignal(list)
     def __init__(self, parent=None):
         QtGui.QMainWindow.__init__(self, parent)
-        
+
         # To be able to just hide to systray when closing the window and restore
         # the window via the systray icon need to set this to false
         QtGui.QApplication.setQuitOnLastWindowClosed(False)
-        
+
         uic.loadUi("slimfeed.ui", self)
         self.feedMgr = FeedManager()
 
@@ -71,7 +71,7 @@ class MainWindow(QtGui.QMainWindow):
         self.browserToolBar = QtGui.QToolBar(self.browserToolBarContainer)
 
         self.setupListToolBars()
-        self.entryList.sortByColumn(2, QtCore.Qt.AscendingOrder) 
+        self.entryList.sortByColumn(2, QtCore.Qt.AscendingOrder)
 
         self.entryModel = EntryModel(parent=self)
         self.entryProxyModel = QtGui.QSortFilterProxyModel()
@@ -81,7 +81,7 @@ class MainWindow(QtGui.QMainWindow):
         self.entryList.setModel(self.entryProxyModel)
 
         self.entryModel.entriesChanged.connect(self.feedModel.entriesUpdated)
-        
+
         # Directly call quit from our quit-action instead of going through the close
         # event since that just hides to systray
         self.actionQuit.triggered.connect(self.quit)
@@ -131,7 +131,7 @@ class MainWindow(QtGui.QMainWindow):
     def doShow(self):
         self.show()
         self.activateWindow()
-        
+
     def showPreferences(self):
         prefs = Preferences(self)
         prefs.setWindowTitle("Slimfeed Preferences")
@@ -197,7 +197,7 @@ class MainWindow(QtGui.QMainWindow):
             painter.begin(pixmap)
             painter.setFont(self.systrayFont)
             painter.setPen(self.systrayFontColor)
-            painter.drawText(pixmap.rect(), QtCore.Qt.AlignCenter | QtCore.Qt.AlignHCenter, str(numUnread) );
+            painter.drawText(pixmap.rect(), QtCore.Qt.AlignCenter | QtCore.Qt.AlignHCenter, str(numUnread));
             painter.end()
             self.sysTrayIcon = QtGui.QIcon(pixmap)
             self.sysTray.setIcon(self.sysTrayIcon)
@@ -220,9 +220,9 @@ class MainWindow(QtGui.QMainWindow):
         toolbar.setIconSize(QtCore.QSize(16, 16))
 
     def setupListToolBars(self):
-        self._setupToolBar(self.feedToolBar, self.feedToolBarContainer, [self.actionDeleteFeed,])
+        self._setupToolBar(self.feedToolBar, self.feedToolBarContainer, [self.actionDeleteFeed, ])
         self._setupToolBar(self.entryToolBar, self.entryToolBarContainer, [self.actionMarkEntryAsImportant, self.actionDeleteEntry])
-        self._setupToolBar(self.browserToolBar, self.browserToolBarContainer, [self.actionBack,self.actionForward,self.actionStop,self.actionReload])
+        self._setupToolBar(self.browserToolBar, self.browserToolBarContainer, [self.actionBack, self.actionForward, self.actionStop, self.actionReload])
 
     def feedSelectionChanged(self):
         selection = self.feedList.selectionModel().selectedRows()
@@ -288,7 +288,7 @@ class MainWindow(QtGui.QMainWindow):
             # Make sure to select the complete row, to be consistent with what the user
             # can select
             topleft = self.feedModel.indexForFeed(currentFeed)
-            self.feedList.selectionModel().select(topleft, QtGui.QItemSelectionModel.ClearAndSelect|QtGui.QItemSelectionModel.Rows)
+            self.feedList.selectionModel().select(topleft, QtGui.QItemSelectionModel.ClearAndSelect | QtGui.QItemSelectionModel.Rows)
             self.feedList.selectionModel().setCurrentIndex(topleft, QtGui.QItemSelectionModel.Current)
         settings.endGroup()
         settings.beginGroup("EntryList")
@@ -317,7 +317,6 @@ class MainWindow(QtGui.QMainWindow):
         self.restoreState(settings.value("state", QtCore.QByteArray()))
         self.updateTimeout = _readQSettingsIntEntry(settings, "UpdateTimeout", 300)
         self.markReadTimeout = _readQSettingsIntEntry(settings, "MarkReadTimeout", 500)
-        self.systrayFontColor = settings.value("SystrayFontColor", QtGui.qApp.palette().color(QtGui.QPalette.Active,QtGui.QPalette.Text))
         settings.beginGroup("ArticleDeletion")
 
         self.enableArticleDeletion = _readQSettingsBoolEntry(settings, "Enabled", False)
@@ -327,6 +326,7 @@ class MainWindow(QtGui.QMainWindow):
         self.numberOfDays = _readQSettingsIntEntry(settings, "NumberOfDays", 60)
         settings.endGroup()
 
+        self.systrayFontColor = settings.value("SystrayFontColor", QtGui.qApp.palette().color(QtGui.QPalette.Active, QtGui.QPalette.Text))
         # The default font for the systray overlay text should be bold
         defFont = QtGui.qApp.font()
         defFont.setBold(True)
@@ -359,11 +359,11 @@ class MainWindow(QtGui.QMainWindow):
             settings.setValue("CurrentEntryId", currentEntry.identity)
         else:
             settings.setValue("CurrentEntryId", None)
-        settings.setValue("Horizontal Header State", 
+        settings.setValue("Horizontal Header State",
                 self.entryList.horizontalHeader().saveState())
         for col in range(0, self.entryList.horizontalHeader().count()):
             settings.beginGroup("Column %d" % col)
-            settings.setValue("Width", 
+            settings.setValue("Width",
                     self.entryList.horizontalHeader().sectionSize(col))
             settings.endGroup()
         settings.endGroup()
@@ -373,11 +373,11 @@ class MainWindow(QtGui.QMainWindow):
             settings.setValue("CurrentFeedUrl", currentFeed.url)
         else:
             settings.setValue("CurrentFeedUrl", None)
-        settings.setValue("Horizontal Header State", 
+        settings.setValue("Horizontal Header State",
                 self.feedList.horizontalHeader().saveState())
         for col in range(0, self.feedList.horizontalHeader().count()):
             settings.beginGroup("Column %d" % col)
-            settings.setValue("Width", 
+            settings.setValue("Width",
                     self.feedList.horizontalHeader().sectionSize(col))
             settings.endGroup()
         settings.endGroup()
