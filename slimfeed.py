@@ -100,7 +100,7 @@ class MainWindow(QtGui.QMainWindow):
         self.updateTimer = QtCore.QTimer()
         self.updateTimer.timeout.connect(self.updateFeeds)
         self.updateThread = None
-        self.updateTimer.start(self.updateTimeout)
+        self._startUpdateTimer()
         # Need to do this async, _readSettings is done too early and
         # hence the size is being overwritten somehow later on
         QtCore.QTimer.singleShot(0, self._restoreViews)
@@ -124,6 +124,9 @@ class MainWindow(QtGui.QMainWindow):
         self.sysTrayMenu.addSeparator()
         self.sysTrayMenu.addAction(self.actionQuit)
         self.sysTray.setContextMenu(self.sysTrayMenu)
+
+    def _startUpdateTimer(self):
+        self.updateTimer.start(self.updateTimeout * 1000)
 
     def doShow(self):
         self.show()
@@ -195,7 +198,7 @@ class MainWindow(QtGui.QMainWindow):
         self.feedModel.feedsUpdated(updated)
         self.entryModel.feedsUpdated(updated)
         self.updateSystrayIcon()
-        self.updateTimer.start(self.updateTimeout)
+        self._startUpdateTimer()
 
     def _setupToolBar(self, toolbar, container, actions):
         container.setLayout(QtGui.QVBoxLayout())
@@ -302,7 +305,7 @@ class MainWindow(QtGui.QMainWindow):
         settings = QtCore.QSettings("de.apaku", "Slimfeed")
         self.restoreGeometry(settings.value("geometry", QtCore.QByteArray()))
         self.restoreState(settings.value("state", QtCore.QByteArray()))
-        self.updateTimeout = _readQSettingsIntEntry(settings, "UpdateTimeout", 6000)
+        self.updateTimeout = _readQSettingsIntEntry(settings, "UpdateTimeout", 300)
         self.markReadTimeout = _readQSettingsIntEntry(settings, "MarkReadTimeout", 500)
         self.systrayFontColor = settings.value("SystrayFontColor", QtGui.qApp.palette().color(QtGui.QPalette.Active,QtGui.QPalette.Text))
         # The default font for the systray overlay text should be bold

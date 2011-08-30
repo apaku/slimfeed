@@ -35,10 +35,10 @@
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>Specifies the number of milliseconds to wait between updating the feeds from their urls.</string>
+         <string>Specifies the number of seconds to wait between updating the feeds from their urls.</string>
        </property>
        <property name="suffix">
-        <string> ms</string>
+         <string> s</string>
        </property>
        <property name="maximum">
         <number>999999</number>
