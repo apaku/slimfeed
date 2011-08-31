@@ -143,8 +143,8 @@ class EntryModelTest(unittest2.TestCase):
                     Qt.FontRole).bold(), False)
 
     def testIndexFromEntry(self):
-        self.assertEqual(self.entryModel.indexForFeed(self.feed.entries[0]), self.entryModel.index(0, 0, QModelIndex()))
-        self.assertEqual(self.entryModel.indexForFeed(self.feed.entries[1]), self.entryModel.index(1, 0, QModelIndex()))
+        self.assertEqual(self.entryModel.indexForEntry(self.feed.entries[0]), self.entryModel.index(0, 0, QModelIndex()))
+        self.assertEqual(self.entryModel.indexForEntry(self.feed.entries[1]), self.entryModel.index(1, 0, QModelIndex()))
 
 if __name__ == "__main__":
     unittest2.main()

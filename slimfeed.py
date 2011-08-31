@@ -306,7 +306,7 @@ class MainWindow(QtGui.QMainWindow):
         if currentEntry is not None:
             # Make sure to select the complete row, to be consistent with what the user
             # can select
-            topleft = self.entryProxyModel.mapFromSource(self.entryModel.indexForFeed(currentEntry))
+            topleft = self.entryProxyModel.mapFromSource(self.entryModel.indexForEntry(currentEntry))
             self.entryList.selectionModel().select(topleft, QtGui.QItemSelectionModel.ClearAndSelect | QtGui.QItemSelectionModel.Rows)
             self.entryList.selectionModel().setCurrentIndex(topleft, QtGui.QItemSelectionModel.Current)
         settings.endGroup()

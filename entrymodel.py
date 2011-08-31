@@ -140,7 +140,7 @@ class EntryModel(QAbstractTableModel):
         self.endRemoveRows()
         self.entriesChanged.emit(self._feed)
 
-    def indexForFeed(self, entry):
+    def indexForEntry(self, entry):
         if self._feed is None:
             return None
         for i in range(0, len(self._feed.entries)):
