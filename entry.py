@@ -122,6 +122,9 @@ class Entry(object):
         store.setValue("Read", self.read)
         store.setValue("Important", self.important)
 
+    def __lt__(self, other):
+        return self.updated < other.updated
+
     def __eq__(self, other):
         if other is None:
             return False
