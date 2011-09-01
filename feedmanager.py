@@ -19,7 +19,8 @@
 from feed import Feed
 import feedparser
 from feedparserfactory import createFeedFromData
-
+from datetime import datetime, date
+import time
 
 class FeedManager(object):
     def __init__(self):
@@ -69,6 +70,29 @@ class FeedManager(object):
         self._feeds = feeds
 
     feeds = property(getfeeds, setfeeds, None, "Feeds managed by this object")
+
+    # Expose a list of entries to archive, necessary since direct deletion can cause inconsistency
+    # between a possibly showing list of entries for one of the feeds
+    def checkForArchiveableEntries(self, numberOfDaysEnabled, numberOfDays, numberOfArticlesEnabled, numberOfArticles):
+        removedinfo = []
+        for feed in self.feeds:
+            feedinfo = {'feed': feed, 'entries':[]}
+            if numberOfArticlesEnabled:
+                sortedentries = sorted(feed.entries)
+                if len(feed.entries) > numberOfArticles:
+                    for entry in sortedentries[:numberOfArticles]:
+                        feedinfo['entries'].append(entry)
+            elif numberOfDaysEnabled:
+                today = date.today()
+                # Make sure to iterate over a copy so we do not step over entries if one is removed
+                for entry in list(feed.entries):
+                    # Need to convert since entries usually carry a time_struct
+                    entrydatetime = datetime.fromtimestamp(time.mktime(entry.updated))
+                    if (today - entrydatetime.date()).days > numberOfDays:
+                        feedinfo['entries'].append(entry)
+            removedinfo.append(feedinfo)
+        return removedinfo
+
 
 if __name__ == "__main__":
     import sys

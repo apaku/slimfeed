@@ -26,7 +26,9 @@ from feedmanager import FeedManager
 from feed import Feed
 
 from storemock import StoreMock
+from minimock import Mock
 
+from datetime import timedelta, datetime
 
 class TestFeedManager(unittest2.TestCase):
     def setUp(self):
@@ -78,6 +80,43 @@ class TestFeedManager(unittest2.TestCase):
         self.feedManager.feeds.remove(feed)
         self.assertEqual(len(self.feedManager.feeds), 0)
 
+    def testArchivingAfterSize(self):
+        class EntryMock(Mock):
+            def __lt__(self, other):
+                return self.updated < other.updated
+        self.assertEqual(len(self.feedManager.feeds), 0)
+        feed = Feed()
+        today = datetime.today()
+        for i in range(0, 20):
+            entry = EntryMock("Entry")
+            entry.id = i
+            entry.updated = (today - timedelta(days=i / 2)).timetuple()
+            feed.entries.append(entry)
+        self.assertEquals(len(feed.entries), 20)
+        self.feedManager.feeds.append(feed)
+        tobedeleted = self.feedManager.checkForArchiveableEntries(False, 0, True, 10)
+        self.assertEqual(len(tobedeleted), 1)
+        self.assertEqual(len(tobedeleted[0]['entries']), 10)
+        print [entry.id for entry in tobedeleted[0]['entries'] ]
+        deletedids = range(10, 20)
+        for i in range(0, 10):
+            self.assertTrue(tobedeleted[0]['entries'][i].id in deletedids)
+
+    def testArchivingAfterDays(self):
+        self.assertEqual(len(self.feedManager.feeds), 0)
+        feed = Feed()
+        for i in range(0, 10):
+            entry = Mock("Entry")
+            entry.id = i
+            entry.updated = (datetime.today() - timedelta(days=i)).timetuple()
+            feed.entries.append(entry)
+        self.assertEquals(len(feed.entries), 10)
+        self.feedManager.feeds.append(feed)
+        tobedeleted = self.feedManager.checkForArchiveableEntries(True, 6, False, 0)
+        self.assertEqual(len(tobedeleted), 1)
+        self.assertEqual(len(tobedeleted[0]['entries']), 3)
+        for i in range(0, 3):
+            self.assertEqual(tobedeleted[0]['entries'][i].id, i + 7)
 
 if __name__ == "__main__":
     unittest2.main()
