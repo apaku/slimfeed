@@ -110,6 +110,10 @@ class MainWindow(QtGui.QMainWindow):
         self.markReadTimer.setSingleShot(True)
         self.markReadTimer.timeout.connect(self.markEntryRead)
 
+        # Start archive-timer if necessary
+        self.archiveTimer = None
+        self.checkArchiveTimer()
+
         self.updated.connect(self.feedsUpdated, QtCore.Qt.QueuedConnection)
 
         # Set up systray
@@ -131,6 +135,37 @@ class MainWindow(QtGui.QMainWindow):
     def doShow(self):
         self.show()
         self.activateWindow()
+
+    def checkArchiveTimer(self):
+        if self.enableArticleDeletion:
+            if self.archiveTimer is None:
+                self.archiveTimer = QtCore.QTimer()
+                self.archiveTimer.timeout.connect(self.archiveArticles)
+            # First check after enabling is done after 60 seconds, the archive
+            # function will then re-schedule for longer timeout
+            self.archiveTimer.start(6000)
+        elif self.archiveTimer is not None:
+                self.archiveTimer.stop()
+                self.archiveTimer.timeout.disconnect(self.archiveArticles)
+                self.archiveTimer = None
+
+    def archiveArticles(self):
+        deleteableinfo = self.feedMgr.checkForArchiveableEntries(self.numberOfDaysEnabled, self.numberOfDays, 
+                                                                 self.numberOfArticlesEnabled, self.numberOfArticles)
+        # Now update the feeds, this may need to go through the entrymodel so that the indexes are updated properly,
+        # hence cannot do this directly in the archiving-method above
+        for info in deleteableinfo:
+            feed = info["feed"]
+            entries = info["entries"]
+            isentrymodelfeed = self.entryModel.feed == feed
+            for entry in entries:
+                if isentrymodelfeed:
+                    self.entryModel.removeEntry(self.entryModel.indexForEntry(entry))
+                else:
+                    feed.entries.remove(entry)
+            self.feedModel.entriesUpdated(feed)
+        # Restart timer to run again after an hour
+        self.archiveTimer.start(60 * 1000)
 
     def showPreferences(self):
         prefs = Preferences(self)
@@ -155,6 +190,8 @@ class MainWindow(QtGui.QMainWindow):
             self.numberOfDaysEnabled = prefs.numberOfDaysEnabled
             self.numberOfDays = prefs.numberOfDays
             self.updateSystrayIcon()
+            self.checkArchiveTimer()
+
 
     def sysTrayActivated(self, reason):
         if reason == QtGui.QSystemTrayIcon.Trigger:
