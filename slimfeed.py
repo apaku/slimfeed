@@ -453,7 +453,7 @@ class MainWindow(QtGui.QMainWindow):
         txt = """
 <b>Slimfeed</b><br />
 <br />
-Version: 1.0.0<br />
+Version: 0.9.0<br />
 A samll and fast feed reader<br />
 <br />
 Copyright 2011 Andreas Pakulat <apaku@gmx.de>
