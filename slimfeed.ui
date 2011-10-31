@@ -243,6 +243,8 @@
     </property>
     <addaction name="actionMarkAllEntriesRead"/>
     <addaction name="actionMarkEntryAsImportant"/>
+    <addaction name="actionMarkAsRead"/>
+    <addaction name="actionMarkAsUnread"/>
     <addaction name="separator"/>
     <addaction name="actionDeleteEntry"/>
    </widget>
@@ -430,6 +432,30 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+I</string>
+   </property>
+  </action>
+  <action name="actionMarkAsRead">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/mail-mark-read.png</normaloff>icons/mail-mark-read.png</iconset>
+   </property>
+   <property name="text">
+    <string>Mark as R&amp;ead</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionMarkAsUnread">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/mail-mark-unread.png</normaloff>icons/mail-mark-unread.png</iconset>
+   </property>
+   <property name="text">
+    <string>Mark as &amp;Unread</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+U</string>
    </property>
   </action>
  </widget>

@@ -94,6 +94,8 @@ class MainWindow(QtGui.QMainWindow):
         self.actionMarkEntryAsImportant.triggered.connect(self.markSelectedEntriesImportant)
         self.actionMarkAllEntriesRead.triggered.connect(self.markAllEntriesRead)
         self.actionMarkAllFeedsRead.triggered.connect(self.markAllFeedsRead)
+        self.actionMarkAsRead.triggered.connect(self.markArticleRead)
+        self.actionMarkAsUnread.triggered.connect(self.markArticleUnread)
         self.feedList.selectionModel().selectionChanged.connect(
                 self.feedSelectionChanged)
         self.entryList.selectionModel().selectionChanged.connect(
@@ -223,6 +225,16 @@ class MainWindow(QtGui.QMainWindow):
             else:
                 self.doShow()
 
+    def markArticleRead(self):
+        if self.feedList.selectionModel().hasSelection():
+            for idx in self.entryList.selectionModel().selectedRows():
+                self.entryModel.markRead(idx);
+
+    def markArticleUnread(self):
+        if self.feedList.selectionModel().hasSelection():
+            for idx in self.entryList.selectionModel().selectedRows():
+                self.entryModel.markUnread(idx);
+
     def markEntryReadTimeout(self):
         if self.markReadIdx is not None and self.markReadIdx.isValid():
             self.entryModel.markRead(self.markReadIdx)
@@ -281,7 +293,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def setupListToolBars(self):
         self._setupToolBar(self.feedToolBar, self.feedToolBarContainer, [self.actionDeleteFeed, ])
-        self._setupToolBar(self.entryToolBar, self.entryToolBarContainer, [self.actionMarkEntryAsImportant, self.actionDeleteEntry])
+        self._setupToolBar(self.entryToolBar, self.entryToolBarContainer, [self.actionMarkEntryAsImportant, self.actionMarkAsRead, self.actionMarkAsUnread, self.actionDeleteEntry])
         self._setupToolBar(self.browserToolBar, self.browserToolBarContainer, [self.actionBack, self.actionForward, self.actionStop, self.actionReload])
 
     def feedSelectionChanged(self):
