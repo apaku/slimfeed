@@ -232,9 +232,10 @@
      <string>&amp;Feed</string>
     </property>
     <addaction name="actionAdd"/>
-    <addaction name="actionDeleteFeed"/>
     <addaction name="actionMarkAllFeedsRead"/>
     <addaction name="actionFetchAllFeeds"/>
+    <addaction name="separator"/>
+    <addaction name="actionDeleteFeed"/>
    </widget>
    <widget class="QMenu" name="menuArticle">
     <property name="title">
@@ -242,6 +243,7 @@
     </property>
     <addaction name="actionMarkAllEntriesRead"/>
     <addaction name="actionMarkEntryAsImportant"/>
+    <addaction name="separator"/>
     <addaction name="actionDeleteEntry"/>
    </widget>
    <widget class="QMenu" name="menuSlimfeed">
