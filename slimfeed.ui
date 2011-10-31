@@ -318,6 +318,9 @@
    <property name="text">
     <string>&amp;Fetch All Feeds</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
   </action>
   <action name="actionAbout">
    <property name="icon">
@@ -362,6 +365,9 @@
    <property name="text">
     <string>Back</string>
    </property>
+   <property name="shortcut">
+    <string>Alt+Left</string>
+   </property>
   </action>
   <action name="actionForward">
    <property name="icon">
@@ -370,6 +376,9 @@
    </property>
    <property name="text">
     <string>Forward</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Right</string>
    </property>
   </action>
   <action name="actionStop">
@@ -389,6 +398,9 @@
    <property name="text">
     <string>Reload</string>
    </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
   </action>
   <action name="actionDeleteEntry">
    <property name="enabled">
@@ -401,6 +413,9 @@
    <property name="text">
     <string>&amp;Delete</string>
    </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
   </action>
   <action name="actionMarkEntryAsImportant">
    <property name="enabled">
@@ -412,6 +427,9 @@
    </property>
    <property name="text">
     <string>Mark As Important</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
    </property>
   </action>
  </widget>
