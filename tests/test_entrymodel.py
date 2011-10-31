@@ -93,6 +93,15 @@ class EntryModelTest(unittest2.TestCase):
         self.assertEqual(spyDataChanged.slotTriggered, 1)
         self.assertEqual(spyDataChanged.arguments[0][0].row(), model.index(0, 0, QModelIndex()).row())
         self.assertEqual(spyDataChanged.arguments[0][1].row(), model.index(0, 2, QModelIndex()).row())
+        spyEntriesChanged = SignalSpy(model.entriesChanged)
+        spyDataChanged = SignalSpy(model.dataChanged)
+        idx = model.index(0, 0, QModelIndex())
+        model.markUnread(idx)
+        self.assertEqual(spyEntriesChanged.slotTriggered, 1)
+        self.assertEqual(spyEntriesChanged.arguments[0][0], self.feed)
+        self.assertEqual(spyDataChanged.slotTriggered, 1)
+        self.assertEqual(spyDataChanged.arguments[0][0].row(), model.index(0, 0, QModelIndex()).row())
+        self.assertEqual(spyDataChanged.arguments[0][1].row(), model.index(0, 2, QModelIndex()).row())
 
     def testHeader(self):
         self.assertEqual(self.entryModel.headerData(0, Qt.Horizontal, Qt.DisplayRole), "")

@@ -111,6 +111,16 @@ class EntryModel(QAbstractTableModel):
                 self.dataChanged.emit(self.index(idx.row(), 0, idx.parent()), 
                                       self.index(idx.row(), self.columnCount(idx.parent()) - 1, idx.parent()))
                 self.entriesChanged.emit(self._feed)
+
+    def markUnread(self, idx):
+        if idx.isValid() and idx.row() >= 0 and idx.row() < self.rowCount(idx.parent()):
+            e = self._feed.entries[idx.row()]
+            if e.read == True:
+                e.read = False
+                self.dataChanged.emit(self.index(idx.row(), 0, idx.parent()), 
+                                      self.index(idx.row(), self.columnCount(idx.parent()) - 1, idx.parent()))
+                self.entriesChanged.emit(self._feed)
+
     def markImportant(self, idx):
         if idx.isValid() and idx.row() >= 0 and idx.row() < self.rowCount(idx.parent()):
             e = self._feed.entries[idx.row()]
