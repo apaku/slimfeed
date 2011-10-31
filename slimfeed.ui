@@ -426,7 +426,7 @@
      <normaloff>icons/mail-mark-important.png</normaloff>icons/mail-mark-important.png</iconset>
    </property>
    <property name="text">
-    <string>Mark As Important</string>
+    <string>Mark As &amp;Important</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+I</string>
