@@ -3,15 +3,15 @@ Slimfeed
 This is a small and fast feed reader. 
 
 Requirements:
-Python 2.6 or later
-PyQt4 4.7 or later
-Qt4 4.6 or later
-python-feedparser
+Python 2.6 or later (http://python.org
+PyQt4 4.7 or later (http://www.riverbankcomputing.co.uk/software/pyqt/intro)
+Qt4 4.6 or later (http://qt.nokia.com)
+python-feedparser (http://pypi.python.org/pypi/feedparser)
 
 For the unit-tests
-python-minimock
-python-unittest2
-python-nose
+python-minimock (http://pypi.python.org/pypi/MiniMock)
+python-unittest2 (http://pypi.python.org/pypi/unittest2)
+python-nose (http://code.google.com/p/python-nose/)
 
 This code was not tested against Python3
 
