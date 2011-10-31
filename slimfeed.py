@@ -92,6 +92,8 @@ class MainWindow(QtGui.QMainWindow):
         self.actionDeleteFeed.triggered.connect(self.deleteSelectedFeed)
         self.actionDeleteEntry.triggered.connect(self.deleteSelectedEntry)
         self.actionMarkEntryAsImportant.triggered.connect(self.markSelectedEntriesImportant)
+        self.actionMarkAllEntriesRead.triggered.connect(self.markAllEntriesRead)
+        self.actionMarkAllFeedsRead.triggered.connect(self.markAllFeedsRead)
         self.feedList.selectionModel().selectionChanged.connect(
                 self.feedSelectionChanged)
         self.entryList.selectionModel().selectionChanged.connect(
@@ -135,6 +137,27 @@ class MainWindow(QtGui.QMainWindow):
     def doShow(self):
         self.show()
         self.activateWindow()
+
+    def markAllEntriesRead(self):
+        for idx in self.feedList.selectionModel().selectedRows():
+            feed = self.feedModel.feedFromIndex(idx)
+            for entry in feed.entries:
+                self.entryModel.markRead(self.entryModel.indexForEntry(entry))
+
+    def markAllFeedsRead(self):
+        for feed in self.feedMgr.feeds:
+            idx = self.feedModel.indexForFeed(feed)
+            # For the currently-selected feed update should be done through entry-model
+            # so that the entry list updates correctly. For the other feeds we just need
+            # to notify once all entries are marked
+            if self.feedList.selectionModel().isSelected(idx):
+                for entry in feed.entries:
+                    self.entryModel.markRead(self.entryModel.indexForEntry(entry))
+            else:
+                for entry in feed.entries:
+                    entry.read = True
+                # Update the model
+                self.feedModel.feedsUpdated([{'title':feed.title}])
 
     def checkArchiveTimer(self):
         if self.enableArticleDeletion:
