@@ -110,7 +110,7 @@ class MainWindow(QtGui.QMainWindow):
         self.entryList.selectionModel().currentChanged.connect(self.currentEntryChanged)
         self.markReadTimer = QtCore.QTimer()
         self.markReadTimer.setSingleShot(True)
-        self.markReadTimer.timeout.connect(self.markEntryRead)
+        self.markReadTimer.timeout.connect(self.markEntryReadTimeout)
 
         # Start archive-timer if necessary
         self.archiveTimer = None
@@ -223,7 +223,7 @@ class MainWindow(QtGui.QMainWindow):
             else:
                 self.doShow()
 
-    def markEntryRead(self):
+    def markEntryReadTimeout(self):
         if self.markReadIdx is not None and self.markReadIdx.isValid():
             self.entryModel.markRead(self.markReadIdx)
         self.updateSystrayIcon()
